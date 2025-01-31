@@ -16,8 +16,6 @@ export default function EditProfile() {
   const navigation = useNavigation();
   const goToProfile = () => {
     try {
-        // navigation.navigate('profile');
-        // navigation.navigate('TabNavigation', {screen: 'profile'});
         navigation.dispatch(
             CommonActions.reset({
                 index: 0,

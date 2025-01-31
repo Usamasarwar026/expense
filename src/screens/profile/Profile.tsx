@@ -4,16 +4,13 @@ import {
   Image,
   StyleSheet,
   TouchableOpacity,
-  Alert,
-  Modal,
-  TouchableWithoutFeedback,
-  Animated,
 } from 'react-native';
 import React from 'react';
 import {IMAGES} from '../../constant/image';
 import Setting from '../../components/setting/Setting';
 import {ProfileData} from './profileData';
 import {useNavigation} from '@react-navigation/native';
+import Logout from '../logout/Logout';
 
 
 
@@ -73,27 +70,14 @@ export default function Profile() {
         })}
       </View>
       <View style={{flex: 1}}></View>
-
-       <Modal visible={openModel} animationType='slide' transparent={true}>
-       <TouchableWithoutFeedback onPress={()=>setOpenModel(false)}>
-        <Animated.View style={[style.overlay]} />
-      </TouchableWithoutFeedback>
-      <View style={style.modalView}>
-        <Text style={style.logoutline}></Text>
-        <Text style={style.logout}>Logout?</Text>
-        <Text style={style.modalText}>Are you sure do you wanna logout?</Text>
-        <View style={style.logoutbtn}>
-        <TouchableOpacity onPress={() => {setOpenModel(false)}} style={style.button}>
-          <Text style={style.buttonText}>No</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => {Alert.alert('Logged Out'); setOpenModel(false)}} style={style.button1}>
-          <Text style={style.buttonText1}>Yes</Text>
-        </TouchableOpacity>
-        </View>
-      </View>
+      <Logout
+      openModel={openModel}
+      setOpenModel={setOpenModel}
+      title="Logout?"
+      description="Are you sure do you wanna logout?"
+      text="You have been logged out successfully"
       
-  
-    </Modal>
+      />
     </View>
 
     
@@ -159,79 +143,5 @@ const style = StyleSheet.create({
     marginHorizontal: 20,
   },
 
-  modalView:{
-
-  position: 'absolute',
-  bottom: 0,
-  width: '100%',
-  height: '30%', // Adjust height as needed
-  backgroundColor: 'white',
-  borderTopLeftRadius: 40,
-  borderTopRightRadius: 40,
-  padding: 20,
-  alignItems: 'center',
-  justifyContent: 'center',
-  elevation: 5, // Adds shadow effect
-  },
-  logoutline:{
-    borderTopColor: "#D3BDFF",
-    borderTopWidth: 3,
-    width: '10%',
-    height: 2,
-    marginBottom: 15,
-    
-  },
-  logout:{
-    marginBottom: 15,
-    fontSize: 24,
-    fontWeight: 'bold',
-  },
-  logoutbtn:{
-    flexDirection: 'row',
-    justifyContent:'space-around',
-    width: '100%',
-    marginBottom: 20,
-  },
-  modalText:{
-    marginBottom: 15,
-    textAlign: 'center',
-    fontSize: 16,
-    fontWeight: '500',
-    color: '#91919F'
-  },
-  button:{
-    borderRadius: 10,
-    paddingHorizontal: 50,
-    paddingBottom:18,
-    paddingTop:18,
-    backgroundColor: '#EEE5FF',
-    marginBottom: 10,
-  },
-  button1:{
-    borderRadius: 10,
-    paddingHorizontal: 50,
-    paddingBottom:18,
-    paddingTop:18,
-    backgroundColor: '#7F3DFF',
-    marginBottom: 10,
-  },
-  buttonText:{
-    color: '#7F3DFF',
-    fontSize: 18,
-    fontWeight: 'bold',
-    
-  },
-  buttonText1:{
-    color: 'white',
-    fontSize: 18,
-    fontWeight: 'bold',
-    
-  },
-  overlay: {
-    ...StyleSheet.absoluteFillObject, // This will make the background cover the entire screen
-    backgroundColor: 'rgba(0, 0, 0, 0.5)', // Semi-transparent black for blur effect
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
 
 });

@@ -4,9 +4,16 @@ import {IMAGES} from '../../constant/image';
 import Transction from '../../components/transction/Transction';
 import {newTransaction, transactions} from '../home/TransctionData';
 import TransctionModel from '../../components/transctionModel/TransctionModel';
+import { useNavigation } from '@react-navigation/native';
 
 export default function TransctionScreen() {
   const [openModel, setOpenModel] = useState(false);
+  const navigation = useNavigation();
+  
+
+  const goToFinancialReport = ()=>{
+    navigation.navigate('FinancialReport');
+  }
   return (
     <>
     <ScrollView style={{flex: 1}} contentContainerStyle={{flexGrow: 1}} bounces={false}>
@@ -22,7 +29,7 @@ export default function TransctionScreen() {
           </TouchableOpacity>
         </View>
       </View>
-      <TouchableOpacity >
+      <TouchableOpacity onPress={goToFinancialReport}>
       <View style={style.financialBox} >
         <Text style={style.financialBoxText}>See your financial report</Text>
         <Image source={IMAGES.RIGHT_ARROW} />
@@ -36,7 +43,7 @@ export default function TransctionScreen() {
           {transactions.map(transaction => (
             <Transction
               key={transaction.id}
-              title={transaction.title}
+              title={transaction.categoryName}
               subtitle={transaction.subtitle}
               amount={transaction.amount}
               time={transaction.time}
@@ -50,16 +57,19 @@ export default function TransctionScreen() {
       </View>
       <View style={style.list}>
         <ScrollView style={style.listbar1}>
-          {newTransaction.map(transaction => (
-            <Transction
-              key={transaction.id}
-              title={transaction.title}
-              subtitle={transaction.subtitle}
-              amount={transaction.amount}
-              time={transaction.time}
-              image={transaction.image}
-            />
-          ))}
+          {newTransaction.map(transaction =>{   
+            return(
+              <Transction
+                key={transaction.id}
+                title={transaction.categoryName}
+                subtitle={transaction.subtitle}
+                amount={transaction.amount}
+                time={transaction.time}
+                image={transaction.image}
+                
+              />
+            )
+          } )}
         </ScrollView>
       </View>
     </View>

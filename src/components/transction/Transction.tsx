@@ -1,10 +1,9 @@
-import {View, Text, Image, StyleSheet} from 'react-native';
+import {View, Text, Image, StyleSheet, TouchableOpacity} from 'react-native';
 import React from 'react';
-import {IMAGES} from '../../constant/image';
 
 export default function Transction({title, subtitle, amount, time, image}:any) {
   return (
-    <View style={style.TransctionContainer}>
+    <TouchableOpacity style={style.TransctionContainer}  >
       <View style={style.leftContainer}>
         <View style={style.leftContainerImage}>
           <Image style={style.containerImage} source={image} />
@@ -20,7 +19,7 @@ export default function Transction({title, subtitle, amount, time, image}:any) {
           <Text style={style.text2}>{time}</Text>
         </View>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 }
 

@@ -7,12 +7,13 @@ import {
   KeyboardAvoidingView,
   ScrollView,
 } from 'react-native';
-import React from 'react';
+import React, { useState } from 'react';
 import {IMAGES} from '../../constant/image';
 import Input from '../../components/input/Input';
 import {useNavigation} from '@react-navigation/native';
 
 export default function SignUp() {
+  const [isChecked, setChecked] = useState(false);
   const navigation = useNavigation();
 
   const goToLogin = () => {
@@ -65,7 +66,12 @@ export default function SignUp() {
         </View>
 
         <View style={style.label}>
-          <Text style={style.check}></Text>
+          <TouchableOpacity
+      style={[style.checkbox, isChecked && style.checked]}
+      onPress={() => setChecked(!isChecked)}
+    >
+      {isChecked && <Text style={style.checkmark}>✔</Text>}
+    </TouchableOpacity>
           <Text>
             By signing up, you agree to the{' '}
             <Text style={style.labelText}>
@@ -192,6 +198,23 @@ const style = StyleSheet.create({
   login: {
     flex: 3,
     alignItems: 'center',
+    fontSize: 16,
+  },
+
+  checkbox: {
+    width: 24,
+    height: 24,
+    borderWidth: 2,
+    borderColor: '#7F3DFF',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 5,
+  },
+  checked: {
+    backgroundColor: '#7F3DFF',
+  },
+  checkmark: {
+    color: 'white',
     fontSize: 16,
   },
 });

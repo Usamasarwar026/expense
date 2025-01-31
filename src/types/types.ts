@@ -11,6 +11,10 @@ export type RootStackParamList = {
     profile: undefined;
     ResetPassword: undefined;
     Logout: undefined;
+    FinancialReport: undefined;
+    DetailTransction: undefined;
+    AddModel: undefined;
+    Expense: undefined;
     // Add other screens here
   };
 

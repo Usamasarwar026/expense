@@ -81,7 +81,7 @@ export default function Home() {
       {transactions.map((transaction) => (
         <Transction
           key={transaction.id}
-          title={transaction.title}
+          title={transaction.categoryName}
           subtitle={transaction.subtitle}
           amount={transaction.amount}
           time={transaction.time}
@@ -89,8 +89,6 @@ export default function Home() {
         />
       ))}
     </ScrollView>
-    <AddTransactionButton/>
-        
       </View>
     </View>
     </ScrollView>

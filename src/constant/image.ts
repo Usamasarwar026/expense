@@ -28,5 +28,16 @@ export const IMAGES = {
   SALARY: require('../assets/icon/salary.png'),
   MAINPROFILE: require('../assets/images/mainprofile.png'),
   LOGOUT: require('../assets/icon/logout.png'),
+  SORTING: require('../assets/icon/sorting.png'),
+  TRASH: require('../assets/icon/trash.png'),
+  WHITEARROW: require('../assets/icon/whitearrow.png'),
+  DETAILPIC: require('../assets/images/detailpic.png'),
+  WHITEINCOME: require('../assets/icon/whiteincome.png'),
+  WHITEEXPENSE: require('../assets/icon/whiteexpense.png'),
+  ATTACHMENT: require('../assets/icon/attachment.png'),
+  FILE: require('../assets/icon/file.png'),
+  CAMER: require('../assets/icon/camera.png'),
+  GALLERY: require('../assets/icon/gallery.png'),
+  
 
 };

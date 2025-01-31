@@ -10,6 +10,10 @@ import TabNavigation from './TabNavigation';
 import EditProfile from '../screens/editProfile/EditProfile';
 import ResetPassword from '../screens/resetPassword/ResetPassword';
 import Logout from '../screens/logout/Logout';
+import FinancialReport from '../screens/financialReport/FinancialReport';
+import DetailTransction from '../screens/detailTransction/DetailTransction';
+import AddModel from '../components/addModel/AddModel';
+import Expense from '../screens/expense/Expense';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -17,7 +21,7 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
 export default function Navigation() {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="TabNavigation">
+      <Stack.Navigator initialRouteName="LaunchScreen">
         <Stack.Screen name="LaunchScreen" component={LaunchScreen} options={{ headerShown: false }} />
         <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
         <Stack.Screen name="SignUp" component={SignUp} options={{ headerShown: false }}/>
@@ -26,6 +30,10 @@ export default function Navigation() {
         <Stack.Screen name="EditProfile" component={EditProfile} options={{ headerShown: false }}/>
         <Stack.Screen name="Logout" component={Logout} options={{ headerShown: false }}/>
         <Stack.Screen name="ResetPassword" component={ResetPassword} options={{ headerShown: false }}/>
+        <Stack.Screen name="FinancialReport" component={FinancialReport} options={{ headerShown: false }}/>
+        <Stack.Screen name="DetailTransction" component={DetailTransction} options={{ headerShown: false }}/>
+        <Stack.Screen name="AddModel" component={AddModel} options={{ headerShown: false }}/>
+        <Stack.Screen name="Expense" component={Expense} options={{ headerShown: false }}/>
       </Stack.Navigator>
     </NavigationContainer>
   );
