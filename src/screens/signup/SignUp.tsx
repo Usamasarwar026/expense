@@ -7,14 +7,20 @@ import {
   KeyboardAvoidingView,
   ScrollView,
 } from 'react-native';
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import {IMAGES} from '../../constant/image';
 import Input from '../../components/input/Input';
-import {useNavigation} from '@react-navigation/native';
+import {CommonActions, useNavigation} from '@react-navigation/native';
+import {useAppDispatch} from '../../hooks/useRedux';
+import {signup} from '../../store/authSlice/authSlice';
 
 export default function SignUp() {
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [isChecked, setChecked] = useState(false);
   const navigation = useNavigation();
+  const dispatch = useAppDispatch();
 
   const goToLogin = () => {
     // Navigate to Login Screen
@@ -27,6 +33,31 @@ export default function SignUp() {
       console.error('Navigation Error:', error);
     }
   };
+
+  const signupfunction = async () => {
+    
+    try {
+      const resultAction = await dispatch(signup({name, email, password}));
+      console.log('resultAction:', resultAction); // Log the result of the signup action
+  
+      if (signup.fulfilled.match(resultAction)) {
+        // Navigate only if signup is successful
+        navigation.dispatch(
+          CommonActions.reset({
+            index: 0,
+            routes: [{ name: 'TabNavigation', params: { screen: 'Home' } }],
+          })
+        );
+      } else {
+        console.error('Signup failed:', resultAction.payload);
+        // Handle specific error from the action
+      }
+    } catch (error) {
+      console.error('Signup Error:', error);
+    }
+  };
+  
+  
 
   return (
     <KeyboardAvoidingView style={style.container}>
@@ -44,34 +75,33 @@ export default function SignUp() {
             style={style.inputField}
             placeholder="Name"
             placeholderTextColor="#91919F"
-            // value={name}
-            // onChangeText={setName}
+            value={name}
+            onChangeText={nam => setName(nam)}
           />
           <Input
             style={style.inputField}
             placeholder="Email"
             placeholderTextColor="#91919F"
-            // value={email}
-            // onChangeText={setEmail}
+            value={email}
+            onChangeText={eml => setEmail(eml)}
             keyboardType="email-address"
           />
           <Input
             style={style.inputField}
             placeholder="Password"
             placeholderTextColor="#91919F"
-            // value={password}
-            // onChangeText={setPassword}
-            secureTextEntry={true} // To hide the password input
+            value={password}
+            onChangeText={pass => setPassword(pass)}
+            // secureTextEntry={true} // To hide the password input
           />
         </View>
 
         <View style={style.label}>
           <TouchableOpacity
-      style={[style.checkbox, isChecked && style.checked]}
-      onPress={() => setChecked(!isChecked)}
-    >
-      {isChecked && <Text style={style.checkmark}>✔</Text>}
-    </TouchableOpacity>
+            style={[style.checkbox, isChecked && style.checked]}
+            onPress={() => setChecked(!isChecked)}>
+            {isChecked && <Text style={style.checkmark}>✔</Text>}
+          </TouchableOpacity>
           <Text>
             By signing up, you agree to the{' '}
             <Text style={style.labelText}>
@@ -81,7 +111,7 @@ export default function SignUp() {
         </View>
 
         <View style={style.btn}>
-          <TouchableOpacity style={style.button} onPress={() => {}}>
+          <TouchableOpacity style={style.button} onPress={signupfunction}>
             <Text style={style.buttonText}>Sign Up</Text>
           </TouchableOpacity>
         </View>
@@ -90,19 +120,16 @@ export default function SignUp() {
           <Text>or</Text>
         </View>
 
-        <View style={style.googleSign}>
+        <TouchableOpacity style={style.googleSign}>
           <Image source={IMAGES.GOOGLE}></Image>
           <Text style={style.googletext}>Sign Up with Google</Text>
-        </View>
+        </TouchableOpacity>
 
-        <View style={style.login}>
+        <TouchableOpacity style={style.login} onPress={goToLogin}>
           <Text>
-            Already have an account?{' '}
-            <Text style={style.labelText} onPress={goToLogin}>
-              Login
-            </Text>
+            Already have an account? <Text style={style.labelText}>Login</Text>
           </Text>
-        </View>
+        </TouchableOpacity>
       </ScrollView>
     </KeyboardAvoidingView>
   );

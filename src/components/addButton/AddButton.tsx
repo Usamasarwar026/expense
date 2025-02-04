@@ -63,8 +63,10 @@ export default function AddTransactionButton() {
         <Icon name="add" size={35} color="#fff" />
       </TouchableOpacity>
     </View>
+    
   );
 }
+// ndkVersion = "27.1.12297006"
 
 // **STYLES**
 const styles = StyleSheet.create({

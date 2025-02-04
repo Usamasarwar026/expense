@@ -10,17 +10,24 @@ import {
 } from 'react-native';
 import React, { useState } from 'react';
 import SuccessfulModel from '../../components/successfulModel/SuccessfulModel';
+import { useNavigation } from '@react-navigation/native';
 
 export default function Logout({openModel, setOpenModel,title,description, text}: any) {
   const [successModelVisible, setSuccessModelVisible] = useState(false);
+  const navigation = useNavigation();
 
   const handleYesPress = ()=>{
     setOpenModel(false);
     setSuccessModelVisible(true);
-    
+  
     setTimeout(() => {
       
       setSuccessModelVisible(false);
+      navigation.reset({
+        index: 0,
+        routes: [{ name: "Login" }],
+      });
+  
     }, 3000);
   }
   return (
