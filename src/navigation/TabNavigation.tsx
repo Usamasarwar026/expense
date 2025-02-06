@@ -21,7 +21,7 @@ export default function TabNavigation() {
           tabBarInactiveTintColor: '#C6C6C6',
         }}>
         <Tab.Screen
-          name="Home"
+          name="/"
           component={Home}
           options={{
             tabBarIcon: ({color, size}) => (

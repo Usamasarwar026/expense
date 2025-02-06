@@ -6,14 +6,24 @@ import {
   TouchableOpacity,
   KeyboardAvoidingView,
   ScrollView,
+  Alert,
 } from 'react-native';
 import React from 'react';
 import {IMAGES} from '../../constant/image';
 import Input from '../../components/input/Input';
 import {CommonActions, useNavigation} from '@react-navigation/native';
+import Toast from 'react-native-toast-message';
+import { useAppDispatch } from '../../hooks/useRedux';
+import { changePassword } from '../../store/authSlice/authSlice';
+import auth from '@react-native-firebase/auth';
 
 export default function ResetPassword() {
+  const [oldpassword, setOldpassword] = React.useState('');
+  const [newpassword, setNewpassword] = React.useState('');
+  const [confirmPassword, setConfirmPassword] = React.useState('');
+  const [isLoading, setIsLoading] = React.useState(false); 
   const navigation = useNavigation();
+  const dispatch = useAppDispatch(); // Use the Redux dispatch function
 
   const goToBack = () => {
     try {
@@ -27,6 +37,81 @@ export default function ResetPassword() {
       console.error('Navigation Error:', error);
     }
   };
+
+  
+
+const handleChangePassword = async () => {
+  if (newpassword !== confirmPassword) {
+    Toast.show({
+      type: 'error',
+      text1: 'Passwords do not match',
+      position: 'top',
+      visibilityTime: 2000,
+      autoHide: true,
+    });
+    return;
+  }
+
+  if (!oldpassword || !newpassword || !confirmPassword) {
+    Toast.show({
+      type: 'error',
+      text1: 'All fields are required',
+      position: 'top',
+      visibilityTime: 2000,
+      autoHide: true,
+    });
+    return;
+  }
+
+  try {
+    setIsLoading(true); // Set loading state to true
+
+    const email = auth().currentUser?.email; // Get the current user's email
+
+    if (!email) {
+      Toast.show({
+        type: 'error',
+        text1: 'User is not authenticated',
+        position: 'top',
+        visibilityTime: 200,
+        autoHide: true,
+      });
+      return;
+    }
+
+
+    const actionResult = await dispatch(
+      changePassword({email, currentPassword: oldpassword, newPassword: newpassword })
+    );
+
+    setIsLoading(false); 
+
+    if (changePassword.fulfilled.match(actionResult)) {
+      
+      goToBack();
+      setTimeout(() => {
+        Toast.show({
+          type: 'success',
+          text1: 'Password successfully updated!',
+          position: 'top',
+          visibilityTime: 2000,
+          autoHide: true,
+        });
+      }, 1500);
+    }
+  } catch (error:any) {
+    setIsLoading(false); // Set loading state to false in case of error
+
+    Toast.show({
+      type: 'error',
+      text1: error.message,
+      position: 'top',
+      visibilityTime: 2000,
+      autoHide: true,
+    });
+  }
+};
+
 
   return (
     <KeyboardAvoidingView style={style.container}>
@@ -44,34 +129,35 @@ export default function ResetPassword() {
             style={style.inputField}
             placeholder="Old Password"
             placeholderTextColor="#91919F"
-            // value={password}
-            // onChangeText={setPassword}
+            value={oldpassword}
+            onChangeText={setOldpassword}
             secureTextEntry={true} 
           />
           <Input
             style={style.inputField}
             placeholder="New Password"
             placeholderTextColor="#91919F"
-            // value={password}
-            // onChangeText={setPassword}
+            value={newpassword}
+            onChangeText={setNewpassword}
             secureTextEntry={true} 
           />
           <Input
             style={style.inputField}
             placeholder="ReType New Password"
             placeholderTextColor="#91919F"
-            // value={password}
-            // onChangeText={setPassword}
+            value={confirmPassword}
+            onChangeText={setConfirmPassword}
             secureTextEntry={true} 
           />
         </View>
 
         <View style={style.btn}>
-          <TouchableOpacity style={style.button} onPress={() => {}}>
+          <TouchableOpacity style={style.button} onPress={handleChangePassword}>
             <Text style={style.buttonText}>Change Password</Text>
           </TouchableOpacity>
         </View>
       </ScrollView>
+      <Toast/>
     </KeyboardAvoidingView>
   );
 }

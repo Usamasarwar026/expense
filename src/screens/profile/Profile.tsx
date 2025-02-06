@@ -4,23 +4,49 @@ import {
   Image,
   StyleSheet,
   TouchableOpacity,
+  ActivityIndicator,
 } from 'react-native';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {IMAGES} from '../../constant/image';
 import Setting from '../../components/setting/Setting';
 import {ProfileData} from './profileData';
 import {useNavigation} from '@react-navigation/native';
 import Logout from '../logout/Logout';
+import auth from '@react-native-firebase/auth';
+import firestore from '@react-native-firebase/firestore';
 
 
 
 export default function Profile() {
-  const [openModel, setOpenModel] = React.useState(false);
+  const [openModel, setOpenModel] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [userData, setUserData] = useState(null);
   const navigation = useNavigation();
 
   const goToEditPage = () => {
     navigation.navigate('EditProfile');
   };
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const user = auth().currentUser; 
+        if (user) {
+          const userDoc = await firestore().collection('users').doc(user.uid).get();
+          if (userDoc.exists) {
+            setUserData(userDoc.data());
+          } else {
+            console.log('User data not found');
+          }
+        }
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchUserData();
+  }, []);
 
   // const logoutModel = ()=>{
    
@@ -34,8 +60,16 @@ export default function Profile() {
 
         <View style={style.containerRight}>
           <View>
-            <Text style={style.username}>Username</Text>
-            <Text style={style.originalName}>Iriana Saliha</Text>
+          {loading ? (
+              <ActivityIndicator size="small" color="#0000ff" />
+            ) : (
+              <>
+                <Text style={style.username}>Username</Text>
+                <Text style={style.originalName}>
+                  {userData ? userData.name : 'Guest User'}
+                </Text>
+              </>
+            )}
           </View>
           <View>
             <TouchableOpacity onPress={goToEditPage}>
@@ -142,6 +176,7 @@ const style = StyleSheet.create({
     paddingHorizontal: 20,
     marginHorizontal: 20,
   },
+  
 
 
 });

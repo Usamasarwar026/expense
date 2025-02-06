@@ -7,13 +7,20 @@ import {
   KeyboardAvoidingView,
   ScrollView,
 } from 'react-native';
-import React from 'react';
+import React, {useState} from 'react';
 import {IMAGES} from '../../constant/image';
 import Input from '../../components/input/Input';
 import {CommonActions, useNavigation} from '@react-navigation/native';
+import Toast from 'react-native-toast-message';
+import {useAppDispatch, useAppSelector} from '../../hooks/useRedux';
+import {login} from '../../store/authSlice/authSlice';
 
 export default function Login() {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const navigation = useNavigation();
+  const dispatch = useAppDispatch();
+  const {user} = useAppSelector(state => state.auth);
 
   const goToBack = () => {
     navigation.navigate('SignUp');
@@ -33,21 +40,39 @@ export default function Login() {
     }
   };
 
-  const goToHome = ()=>{
-    try {
-            // navigation.navigate('profile');
-            // navigation.navigate('TabNavigation', {screen: 'profile'});
-            navigation.dispatch(
-                CommonActions.reset({
-                    index: 0,
-                    routes: [{ name: 'TabNavigation', params: { screen: 'Home' } }],
-                })
-            );
-          } catch (error) {
-            console.error('Navigation Error:', error);
-          }
-  }
+  const handleLogin = async () => {
+    if (!email || !password) {
+      Toast.show({
+        type: 'error',
+        text1: 'Please fill in all fields',
+        position: 'top',
+        visibilityTime: 2000,
+      });
+      return;
+    }
+    dispatch(login({email, password}))
+      .unwrap()
+      .then(() => {
+        navigation.dispatch(
+          CommonActions.reset({
+            index: 0,
+            routes: [{name: 'TabNavigation', params: {screen: 'Home'}}],
+          }),
+        );
 
+        setEmail('');
+        setPassword('');
+      })
+      .catch(errorMessage => {
+        console.log('Login Error:', errorMessage);
+        Toast.show({
+          type: 'error',
+          text1: errorMessage,
+          position: 'top',
+          visibilityTime: 2000,
+        });
+      });
+  };
 
   return (
     <KeyboardAvoidingView style={style.container}>
@@ -65,28 +90,28 @@ export default function Login() {
             style={style.inputField}
             placeholder="Email"
             placeholderTextColor="#91919F"
-            // value={email}
-            // onChangeText={setEmail}
+            value={email}
+            onChangeText={setEmail}
             keyboardType="email-address"
           />
           <Input
             style={style.inputField}
             placeholder="Password"
             placeholderTextColor="#91919F"
-            // value={password}
-            // onChangeText={setPassword}
-            secureTextEntry={true} 
+            value={password}
+            onChangeText={setPassword}
+            secureTextEntry={true}
           />
         </View>
 
         <View style={style.btn}>
-          <TouchableOpacity style={style.button} onPress={goToHome}>
+          <TouchableOpacity style={style.button} onPress={handleLogin}>
             <Text style={style.buttonText}>Login</Text>
           </TouchableOpacity>
         </View>
         <View style={style.label}>
-        <TouchableOpacity onPress={goToForget}>
-          <Text style={style.forgettext}>Forget Password?</Text>
+          <TouchableOpacity onPress={goToForget}>
+            <Text style={style.forgettext}>Forget Password?</Text>
           </TouchableOpacity>
         </View>
 
@@ -101,13 +126,15 @@ export default function Login() {
 
         <View style={style.login}>
           <Text>
-            Don’t have an account yet? 
+            Don’t have an account yet?
             <Text style={style.labelText} onPress={goToSignup}>
               Sign Up
             </Text>
           </Text>
         </View>
       </ScrollView>
+
+      <Toast />
     </KeyboardAvoidingView>
   );
 }
@@ -153,7 +180,6 @@ const style = StyleSheet.create({
   },
   forgettext: {
     color: '#7F00FF',
-    // textAlign: 'right',
   },
   labelText: {
     color: '#7F00FF',
@@ -162,8 +188,6 @@ const style = StyleSheet.create({
   btn: {
     flex: 1,
     paddingHorizontal: 20,
-    // width: 343,
-    // height: 56,
   },
   button: {
     width: 343,

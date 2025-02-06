@@ -10,8 +10,8 @@ export default function Input(props:any) {
                style={style}
                placeholder={placeholder}
                placeholderTextColor={placeholderTextColor}
-            //    value={value}
-            //    onChangeText={onChangeText}
+               value={value}
+               onChangeText={onChangeText}
                secureTextEntry={secureTextEntry}
                keyboardType={keyboardType}
              />

@@ -10,9 +10,10 @@ import {
 import React, {useState} from 'react';
 import {IMAGES} from '../../constant/image';
 import Input from '../../components/input/Input';
-import {CommonActions, useNavigation} from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 import {useAppDispatch} from '../../hooks/useRedux';
-import {signup} from '../../store/authSlice/authSlice';
+import {GoogleSignup, signup} from '../../store/authSlice/authSlice';
+import Toast from 'react-native-toast-message';
 
 export default function SignUp() {
   const [name, setName] = useState('');
@@ -35,28 +36,106 @@ export default function SignUp() {
   };
 
   const signupfunction = async () => {
-    
     try {
+      if (!name || !email || !password) {
+        Toast.show({
+          type: 'error',
+          text1: 'Please fill all fields.',
+          position: 'top',
+          visibilityTime: 3000,
+        });
+        return;
+      }
+      if (!isChecked) {
+        Toast.show({
+          type: 'error',
+          text1: 'Please Accept the Terms and Privacy Policy.',
+          position: 'top',
+          visibilityTime: 3000,
+        });
+        return;
+      }
+      if(password.length < 6){
+        Toast.show({
+          type: 'error',
+          text1: 'Password must be at least 6 characters long.',
+          position: 'top',
+          visibilityTime: 3000,
+        });
+        return;
+      }
+
       const resultAction = await dispatch(signup({name, email, password}));
-      console.log('resultAction:', resultAction); // Log the result of the signup action
-  
       if (signup.fulfilled.match(resultAction)) {
-        // Navigate only if signup is successful
-        navigation.dispatch(
-          CommonActions.reset({
-            index: 0,
-            routes: [{ name: 'TabNavigation', params: { screen: 'Home' } }],
-          })
-        );
+        navigation.navigate('Login');
+
+        setTimeout(() => {
+          Toast.show({
+            type: 'success',
+            text1: 'Signup Successful!',
+            text2: 'You can now log in to your account.',
+            position: 'top',
+            visibilityTime: 3000,
+          });
+        }, 1500);
+
+        setName('');
+        setEmail('');
+        setPassword('');
       } else {
-        console.error('Signup failed:', resultAction.payload);
-        // Handle specific error from the action
+        // 🔹 Handle signup rejection error properly
+        const errorMessage =
+          resultAction.payload || 'Signup failed, please try again.';
+        console.log('Signup Error:', errorMessage);
+        Toast.show({
+          type: 'error',
+          text1: errorMessage,
+          position: 'top',
+          visibilityTime: 3000,
+        });
       }
     } catch (error) {
-      console.error('Signup Error:', error);
+      Toast.show({
+        type: 'error',
+        text1: 'Signup failed, please try again.',
+        position: 'top',
+        visibilityTime: 3000,
+      });
     }
   };
+
+
+  const dispatchGoogleSignIn = async () => {
+    try {
+      const resultAction = await dispatch(GoogleSignup());
+      if (GoogleSignup.fulfilled.match(resultAction)) {
+        Toast.show({
+          type: 'success',
+          text1: 'Google Sign-In Successful!',
+          position: 'top',
+          visibilityTime: 3000,
+        });
   
+        navigation.navigate('Home'); // Navigate to home screen after login
+      } else {
+        Toast.show({
+          type: 'error',
+          text1: 'Google Sign-In Failed!',
+          text2: resultAction.payload || 'Please try again.',
+          position: 'top',
+          visibilityTime: 3000,
+        });
+      }
+    } catch (error) {
+      console.error('Google Sign-In Error:', error);
+      Toast.show({
+        type: 'error',
+        text1: 'Google Sign-In Failed!',
+        position: 'top',
+        visibilityTime: 3000,
+      });
+    }
+  };
   
 
   return (
@@ -76,14 +155,14 @@ export default function SignUp() {
             placeholder="Name"
             placeholderTextColor="#91919F"
             value={name}
-            onChangeText={nam => setName(nam)}
+            onChangeText={setName}
           />
           <Input
             style={style.inputField}
             placeholder="Email"
             placeholderTextColor="#91919F"
             value={email}
-            onChangeText={eml => setEmail(eml)}
+            onChangeText={setEmail}
             keyboardType="email-address"
           />
           <Input
@@ -91,7 +170,7 @@ export default function SignUp() {
             placeholder="Password"
             placeholderTextColor="#91919F"
             value={password}
-            onChangeText={pass => setPassword(pass)}
+            onChangeText={setPassword}
             // secureTextEntry={true} // To hide the password input
           />
         </View>
@@ -120,7 +199,7 @@ export default function SignUp() {
           <Text>or</Text>
         </View>
 
-        <TouchableOpacity style={style.googleSign}>
+        <TouchableOpacity style={style.googleSign} onPress={dispatchGoogleSignIn}>
           <Image source={IMAGES.GOOGLE}></Image>
           <Text style={style.googletext}>Sign Up with Google</Text>
         </TouchableOpacity>
@@ -131,6 +210,8 @@ export default function SignUp() {
           </Text>
         </TouchableOpacity>
       </ScrollView>
+
+      <Toast />
     </KeyboardAvoidingView>
   );
 }

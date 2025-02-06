@@ -7,17 +7,52 @@ import {
   KeyboardAvoidingView,
   ScrollView,
 } from 'react-native';
-import React from 'react';
+import React, { useState } from 'react';
 import {IMAGES} from '../../constant/image';
 import Input from '../../components/input/Input';
 import {useNavigation} from '@react-navigation/native';
+import { useAppDispatch } from '../../hooks/useRedux';
+import { resetPassword } from '../../store/authSlice/authSlice';
+import Toast from 'react-native-toast-message';
 
 export default function Forget() {
+  const [email, setEmail] = useState('');
   const navigation = useNavigation();
+  const dispatch = useAppDispatch(); // Use the Redux dispatch function
 
   const goToBack = () => {
     navigation.navigate('Login');
   };
+
+  const handleSendEmail = () => {
+    if (email) {
+      
+      dispatch(resetPassword(email))
+        .unwrap() 
+       .then(()=>{
+        setEmail('');
+       })
+       .catch((error) => {
+        console.error('Failed to send email:', error);
+        Toast.show({
+          type: 'error',
+          text1: 'Error!',
+          text2: 'Failed to send the reset email. Please try again.',
+          position: 'top',
+          visibilityTime: 3000,
+        });
+      });
+    } else {
+      Toast.show({
+        type: 'error',
+        text1: 'Please enter your email address',
+        position: 'top',
+        visibilityTime: 3000,
+      });
+      
+      
+    }
+  }
   
 
   return (
@@ -42,18 +77,19 @@ export default function Forget() {
             style={style.inputField}
             placeholder="Email"
             placeholderTextColor="#91919F"
-            // value={email}
-            // onChangeText={setEmail}
+            value={email}
+            onChangeText={setEmail}
             keyboardType="email-address"
           />
         </View>
 
         <View style={style.btn}>
-          <TouchableOpacity style={style.button} onPress={() => {}}>
+          <TouchableOpacity style={style.button} onPress={handleSendEmail}>
             <Text style={style.buttonText}>Send Email</Text>
           </TouchableOpacity>
         </View>
       </ScrollView>
+      <Toast/>
     </KeyboardAvoidingView>
   );
 }

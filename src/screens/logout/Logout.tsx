@@ -11,24 +11,58 @@ import {
 import React, { useState } from 'react';
 import SuccessfulModel from '../../components/successfulModel/SuccessfulModel';
 import { useNavigation } from '@react-navigation/native';
+import { useAppDispatch } from '../../hooks/useRedux';
+import { logout } from '../../store/authSlice/authSlice';
+import Toast from 'react-native-toast-message';
+import { getAuth, signOut } from '@react-native-firebase/auth';
 
 export default function Logout({openModel, setOpenModel,title,description, text}: any) {
   const [successModelVisible, setSuccessModelVisible] = useState(false);
   const navigation = useNavigation();
-
-  const handleYesPress = ()=>{
+  const dispatch = useAppDispatch();
+  
+  const handleYesPress = async () => {
     setOpenModel(false);
-    setSuccessModelVisible(true);
+    const auth = getAuth();
   
-    setTimeout(() => {
-      
-      setSuccessModelVisible(false);
-      navigation.reset({
-        index: 0,
-        routes: [{ name: "Login" }],
+    // Check if there is a current user before attempting to sign out
+    if (auth.currentUser) {
+      try {
+  
+        await dispatch(logout()); // Dispatch the redux logout action
+        setSuccessModelVisible(true); // Open the success model if logout is successful
+  
+        setTimeout(() => {
+          setSuccessModelVisible(false); // Close success model after 3 seconds
+          navigation.reset({
+            index: 0,
+            routes: [{ name: 'Login' }],
+          });
+        }, 3000);
+  
+      } catch (error) {
+        Alert.alert('Error', 'Failed to logout');
+        Toast.show({
+          text1: 'Error',
+          text2: 'Failed to logout',
+          type: 'error',
+          visibilityTime: 3000,
+        });
+      }
+    } else {
+      // If no user is signed in, show a modal or message
+      setOpenModel(true); // This can be a custom modal or alert indicating no user is logged in
+      console.log('No user is currently signed in');
+      Toast.show({
+        text1: 'Error',
+        text2: 'No user is currently signed in',
+        type: 'error',
+        visibilityTime: 3000,
       });
+    }
   
-    }, 3000);
+  
+  
   }
   return (
     <>
@@ -58,6 +92,7 @@ export default function Logout({openModel, setOpenModel,title,description, text}
       </Modal>
 
       <SuccessfulModel openModel={successModelVisible} setOpenModel={setSuccessModelVisible} text={text}/>
+      <Toast/>
     </>
   );
 }
