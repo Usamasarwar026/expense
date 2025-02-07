@@ -48,20 +48,23 @@ export default function Profile() {
     fetchUserData();
   }, []);
 
-  // const logoutModel = ()=>{
-   
-  // }
   return (
     <View style={style.container}>
       <View style={style.topcontainer}>
         <View style={style.imageBox}>
-          <Image style={style.profileImage} source={IMAGES.MAINPROFILE} />
+          {loading ? (
+            <ActivityIndicator size="small" color="#7F3DFF" />
+          ):
+          (
+            <Image style={style.profileImage}  source={userData?.profileImageUri ? { uri: userData.profileImageUri } : IMAGES.MAINPROFILE}  />
+          )
+          }
         </View>
 
         <View style={style.containerRight}>
           <View>
           {loading ? (
-              <ActivityIndicator size="small" color="#0000ff" />
+              <ActivityIndicator size="large" color="#7F3DFF" />
             ) : (
               <>
                 <Text style={style.username}>Username</Text>
@@ -144,8 +147,8 @@ const style = StyleSheet.create({
     width: 90,
     height: 90,
     borderRadius: 60,
-    // borderWidth: 2,  //outline for the picture
-    borderColor: 'red',
+    borderWidth: 2,
+    borderColor: '#e03dff',
   },
   profileImage: {
     width: 80,

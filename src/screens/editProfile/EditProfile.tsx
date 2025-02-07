@@ -7,8 +7,9 @@ import {
   Image,
   StyleSheet,
   Alert,
+  ActivityIndicator,
 } from 'react-native';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Input from '../../components/input/Input';
 import {IMAGES} from '../../constant/image';
 import {CommonActions, useNavigation} from '@react-navigation/native';
@@ -16,12 +17,39 @@ import {useAppDispatch} from '../../hooks/useRedux';
 import {updateEmail, updateName} from '../../store/authSlice/authSlice';
 import Toast from 'react-native-toast-message';
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
+import auth from '@react-native-firebase/auth';
+import firestore from '@react-native-firebase/firestore';
 
 export default function EditProfile() {
-  const [email, setEmail] = React.useState('');
-  const [name, setName] = React.useState('');
+  const [email, setEmail] = useState('');
+  const [name, setName] = useState('');
   const navigation = useNavigation();
+  const [imageUri, setImageUri] = useState(null);
+  const [loading, setLoading] = useState(true);
   const dispatch = useAppDispatch();
+  const userId = auth().currentUser?.uid; // Replace with actual user ID (e.g., from authentication)
+
+  useEffect(() => {
+    if(!userId) {
+      Alert.alert('Error', 'User is not authenticated');
+      return;
+    }
+    const fetchImageUri = async () => {
+      try {
+        const doc = await firestore().collection('users').doc(userId).get();
+        if (doc.exists) {
+          setImageUri(doc.data()?.profileImageUri); // Set the retrieved URI
+          setName(doc.data()?.name || '');
+          // setEmail(doc.data()?.email );
+        }
+      } catch (error) {
+        console.error('Error fetching image URI:', error);
+      }
+      setLoading(false);
+    };
+
+    fetchImageUri();
+  }, [userId]);
   const goToProfile = () => {
     try {
       navigation.dispatch(
@@ -35,6 +63,21 @@ export default function EditProfile() {
     }
   };
 
+  const storeImageUriInFirestore = async (uri) => {
+
+    try {
+      await firestore()
+        .collection('users') // Collection name in Firestore
+        .doc(userId) // Document for the user
+        .update({
+          profileImageUri: uri, // Store the image URI
+        });
+      console.log('Image URI stored successfully');
+    } catch (error) {
+      console.error('Error storing image URI:', error);
+    }
+  };
+
   const openGallery = async () => {
     const options = {
       mediaType: 'photo',
@@ -42,7 +85,12 @@ export default function EditProfile() {
     };
     const result = await launchImageLibrary(options);
     if (result.assets) {
-      console.log('Selected Image from Gallery:', result.assets[0].uri);
+      const selectedImageUri = result.assets[0].uri; // Local URI
+    console.log('Selected Image URI from Gallery:', selectedImageUri);
+    setImageUri(selectedImageUri)
+    
+    // Store the URI in Firestore
+    await storeImageUriInFirestore(selectedImageUri);
     }
   };
 
@@ -54,7 +102,12 @@ export default function EditProfile() {
     };
     const result = await launchCamera(options);
     if (result.assets) {
-      Alert.alert('Selected Image:', result.assets[0].uri);
+      const selectedImageUri = result.assets[0].uri; // Local URI
+    // Alert.alert('Selected Image URI:', selectedImageUri);
+    setImageUri(selectedImageUri);
+    
+    // Store the URI in Firestore
+    await storeImageUriInFirestore(selectedImageUri);
     }
   };
 
@@ -169,7 +222,11 @@ export default function EditProfile() {
         </View>
         <View style={style.picConatiner}>
           <View style={style.picBox}>
-            <Image style={style.pic} source={IMAGES.MAINPROFILE} />
+           {loading ? (
+            <ActivityIndicator size='large' color="#7F3DFF" />
+           ) : (
+            <Image style={style.pic} source={imageUri ? { uri: imageUri } : IMAGES.MAINPROFILE} />
+           ) }
             <TouchableOpacity
               style={style.editbtn}
               // onPress={openGallery}
@@ -181,14 +238,15 @@ export default function EditProfile() {
 
         <View style={style.inputcontainer}>
           <View style={style.inputTextfields}>
-            <Text style={style.inputText}>Email</Text>
+            <Text style={style.inputText}>Email (cannot be changed)</Text>
             <Input
               style={style.inputField}
               placeholder="Email"
               placeholderTextColor="#91919F"
               value={email}
-              onChangeText={setEmail}
-              keyboardType="email-address"
+              // onChangeText={setEmail}
+              editable={false}
+              // keyboardType="email-address"
             />
           </View>
           <View style={style.inputTextfields}>
@@ -257,6 +315,7 @@ const style = StyleSheet.create({
     height: 130,
     justifyContent: 'center',
     alignItems: 'center',
+    borderColor: '#e03dff',
 
     borderRadius: 86,
   },
