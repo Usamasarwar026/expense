@@ -152,10 +152,7 @@ export const GoogleSignup = createAsyncThunk(
   'auth/GoogleSignup',
   async (_, {rejectWithValue}) => {
     try {
-      GoogleSignin.configure({
-        webClientId:
-          '356685019901-pm0e1tflislt8u6jkmp27n90mvik2uj1.apps.googleusercontent.com',
-      });
+    
       await GoogleSignin.hasPlayServices({showPlayServicesUpdateDialog: true});
       const {idToken} = await GoogleSignin.signIn();
       if (!idToken) {
@@ -273,28 +270,45 @@ export const updateEmail = createAsyncThunk(
     },
   );
 
-  export const updateImage = createAsyncThunk(
-    'auth/updateImage',
-    async (uri: string, { rejectWithValue }) => {
-      try {
-        const currentUser = auth().currentUser;
-        if (!currentUser) {
-          throw new Error('User is not authenticated');
-        }
-  
-        // Update the profile image
-        await currentUser.updateProfile({ photoURL: uri });
-  
-        // Return the updated image URL
-        return uri;
-      } catch (error: any) {
-        console.log('Error updating profile image: ', error.message);
-  
-        // Reject with the error message
-        return rejectWithValue(error.message);
-      }
+
+  export const fetchUserData = createAsyncThunk(
+    'auth/fetchUserData',
+    async () => {
+      const userId = auth().currentUser?.uid;
+    if(!userId) {
+      console.log('Error', 'User is not authenticated');
+      return;
     }
-  );
+    try {
+      const doc = await firestore().collection('users').doc(userId).get();
+      if (doc.exists) {
+        return { profileImageUri: doc.data()?.profileImageUri, name: doc.data()?.name, email: doc.data()?.email};
+      }
+    } catch (error) {
+      console.error('Error fetching image URI:', error);
+    }
+    
+  })
+
+  export const storeImageUriInFirestore = createAsyncThunk( 
+    'auth/storeImageUriInFirestore',
+    async (uri) => {
+      const userId = auth().currentUser?.uid;
+
+    try {
+      await firestore()
+        .collection('users') // Collection name in Firestore
+        .doc(userId) // Document for the user
+        .update({
+          profileImageUri: uri, // Store the image URI
+        });
+        console.log('Image URI stored successfully');
+        return uri;
+    } catch (error) {
+      console.error('Error storing image URI:', error);
+    }
+  })
+
 
 export const logout = createAsyncThunk('auth/logout', async () => {
   try {
@@ -393,6 +407,33 @@ export const authSlice = createSlice({
       .addCase(updateEmail.rejected, (state, action) => {
         state.status = 'failed';
         state.error = action.payload as string;
+      })
+      // Fetching Image URI
+      .addCase(fetchUserData.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchUserData.fulfilled, (state, action) => {
+        state.loading = false;
+        state.profileImageUri = action.payload.profileImageUri;
+      })
+      .addCase(fetchUserData.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload || 'Failed to fetch image URI';
+      })
+
+      // Storing Image URI
+      .addCase(storeImageUriInFirestore.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(storeImageUriInFirestore.fulfilled, (state, action) => {
+        state.loading = false;
+        state.profileImageUri = action.payload.profileImageUri;
+      })
+      .addCase(storeImageUriInFirestore.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload || 'Failed to store image URI';
       });
   },
 });

@@ -38,6 +38,7 @@ export const IMAGES = {
   FILE: require('../assets/icon/file.png'),
   CAMER: require('../assets/icon/camera.png'),
   GALLERY: require('../assets/icon/gallery.png'),
+  CLOSE: require('../assets/icon/close.png'),
   
 
 };

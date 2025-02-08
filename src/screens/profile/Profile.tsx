@@ -12,8 +12,8 @@ import Setting from '../../components/setting/Setting';
 import {ProfileData} from './profileData';
 import {useNavigation} from '@react-navigation/native';
 import Logout from '../logout/Logout';
-import auth from '@react-native-firebase/auth';
-import firestore from '@react-native-firebase/firestore';
+import { useAppDispatch } from '../../hooks/useRedux';
+import { fetchUserData } from '../../store/authSlice/authSlice';
 
 
 
@@ -22,22 +22,13 @@ export default function Profile() {
   const [loading, setLoading] = useState(true);
   const [userData, setUserData] = useState(null);
   const navigation = useNavigation();
+  const dispatch = useAppDispatch();
 
-  const goToEditPage = () => {
-    navigation.navigate('EditProfile');
-  };
   useEffect(() => {
-    const fetchUserData = async () => {
+    const fetchUserInfo = async () => {
       try {
-        const user = auth().currentUser; 
-        if (user) {
-          const userDoc = await firestore().collection('users').doc(user.uid).get();
-          if (userDoc.exists) {
-            setUserData(userDoc.data());
-          } else {
-            console.log('User data not found');
-          }
-        }
+        const data = await dispatch(fetchUserData()).unwrap();
+        setUserData(data);
       } catch (error) {
         console.error('Error fetching user data:', error);
       } finally {
@@ -45,8 +36,12 @@ export default function Profile() {
       }
     };
 
-    fetchUserData();
-  }, []);
+    fetchUserInfo();
+  }, [dispatch]);
+
+  const goToEditPage = () => {
+    navigation.navigate('EditProfile');
+  };
 
   return (
     <View style={style.container}>
@@ -56,7 +51,9 @@ export default function Profile() {
             <ActivityIndicator size="small" color="#7F3DFF" />
           ):
           (
-            <Image style={style.profileImage}  source={userData?.profileImageUri ? { uri: userData.profileImageUri } : IMAGES.MAINPROFILE}  />
+            <Image style={style.profileImage}  source={
+              userData?.profileImageUri ? { uri: userData.profileImageUri } : IMAGES.MAINPROFILE
+            }  />
           )
           }
         </View>
@@ -69,7 +66,7 @@ export default function Profile() {
               <>
                 <Text style={style.username}>Username</Text>
                 <Text style={style.originalName}>
-                  {userData ? userData.name : 'Guest User'}
+                  {userData?.name || 'Guest User'}
                 </Text>
               </>
             )}

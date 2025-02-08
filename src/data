@@ -1,0 +1,62 @@
+
+//   export const updateImage = createAsyncThunk(
+//     'auth/updateImage',
+//     async (uri: string, { rejectWithValue }) => {
+//       try {
+//         const currentUser = auth().currentUser;
+//         if (!currentUser) {
+//           throw new Error('User is not authenticated');
+//         }
+  
+//         // Update the profile image
+//         await currentUser.updateProfile({ photoURL: uri });
+  
+//         // Return the updated image URL
+//         return uri;
+//       } catch (error: any) {
+//         console.log('Error updating profile image: ', error.message);
+  
+//         // Reject with the error message
+//         return rejectWithValue(error.message);
+//       }
+//     }
+//   );
+
+
+
+
+// ==========
+  // export const manageImageUri = createAsyncThunk(
+  //   'auth/manageImageUri',
+  //   async({type, uri}: {type: string, uri: string}, {rejectWithValue })=>{
+  //     const userId = await auth().currentUser?.uid;
+  //     if (!userId) {
+  //       console.log('Error', 'User is not authenticated');
+  //       return;
+  //     }
+  //     try {
+  //     if(type === 'fetch'){
+  //         const doc = await firestore().collection('users').doc(userId).get();
+  //         if (doc.exists) {
+  //           return { profileImageUri: doc.data()?.profileImageUri, name: doc.data()?.name };
+  //         }else{
+  //           return rejectWithValue("no data found")
+  //         }
+          
+
+  //     }else if(type === 'store' && uri){
+  //       await firestore().collection('users').doc(userId).update({
+  //           profileImageUri: uri,
+  //       });
+  //       return { profileImageUri: uri }
+  //     }
+  //       } catch (error: any) {
+  //         console.error('Error in manageImageUri:', error);
+  //         return rejectWithValue(error.message);
+  //       }
+  
+  //     }
+    
+    
+  // )
+  

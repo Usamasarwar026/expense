@@ -14,7 +14,7 @@ import {IMAGES} from '../../constant/image';
 import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
 import DocumentPicker from 'react-native-document-picker';
 
-export default function AttachmentModel({openModel, setOpenModel}) {
+export default function AttachmentModel({openModel, setOpenModel, onSelectImage}: any) {
     const openCamera = async () => {
         const options = {
           mediaType: 'photo',
@@ -24,6 +24,8 @@ export default function AttachmentModel({openModel, setOpenModel}) {
         const result = await launchCamera(options);
         if (result.assets) {
           Alert.alert('Selected Image:', result.assets[0].uri);
+          onSelectImage(result.assets[0].uri)
+          setOpenModel(false);
         }
       };
 
@@ -35,6 +37,8 @@ export default function AttachmentModel({openModel, setOpenModel}) {
         const result = await launchImageLibrary(options);
         if (result.assets) {
           console.log('Selected Image from Gallery:', result.assets[0].uri);
+          onSelectImage(result.assets[0].uri)
+          setOpenModel(false);
         }
       };
 
@@ -44,6 +48,8 @@ export default function AttachmentModel({openModel, setOpenModel}) {
             type: [DocumentPicker.types.allFiles],
           });
           console.log('Selected Document:', result.uri);
+          onSelectImage(result.uri);
+          setOpenModel(false);
         } catch (err) {
           if (DocumentPicker.isCancel(err)) {
             console.log('User canceled document picker');

@@ -5,6 +5,7 @@ import Transction from '../../components/transction/Transction';
 import {newTransaction, transactions} from '../home/TransctionData';
 import TransctionModel from '../../components/transctionModel/TransctionModel';
 import { useNavigation } from '@react-navigation/native';
+import Dropdown from '../../components/dropdown/Dropdown';
 
 export default function TransctionScreen() {
   const [openModel, setOpenModel] = useState(false);
@@ -20,8 +21,9 @@ export default function TransctionScreen() {
     <View style={style.container}>
       <View style={style.topBar}>
         <View style={style.topBarLeft}>
-          <Image source={IMAGES.ARROW_DOWN} />
-          <Text>Month</Text>
+          {/* <Image source={IMAGES.ARROW_DOWN} />
+          <Text>Month</Text> */}
+          <Dropdown dropdownPosition="left"/>
         </View>
         <View>
           <TouchableOpacity onPress={()=>{setOpenModel(true)}}>

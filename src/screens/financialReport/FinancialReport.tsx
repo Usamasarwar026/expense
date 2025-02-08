@@ -10,8 +10,9 @@ import React, { useState } from 'react';
 import {IMAGES} from '../../constant/image';
 import {CommonActions, useNavigation} from '@react-navigation/native';
 import ProgressBar from '../../components/progressBar/ProgressBar';
-import { incomeProgressData, progressData } from '../../components/progressBar/progressData';
 import { newTransaction, transactions } from '../home/TransctionData';
+import Dropdown from '../../components/dropdown/Dropdown';
+import CategoryDropdown from '../../components/categoryDropdown/CategoryDropdown';
 
 
 export default function FinancialReport() {
@@ -39,6 +40,7 @@ export default function FinancialReport() {
   const dataToDisplay = selectedTab === 'Expense' ? transactions : newTransaction;
   const totalAmount = selectedTab === 'Expense' ? '$332' : '$520'; 
   const graph = selectedTab === 'Expense' ? IMAGES.YELLOWCIRCLE : IMAGES.GREENCIRCLE;
+  
 
   return (
     <>
@@ -48,12 +50,15 @@ export default function FinancialReport() {
             <Image source={IMAGES.ARROW} />
           </TouchableOpacity>
           <Text style={style.topcontainerText}>Financial Report</Text>
-          {/* <Text></Text> */}
         </View>
         <View style={style.topBar}>
           <View style={style.topBarLeft}>
-            <Image source={IMAGES.ARROW_DOWN} />
-            <Text>Month</Text>
+            {/* <Image source={IMAGES.ARROW_DOWN} />
+            <Text>Month</Text> */}
+            {
+
+            }
+            <Dropdown dropdownPosition='left'/>
           </View>
           <View>
             <TouchableOpacity>
@@ -77,8 +82,13 @@ export default function FinancialReport() {
         </View>
         <View style={style.topBar}>
           <View style={style.topBarLeft}>
-            <Image source={IMAGES.ARROW_DOWN} />
-            <Text>Category</Text>
+            {/* <Image source={IMAGES.ARROW_DOWN} />
+            <Text>Category</Text> */}
+            {
+              // selectedTab === 'Expense' ?   <CategoryDropdown dropdownPosition='left' type='Expense' /> : <CategoryDropdown dropdownPosition='left' type='Income' />
+            }
+            <CategoryDropdown  dropdownPosition='left' type={selectedTab}  /> 
+          
           </View>
           <View>
             <TouchableOpacity>

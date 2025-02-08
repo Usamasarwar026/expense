@@ -14,11 +14,9 @@ import Input from '../../components/input/Input';
 import {IMAGES} from '../../constant/image';
 import {CommonActions, useNavigation} from '@react-navigation/native';
 import {useAppDispatch} from '../../hooks/useRedux';
-import {updateEmail, updateName} from '../../store/authSlice/authSlice';
+import {fetchUserData, storeImageUriInFirestore, updateEmail, updateName} from '../../store/authSlice/authSlice';
 import Toast from 'react-native-toast-message';
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
-import auth from '@react-native-firebase/auth';
-import firestore from '@react-native-firebase/firestore';
 
 export default function EditProfile() {
   const [email, setEmail] = useState('');
@@ -26,30 +24,29 @@ export default function EditProfile() {
   const navigation = useNavigation();
   const [imageUri, setImageUri] = useState(null);
   const [loading, setLoading] = useState(true);
-  const dispatch = useAppDispatch();
-  const userId = auth().currentUser?.uid; // Replace with actual user ID (e.g., from authentication)
-
+  const [initialName, setInitialName] = useState('');
+  const [initialImageUri, setInitialImageUri] = useState(null);
+  const dispatch = useAppDispatch();// Replace with actual user ID (e.g., from authentication)
+  
   useEffect(() => {
-    if(!userId) {
-      Alert.alert('Error', 'User is not authenticated');
-      return;
-    }
-    const fetchImageUri = async () => {
+    
+    const fetchImage = async () => {
       try {
-        const doc = await firestore().collection('users').doc(userId).get();
-        if (doc.exists) {
-          setImageUri(doc.data()?.profileImageUri); // Set the retrieved URI
-          setName(doc.data()?.name || '');
-          // setEmail(doc.data()?.email );
-        }
+        const { profileImageUri, name, email } = await dispatch(fetchUserData()).unwrap();
+        setImageUri(profileImageUri);
+        setEmail(email);
+        setName(name);
+        setInitialName(name);
+        setInitialImageUri(profileImageUri);
+        
       } catch (error) {
         console.error('Error fetching image URI:', error);
       }
       setLoading(false);
     };
 
-    fetchImageUri();
-  }, [userId]);
+    fetchImage();
+  }, []);
   const goToProfile = () => {
     try {
       navigation.dispatch(
@@ -63,15 +60,10 @@ export default function EditProfile() {
     }
   };
 
-  const storeImageUriInFirestore = async (uri) => {
+  const storeImage= async (uri) => {
 
     try {
-      await firestore()
-        .collection('users') // Collection name in Firestore
-        .doc(userId) // Document for the user
-        .update({
-          profileImageUri: uri, // Store the image URI
-        });
+      await dispatch(storeImageUriInFirestore(uri))
       console.log('Image URI stored successfully');
     } catch (error) {
       console.error('Error storing image URI:', error);
@@ -90,7 +82,7 @@ export default function EditProfile() {
     setImageUri(selectedImageUri)
     
     // Store the URI in Firestore
-    await storeImageUriInFirestore(selectedImageUri);
+    await storeImage(selectedImageUri);
     }
   };
 
@@ -107,7 +99,7 @@ export default function EditProfile() {
     setImageUri(selectedImageUri);
     
     // Store the URI in Firestore
-    await storeImageUriInFirestore(selectedImageUri);
+    await storeImage(selectedImageUri);
     }
   };
 
@@ -130,74 +122,53 @@ export default function EditProfile() {
   };
 
   const handleUpdateProfile = async () => {
-    console.log('Email:', email);
-    console.log('Name:', name);
-    if (!name) {
-      Toast.show({
-        type: 'error',
-        text1: 'Please fill the name field ',
-        text2: 'and you can not update the email !',
-        position: 'top',
-        visibilityTime: 3000,
-      });
-      return;
-    }
-    if (email) {
-      Toast.show({
-        type: 'error',
-        text1: 'You can not update the email! ',
-        text2: 'please do not fill the email to update',
-        position: 'top',
-        visibilityTime: 3000,
-      });
-      return;
-    }
-
     try {
-      let updatedFields = [];
-
-      if (email) {
-        await dispatch(updateEmail(email));
-        updatedFields.push('Email');
-      }
-
-      if (name) {
+      // let profileUpdated = false;
+      let nameUpdated = false;
+      let imageUpdated = false;
+  
+      if (name !== initialName) {
         await dispatch(updateName(name));
-        updatedFields.push('Name');
+        nameUpdated = true;
       }
-
-      if (updatedFields.length > 1) {
+  
+      if (imageUri !== initialImageUri) {
+        await storeImage(imageUri);
+        imageUpdated = true;
+      }
+  
+      // Show toast messages based on what was updated
+      if (nameUpdated || imageUpdated) {
         setTimeout(() => {
-          Toast.show({
-            type: 'success',
-            position: 'top',
-            text1: 'Profile Updated!',
-            text2: 'Both Email and Name have been updated.',
-          });
-        }, 1500);
-      } else {
-        if (updatedFields.includes('Email')) {
-          setTimeout(() => {
+          if (nameUpdated && imageUpdated) {
             Toast.show({
               type: 'success',
               position: 'top',
               text1: 'Profile Updated!',
-              text2: 'Email has been updated.',
+              text2: 'Your name and profile picture were updated successfully.',
             });
-          }, 1500);
-        }
-
-        if (updatedFields.includes('Name')) {
-          setTimeout(() => {
+          } else if (nameUpdated) {
             Toast.show({
               type: 'success',
               position: 'top',
-              text1: 'Profile Updated!',
-              text2: 'Name has been updated.',
+              text1: 'Name Updated!',
+              text2: 'Your name was updated successfully.',
             });
-          }, 1500);
-        }
+          } else if (imageUpdated) {
+            Toast.show({
+              type: 'success',
+              position: 'top',
+              text1: 'Profile Picture Updated!',
+              text2: 'Your profile picture was updated successfully.',
+            });
+          }
+        }, 500); // 500ms delay
+  
+        
+          goToProfile(); // Navigate after the toast appears
+         // Delay navigation to ensure toast is visible
       }
+      
     } catch (error: any) {
       Toast.show({
         type: 'error',
@@ -206,9 +177,9 @@ export default function EditProfile() {
         text2: error.message,
       });
     }
-
-    goToProfile();
   };
+
+  const isButtonEnabled = name !== initialName || imageUri !== initialImageUri;
 
   return (
     <KeyboardAvoidingView style={style.container}>
@@ -262,7 +233,7 @@ export default function EditProfile() {
         </View>
 
         <View style={style.btn}>
-          <TouchableOpacity style={style.button} onPress={handleUpdateProfile}>
+          <TouchableOpacity style={[style.button, { backgroundColor: isButtonEnabled ? '#7F3DFF' : '#8580bc' }]}  disabled={!isButtonEnabled} onPress={handleUpdateProfile}>
             <Text style={style.buttonText}>Update Profile</Text>
           </TouchableOpacity>
         </View>
