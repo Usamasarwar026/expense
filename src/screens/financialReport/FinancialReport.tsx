@@ -6,18 +6,28 @@ import {
   TouchableOpacity,
   Image,
 } from 'react-native';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {IMAGES} from '../../constant/image';
 import {CommonActions, useNavigation} from '@react-navigation/native';
 import ProgressBar from '../../components/progressBar/ProgressBar';
-import { newTransaction, transactions } from '../home/TransctionData';
+// import { newTransaction, transactions } from '../home/TransctionData';
 import Dropdown from '../../components/dropdown/Dropdown';
 import CategoryDropdown from '../../components/categoryDropdown/CategoryDropdown';
+import { useAppDispatch, useAppSelector } from '../../hooks/useRedux';
+import { fetchTransactions } from '../../store/transctionSlice/transctionSlice';
 
 
 export default function FinancialReport() {
   const [selectedTab, setSelectedTab] = useState('Expense');
+  const [category, setCategory] = useState(null);
   const navigation = useNavigation();
+  const dispatch = useAppDispatch();
+  const {transactions, loading} = useAppSelector(state => state.transctions);
+  
+  useEffect(()=>{
+    // dispatch(fetchTransactions());
+    console.log(transactions)
+  },[dispatch])
 
   const goToTransction = () => {
     try {
@@ -32,15 +42,26 @@ export default function FinancialReport() {
     } catch (error) {}
   };
   const handlepress = (transaction)=>{
+    console.log("Pressed Transaction:", transaction);
     navigation.navigate('DetailTransction', {transaction});
+
   }
   const toggleTab = (tab:any) => {
     setSelectedTab(tab);
   };
-  const dataToDisplay = selectedTab === 'Expense' ? transactions : newTransaction;
+  const dataToDisplay = transactions?.filter(item => {
+    // console.log("Filtering Item:", item);
+    return item?.type === selectedTab;
+  });
+  // console.log("Data to Display after filtering:", dataToDisplay);
+  const maxAmount = Math.max(...dataToDisplay.map(item => item.amount), 1);
+        const adjustedMaxAmount = maxAmount * 0.8;
+  
+  // const dataToDisplay = selectedTab === 'Expense' ? transactions : newTransaction;
+  // const dataToDisplay = transactions.filter(item => item.type === selectedTab);
   const totalAmount = selectedTab === 'Expense' ? '$332' : '$520'; 
   const graph = selectedTab === 'Expense' ? IMAGES.YELLOWCIRCLE : IMAGES.GREENCIRCLE;
-  
+  // console.log("Data to Display:", dataToDisplay);
 
   return (
     <>
@@ -53,11 +74,6 @@ export default function FinancialReport() {
         </View>
         <View style={style.topBar}>
           <View style={style.topBarLeft}>
-            {/* <Image source={IMAGES.ARROW_DOWN} />
-            <Text>Month</Text> */}
-            {
-
-            }
             <Dropdown dropdownPosition='left'/>
           </View>
           <View>
@@ -82,12 +98,8 @@ export default function FinancialReport() {
         </View>
         <View style={style.topBar}>
           <View style={style.topBarLeft}>
-            {/* <Image source={IMAGES.ARROW_DOWN} />
-            <Text>Category</Text> */}
-            {
-              // selectedTab === 'Expense' ?   <CategoryDropdown dropdownPosition='left' type='Expense' /> : <CategoryDropdown dropdownPosition='left' type='Income' />
-            }
-            <CategoryDropdown  dropdownPosition='left' type={selectedTab}  /> 
+            
+            <CategoryDropdown  dropdownPosition='left' type={selectedTab} setCategory={setCategory} /> 
           
           </View>
           <View>
@@ -97,17 +109,29 @@ export default function FinancialReport() {
           </View>
         </View>
         <View>
-      {dataToDisplay.map((item) => (
+      {dataToDisplay.map((item) =>{
+        
+        const progress = Math.min((item.amount / adjustedMaxAmount) * 100, 100);
+        const categoryColors = {
+          Shopping: '#FCAC12',
+          Subscription: '#7F3DFF',
+          Food: '#007BFF',
+          Salary: '#00A86B',
+          Transportation: 'black'
+        };
+        const progressBarColor = categoryColors[item.category] || '#BDC3C7';
+        const textColor = selectedTab === 'Expense' ? '#E74C3C' : '#2ECC71';
+      return(
         <ProgressBar
           key={item.id}
-          categoryName={item.categoryName}
+          categoryName={item.category}
           amount={item.amount}
-          progress={item.progress}
-          color={item.color}
-          textColor={item.textColor}
+          progress={progress}
+          color={progressBarColor}
+          textColor={textColor}
           onPress={()=>handlepress(item)}
         />
-      ))}
+      )})}
     </View>
        
       </ScrollView>

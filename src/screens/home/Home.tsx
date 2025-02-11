@@ -6,23 +6,28 @@ import {
   ScrollView,
   TouchableOpacity,
   ActivityIndicator,
+  FlatList,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {IMAGES} from '../../constant/image';
 import Transction from '../../components/transction/Transction';
-import {transactions} from './TransctionData';
+// import {transactions} from './TransctionData';
 import Dropdown from '../../components/dropdown/Dropdown';
 import {CommonActions, useNavigation} from '@react-navigation/native';
-import {useAppDispatch} from '../../hooks/useRedux';
+import {useAppDispatch, useAppSelector} from '../../hooks/useRedux';
 import {fetchUserData} from '../../store/authSlice/authSlice';
+import {fetchTransactions} from '../../store/transctionSlice/transctionSlice';
 
 export default function Home() {
   const [userData, setUserData] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [loader, setLoader] = useState(true);
+  const [selectedFilter, setSelectedFilter] = useState('Today'); 
   const navigation = useNavigation();
   const dispatch = useAppDispatch();
+  const {transactions, loading} = useAppSelector(state => state.transctions);
 
   useEffect(() => {
+    dispatch(fetchTransactions());
     const fetchUserInfo = async () => {
       try {
         const data = await dispatch(fetchUserData()).unwrap();
@@ -30,12 +35,12 @@ export default function Home() {
       } catch (error) {
         console.error('Error fetching user data:', error);
       } finally {
-        setLoading(false);
+        setLoader(false);
       }
     };
 
     fetchUserInfo();
-  }, []);
+  }, [dispatch]);
 
   const goToProfile = () => {
     try {
@@ -49,8 +54,42 @@ export default function Home() {
       console.error('Navigation Error:', error);
     }
   };
+
+  const filterTransactions = () => {
+    if (!Array.isArray(transactions)) {
+      return []; // Return an empty array if transactions is undefined or not an array
+    }
+
+    if (selectedFilter === 'All') return transactions; 
+    const now = new Date();
+    return transactions.filter(transaction => {
+      const transactionDate = new Date(transaction.timestamp);
+      switch (selectedFilter) {
+        case 'Today':
+          return transactionDate.toDateString() === now.toDateString();
+        case 'Week': {
+          const startOfWeek = new Date();
+          startOfWeek.setDate(now.getDate() - now.getDay()); // Start of the current week (Sunday)
+          return transactionDate >= startOfWeek;
+        }
+        case 'Month': {
+          return (
+            transactionDate.getMonth() === now.getMonth() &&
+            transactionDate.getFullYear() === now.getFullYear()
+          );
+        }
+        case 'Year':
+          return transactionDate.getFullYear() === now.getFullYear();
+        default:
+          return true;
+      }
+    });
+  };
+
+
   return (
     <ScrollView
+      nestedScrollEnabled={true}
       style={{flex: 1}}
       contentContainerStyle={{flexGrow: 1}}
       bounces={false}>
@@ -111,42 +150,74 @@ export default function Home() {
         <View style={style.graphcontainer}>
           <Image resizeMode="contain" source={IMAGES.GRAPH} />
         </View>
+        
+        {/* Filters for Transactions */}
         <View style={style.daybar}>
-          <View style={style.barbox}>
-            <Text style={style.bar1}>Today</Text>
-          </View>
-          <View style={style.barbox1}>
-            <Text style={style.bar2}>Week</Text>
-          </View>
-          <View style={style.barbox1}>
-            <Text style={style.bar2}>Month</Text>
-          </View>
-          <View style={style.barbox1}>
-            <Text style={style.bar2}>Year</Text>
-          </View>
+          {['Today', 'Week', 'Month', 'Year'].map(filter => (
+            <TouchableOpacity
+              key={filter}
+              style={[
+                style.filterButton,
+                selectedFilter === filter ? style.selectedFilter : null,
+              ]}
+              onPress={() => setSelectedFilter(filter)}>
+              <Text
+                style={[
+                  style.filterText,
+                  selectedFilter === filter ? style.selectedFilterText : null,
+                ]}>
+                {filter}
+              </Text>
+            </TouchableOpacity>
+          ))}
         </View>
+
+        {/* Transactions List */}
         <View style={style.recentBar}>
-          <View>
-            <Text style={style.recentBarText1}>Recent Transaction</Text>
-          </View>
-          <View>
+          <Text style={style.recentBarText1}>Recent Transaction</Text>
+          <TouchableOpacity onPress={() => setSelectedFilter('All')}>
             <Text style={style.recentBarText2}>See All</Text>
-          </View>
+          </TouchableOpacity>
         </View>
         <View style={style.listbar}>
-          <ScrollView style={style.listbar}>
-            {transactions.map(transaction => (
-              <Transction
-                key={transaction.id}
-                title={transaction.categoryName}
-                subtitle={transaction.subtitle}
-                amount={transaction.amount}
-                time={transaction.time}
-                image={transaction.image}
-              />
-            ))}
-          </ScrollView>
+          {filterTransactions().length === 0 ? (
+            <View style={style.listtextBox}>
+              <Text style={style.listtext}>No transactions found.</Text>
+            </View>
+          ) : (
+            <FlatList
+              nestedScrollEnabled={true}
+              style={style.listbar}
+              data={filterTransactions()}
+              keyExtractor={(item, index) => item.id || index.toString()}
+              renderItem={({ item }) => {
+                let timeString = '--:--';
+                if (item.timestamp) {
+                  let dateObj = new Date(item.timestamp);
+                  if (!isNaN(dateObj.getTime())) {
+                    timeString = dateObj.toLocaleTimeString([], {
+                      hour: '2-digit',
+                      minute: '2-digit',
+                      hour12: true,
+                    });
+                  }
+                }
+                return (
+                  <Transction
+                    title={item.category}
+                    subtitle={item.description}
+                    amount={item.amount}
+                    time={timeString}
+                    image={{ uri: item.imageUri }}
+                  />
+                );
+              }}
+            />
+          )}
         </View>
+
+
+
       </View>
     </ScrollView>
   );
@@ -171,7 +242,7 @@ const style = StyleSheet.create({
     paddingHorizontal: 20,
     paddingVertical: 10,
   },
-  dropdown:{
+  dropdown: {
     // backgroundColor: '#FCEED4',
     justifyContent: 'center',
     alignItems: 'center',
@@ -266,17 +337,12 @@ const style = StyleSheet.create({
     alignItems: 'center',
   },
   daybar: {
-    flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-around',
     paddingHorizontal: 20,
+    marginTop: 10,
   },
-  bar1: {
-    color: '#FCAC12',
-  },
-  bar2: {
-    color: '#91919F',
-  },
+
   barbox: {
     // flex:0,
     justifyContent: 'center',
@@ -318,9 +384,41 @@ const style = StyleSheet.create({
     textAlign: 'center',
   },
   listbar: {
-    // flex: 3,
+    flex: 3,
     flexDirection: 'column',
-    marginTop: 15,
     marginBottom: 30,
+  },
+  listtext:{
+    fontSize: 18,
+    fontWeight: '600',
+    paddingHorizontal: 20,
+    paddingVertical: 20,
+    textAlign: 'center',
+    marginBottom: 30,
+    // borderWidth: 1,
+  },
+  listtextBox: {
+    flex: 1,
+    // justifyContent: 'center',
+    // alignItems: 'center',
+    paddingHorizontal: 20,
+    paddingVertical: 20,
+    // borderWidth: 1,
+  },
+  filterButton: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 20,
+    height: 34,
+    width: 90,
+  },
+  selectedFilter: {
+    backgroundColor: '#FCEED4',
+  },
+  filterText: {
+    color: '#91919F',
+  },
+  selectedFilterText: {
+    color: '#FCAC12',
   },
 });

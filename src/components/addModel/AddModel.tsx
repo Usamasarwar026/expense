@@ -9,6 +9,9 @@ export default function AddModel({ modalVisible, setModalVisible }:any) {
     const goToExpense = ()=>{
         navigation.navigate('Expense');
     }
+    const goToIncome = ()=>{
+        navigation.navigate('Income');
+    }
   return (
     <>
     <Modal visible={modalVisible} animationType="fade" transparent={true} >
@@ -16,7 +19,7 @@ export default function AddModel({ modalVisible, setModalVisible }:any) {
             <Animated.View style={[style.overlay]} />
         </TouchableWithoutFeedback>
         <View style={style.modelView}>
-            <TouchableOpacity style={style.pic1Box} >
+            <TouchableOpacity style={style.pic1Box} onPress={goToIncome}>
                 <Image source={IMAGES.WHITEINCOME}/>
             </TouchableOpacity>
             <TouchableOpacity style={style.pic2Box} onPress={goToExpense}>

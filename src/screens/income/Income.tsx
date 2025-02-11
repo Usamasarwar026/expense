@@ -19,7 +19,7 @@ import {addTransaction} from '../../store/transctionSlice/transctionSlice';
 import SuccessfulModel from '../../components/successfulModel/SuccessfulModel';
 import Toast from 'react-native-toast-message';
 
-export default function Expense() {
+export default function Income() {
   const [openModel, setOpenModel] = useState(false);
   const [successfullyModel, setSuccessfulModel] = useState(false);
   const [description, setDescription] = useState('');
@@ -28,7 +28,7 @@ export default function Expense() {
   const [amount, setAmount] = useState('');
   const navigation = useNavigation();
   const dispatch = useAppDispatch();
-  const type = 'Expense';
+  const type = 'Income';
 
   const saveData = () => {
     if (!description || !category || !amount || !imageUri) {
@@ -38,7 +38,6 @@ export default function Expense() {
           type: 'error',
         },
       )
-      
       return;
     }
     console.log('Category:', category);
@@ -72,13 +71,13 @@ export default function Expense() {
   };
   return (
     <>
-      <ScrollView style={style.container} contentContainerStyle={{flexGrow: 1}}
-      bounces={false} >
+      <ScrollView style={style.container } contentContainerStyle={{flexGrow: 1}}
+      bounces={false}>
         <View style={style.topcontainer}>
           <TouchableOpacity onPress={goToHome}>
             <Image source={IMAGES.WHITEARROW} />
           </TouchableOpacity>
-          <Text style={style.topcontainerText}>Expense</Text>
+          <Text style={style.topcontainerText}>Income</Text>
         </View>
         <View style={style.secondContainer}>
           <Text style={style.secondContainerText}>How much?</Text>
@@ -89,7 +88,7 @@ export default function Expense() {
             <CategoryDropdown
               dropdownPosition="center"
               style="AllExpense"
-              type="Expense"
+              type="Income"
               setCategory={setCategory}
             />
           </View>
@@ -107,7 +106,7 @@ export default function Expense() {
           <View style={style.numberInputBox}>
             <Input
               style={style.numberInput}
-              placeholder="Enter Expense"
+              placeholder="Enter Income"
               placeholderTextColor="#91919F"
               value={amount}
               onChangeText={setAmount}
@@ -160,7 +159,7 @@ export default function Expense() {
 const style = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FD3C4A',
+    backgroundColor: '#00A86B',
   },
   topcontainer: {
     flex: 1,

@@ -48,6 +48,7 @@ const style = StyleSheet.create({
     containerImage:{
         width: 40,
         height: 40,
+        borderRadius: 10,
         resizeMode: 'contain',
     },
   

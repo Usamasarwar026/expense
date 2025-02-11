@@ -14,14 +14,36 @@ import FinancialReport from '../screens/financialReport/FinancialReport';
 import DetailTransction from '../screens/detailTransction/DetailTransction';
 import AddModel from '../components/addModel/AddModel';
 import Expense from '../screens/expense/Expense';
+import Income from '../screens/income/Income';
+import auth from '@react-native-firebase/auth'
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 
 export default function Navigation() {
+  const [isAuthenticated, setIsAuthenticated] = React.useState<boolean>(false);
+
+  React.useEffect(() => {
+    const currentUser = auth().currentUser;
+    if (!currentUser) {
+      auth().signOut();
+    }
+    if (currentUser) {
+      setIsAuthenticated(true);
+    } else {
+      setIsAuthenticated(false);
+    }
+
+    const unsubscribe = auth().onAuthStateChanged(user => {
+      user?.reload();
+      setIsAuthenticated(!!user);
+    });
+    return unsubscribe;
+  }, []);
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName="LaunchScreen">
+        
         <Stack.Screen name="LaunchScreen" component={LaunchScreen} options={{ headerShown: false }} />
         <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
         <Stack.Screen name="SignUp" component={SignUp} options={{ headerShown: false }}/>
@@ -34,6 +56,7 @@ export default function Navigation() {
         <Stack.Screen name="DetailTransction" component={DetailTransction} options={{ headerShown: false }}/>
         <Stack.Screen name="AddModel" component={AddModel} options={{ headerShown: false }}/>
         <Stack.Screen name="Expense" component={Expense} options={{ headerShown: false }}/>
+        <Stack.Screen name="Income" component={Income} options={{ headerShown: false }}/>
       </Stack.Navigator>
     </NavigationContainer>
   );

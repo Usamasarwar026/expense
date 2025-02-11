@@ -13,7 +13,7 @@ import {ProfileData} from './profileData';
 import {useNavigation} from '@react-navigation/native';
 import Logout from '../logout/Logout';
 import { useAppDispatch } from '../../hooks/useRedux';
-import { fetchUserData } from '../../store/authSlice/authSlice';
+import { fetchUserData, logout } from '../../store/authSlice/authSlice';
 
 
 
@@ -42,6 +42,11 @@ export default function Profile() {
   const goToEditPage = () => {
     navigation.navigate('EditProfile');
   };
+
+  const YesPress = async()=>{
+     await dispatch(logout());
+     
+  }
 
   return (
     <View style={style.container}>
@@ -110,6 +115,8 @@ export default function Profile() {
       title="Logout?"
       description="Are you sure do you wanna logout?"
       text="You have been logged out successfully"
+      YesPress={()=>YesPress}
+      navigateToLogin={true} 
       
       />
     </View>

@@ -14,30 +14,40 @@ import {
 import { IMAGES } from "../../constant/image"; // Make sure IMAGES contains ARROW_DOWN
 import { useFocusEffect } from "@react-navigation/native";
 
-export default function Dropdown({dropdownPosition}: any) {
+export default function Dropdown({dropdownPosition, setSelectedMonth}: any) {
   const [selectedValue, setSelectedValue] = useState(null);
   const [listVisible, setListVisible] = useState(false);
   const [listData] = useState([
-    { id: 1, label: "January", value: "January" },
-    { id: 2, label: "February", value: "February" },
-    { id: 3, label: "March", value: "March" },
-    { id: 4, label: "April", value: "April" },
-    { id: 5, label: "May", value: "May" },
-    { id: 6, label: "June", value: "June" },
-    { id: 7, label: "July", value: "July" },
-    { id: 8, label: "August", value: "August" },
-    { id: 9, label: "September", value: "September" },
-    { id: 10, label: "October", value: "October" },
-    { id: 11, label: "November", value: "November" },
-    { id: 12, label: "December", value: "December" },
+    { id: 1, label: "All", value: "All" },
+    { id: 2, label: "January", value: "January" },
+    { id: 3, label: "February", value: "February" },
+    { id: 4, label: "March", value: "March" },
+    { id: 5, label: "April", value: "April" },
+    { id: 6, label: "May", value: "May" },
+    { id: 7, label: "June", value: "June" },
+    { id: 8, label: "July", value: "July" },
+    { id: 9, label: "August", value: "August" },
+    { id: 10, label: "September", value: "September" },
+    { id: 11, label: "October", value: "October" },
+    { id: 12, label: "November", value: "November" },
+    { id: 13, label: "December", value: "December" },
+
   ]);
+
+  // useFocusEffect(
+  //   useCallback(() => {
+  //     return () => {
+  //       setListVisible(false);
+  //       // setSelectedValue("Month");
+  //     };
+  //   }, [])
+  // );
 
   useFocusEffect(
     useCallback(() => {
-      return () => {
-        setListVisible(false);
-        // setSelectedValue("Month");
-      };
+      setSelectedValue("Month"); // Reset title to "Month" on refresh
+      // setSelectedMonth(null); // Show all transactions
+      return () => setListVisible(false);
     }, [])
   );
   
@@ -68,6 +78,7 @@ export default function Dropdown({dropdownPosition}: any) {
                 style={styles.itemButton}
                 onPress={() => {
                   setSelectedValue(item.value);
+                  setSelectedMonth(item.value);
                   setListVisible(false);
                 }}
               >
@@ -83,8 +94,8 @@ export default function Dropdown({dropdownPosition}: any) {
 
 const styles = StyleSheet.create({
   container: {
-    justifyContent: "center",
-    alignItems: "center",
+    // justifyContent: "center",
+    // alignItems: "center",
   },
   box: {
     flexDirection: "row",

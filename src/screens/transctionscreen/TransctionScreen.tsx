@@ -1,149 +1,131 @@
-import {View, Text, StyleSheet, Image, ScrollView, TouchableOpacity} from 'react-native';
-import React, { useState } from 'react';
-import {IMAGES} from '../../constant/image';
+import { View, Text, StyleSheet, Image, ScrollView, TouchableOpacity, FlatList } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { IMAGES } from '../../constant/image';
 import Transction from '../../components/transction/Transction';
-import {newTransaction, transactions} from '../home/TransctionData';
 import TransctionModel from '../../components/transctionModel/TransctionModel';
 import { useNavigation } from '@react-navigation/native';
 import Dropdown from '../../components/dropdown/Dropdown';
+import { Time } from '../../components/time/Time';
+import { useAppDispatch, useAppSelector } from '../../hooks/useRedux';
+import { fetchTransactions } from '../../store/transctionSlice/transctionSlice';
+import moment from 'moment';
 
 export default function TransctionScreen() {
   const [openModel, setOpenModel] = useState(false);
-  const navigation = useNavigation();
-  
+  const [selectedMonth, setSelectedMonth] = useState(null);  // Default: Current month
 
-  const goToFinancialReport = ()=>{
+  const navigation = useNavigation();
+  const dispatch = useAppDispatch();
+  const { transactions, loading } = useAppSelector((state) => state.transctions);
+
+  useEffect(() => {
+    dispatch(fetchTransactions());
+    console.log(transactions);
+  }, [dispatch]);
+
+  // Group transactions by time period
+  const groupedTransactions = Time(transactions, selectedMonth);
+
+  // Only keep periods that have transactions
+  const nonEmptyPeriods = Object.keys(groupedTransactions).filter(
+    (period) => groupedTransactions[period].length > 0
+  );
+
+  const goToFinancialReport = () => {
     navigation.navigate('FinancialReport');
-  }
+  };
+
   return (
     <>
-    <ScrollView style={{flex: 1}} contentContainerStyle={{flexGrow: 1}} bounces={false}>
-    <View style={style.container}>
-      <View style={style.topBar}>
-        <View style={style.topBarLeft}>
-          {/* <Image source={IMAGES.ARROW_DOWN} />
-          <Text>Month</Text> */}
-          <Dropdown dropdownPosition="left"/>
-        </View>
-        <View>
-          <TouchableOpacity onPress={()=>{setOpenModel(true)}}>
-          <Image source={IMAGES.MENU} />
-          </TouchableOpacity>
-        </View>
-      </View>
-      <TouchableOpacity onPress={goToFinancialReport}>
-      <View style={style.financialBox} >
-        <Text style={style.financialBoxText}>See your financial report</Text>
-        <Image source={IMAGES.RIGHT_ARROW} />
-      </View>
-      </TouchableOpacity>
-      <View style={style.today}>
-        <Text style={style.todayText}>Today</Text>
-      </View>
-      <View style={style.list}>
-        <ScrollView style={style.listbar}>
-          {transactions.map(transaction => (
-            <Transction
-              key={transaction.id}
-              title={transaction.categoryName}
-              subtitle={transaction.subtitle}
-              amount={transaction.amount}
-              time={transaction.time}
-              image={transaction.image}
-            />
-          ))}
-        </ScrollView>
-      </View>
-      <View style={style.today}>
-        <Text style={style.todayText}>Yesterday</Text>
-      </View>
-      <View style={style.list}>
-        <ScrollView style={style.listbar1}>
-          {newTransaction.map(transaction =>{   
-            return(
-              <Transction
-                key={transaction.id}
-                title={transaction.categoryName}
-                subtitle={transaction.subtitle}
-                amount={transaction.amount}
-                time={transaction.time}
-                image={transaction.image}
-                
-              />
-            )
-          } )}
-        </ScrollView>
-      </View>
-    </View>
-    </ScrollView>
+      <ScrollView style={{ flex: 1 }} contentContainerStyle={{ flexGrow: 1 }} bounces={false}>
+        <View style={style.container}>
+          {/* Top Bar */}
+          <View style={style.topBar}>
+            <Dropdown dropdownPosition="left" setSelectedMonth={(month) => setSelectedMonth(month)} />
+            <TouchableOpacity onPress={() => setOpenModel(true)}>
+              <Image source={IMAGES.MENU} />
+            </TouchableOpacity>
+          </View>
 
-    <TransctionModel visible={openModel} onClose={() => setOpenModel(false)} />
+          {/* Financial Report */}
+          <TouchableOpacity onPress={goToFinancialReport}>
+            <View style={style.financialBox}>
+              <Text style={style.financialBoxText}>See your financial report</Text>
+              <Image source={IMAGES.RIGHT_ARROW} />
+            </View>
+          </TouchableOpacity>
+
+          {/* Render Transactions for Available Sections */}
+          {nonEmptyPeriods.map((period) => (
+            <View key={period}>
+              {/* Section Title */}
+              <View style={style.periodHeader}>
+                <Text style={style.periodText}>{period}</Text>
+              </View>
+
+              {/* Render Transactions */}
+              <FlatList
+                style={style.listbar}
+                data={groupedTransactions[period]}
+                keyExtractor={(item) => item.id.toString()}
+                renderItem={({ item }) => (
+                  <Transction
+                    title={item.category}
+                    subtitle={item.description}
+                    amount={item.amount}
+                    time={moment(item.timestamp).format('hh:mm A')}
+                    image={{ uri: item.imageUri }}
+                  />
+                )}
+              />
+            </View>
+          ))}
+        </View>
+      </ScrollView>
+
+      <TransctionModel visible={openModel} onClose={() => setOpenModel(false)} />
     </>
   );
 }
+
 const style = StyleSheet.create({
   container: {
     flex: 1,
     borderWidth: 1,
   },
   topBar: {
-    flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-between',
     paddingHorizontal: 20,
     marginTop: 10,
   },
-  topBarLeft: {
-    flexDirection: 'row',
-    justifyContent: 'space-evenly',
-    gap: 10,
-  },
   financialBox: {
-    flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
     paddingHorizontal: 20,
-
     justifyContent: 'space-between',
-    // borderWidth: 1,
     marginHorizontal: 20,
     borderRadius: 8,
     backgroundColor: '#EEE5FF',
-    marginTop: 20
+    marginTop: 20,
   },
   financialBoxText: {
     color: '#7F3DFF',
     fontSize: 16,
     fontWeight: '400',
     paddingVertical: 15,
-},
-today: {
-    flex: 1,
+  },
+  periodHeader: {
     paddingHorizontal: 20,
     paddingVertical: 15,
     justifyContent: 'center',
-    // borderWidth: 1,
   },
-  todayText: {
+  periodText: {
     fontSize: 18,
     fontWeight: '600',
   },
-  list: {
-    flex: 1,
-    // borderWidth: 1,
+  listbar: {
     backgroundColor: '#F5F5F5',
     paddingHorizontal: 20,
-  },
-  listbar: {
-    // flex: 3,
-    flexDirection: 'column',
-    // marginTop:1,
-    // marginBottom: 30,
-  },
-  listbar1: {
-    // flex: 3,
-    flexDirection: 'column',
-    // marginTop:1,
-    marginBottom: 50,
   },
 });

@@ -8,10 +8,10 @@ import {
   TouchableOpacity,
   ScrollView,
 } from 'react-native';
-import {IMAGES} from '../../constant/image'; // Make sure IMAGES contains ARROW_DOWN
+import {IMAGES} from '../../constant/image'; 
 import {useFocusEffect} from '@react-navigation/native';
 
-export default function CategoryDropdown({dropdownPosition, type, style}: any) {
+export default function CategoryDropdown({dropdownPosition, type, style, setCategory}: any) {
   const [selectedValue, setSelectedValue] = useState(null);
   const [listVisible, setListVisible] = useState(false);
 
@@ -25,7 +25,7 @@ export default function CategoryDropdown({dropdownPosition, type, style}: any) {
     {id: 'I-1', label: 'Salary', value: 'Salary'},
     {id: 'I-2', label: 'Transportation', value: 'Transportation'},
   ];
-  const category = [...IncomeData, ...ExpenseData];
+
     const dropdownData = type === 'Expense' ? ExpenseData : IncomeData;
 //   const dropdownData =
 //     type === 'All' ? category : type === 'Expense' ? ExpenseData : IncomeData;
@@ -40,7 +40,7 @@ export default function CategoryDropdown({dropdownPosition, type, style}: any) {
         setSelectedValue('Category');
       };
     }, []),
-  );
+  )
 
   return (
     <View style={styles.container}>
@@ -76,6 +76,7 @@ export default function CategoryDropdown({dropdownPosition, type, style}: any) {
                 style={styles.itemButton}
                 onPress={() => {
                   setSelectedValue(item.value);
+                  setCategory(item.value);
                   setListVisible(false);
                 }}>
                 <Text style={styles.item}>{item.label}</Text>
@@ -111,7 +112,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     borderWidth: 1,
     borderColor: '#7F3DFF',
-    width: '120%',
+    width: '100%',
     top: 40,
     zIndex: 100,
   },
@@ -121,7 +122,8 @@ const styles = StyleSheet.create({
   },
   label: {
     fontSize: 16,
-    fontWeight: '600',
+    fontWeight: '400',
+    color: '#91919F'
   },
   listContainer: {
     flex: 1,

@@ -1,5 +1,5 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
-import auth from '@react-native-firebase/auth';
+import auth, { getAuth } from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 import Toast from 'react-native-toast-message';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
@@ -312,7 +312,10 @@ export const updateEmail = createAsyncThunk(
 
 export const logout = createAsyncThunk('auth/logout', async () => {
   try {
-    await auth().signOut();
+    const authuser = getAuth();
+    if(authuser.currentUser){
+      await auth().signOut();
+    }
     return null;
   } catch (error: any) {
     console.log('Error signing out:', error);

@@ -15,6 +15,7 @@ export type RootStackParamList = {
     DetailTransction: undefined;
     AddModel: undefined;
     Expense: undefined;
+    Income: undefined;
     // Add other screens here
   };
 

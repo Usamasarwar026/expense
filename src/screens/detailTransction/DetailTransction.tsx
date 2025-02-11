@@ -10,11 +10,14 @@ import React from 'react';
 import {IMAGES} from '../../constant/image';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import Logout from '../logout/Logout';
+import { useAppDispatch } from '../../hooks/useRedux';
+import { deleteTransaction } from '../../store/transctionSlice/transctionSlice';
 
 export default function DetailTransction() {
   const [openModel, setOpenModel] = React.useState(false);
   const navigation = useNavigation();
   const route = useRoute();
+  const dispatch = useAppDispatch();
   const transaction = route.params?.transaction || {};
 
   const goToFinancialReport = () => {
@@ -24,6 +27,12 @@ export default function DetailTransction() {
       console.error('Navigation Error:', error);
     }
   };
+  const onYesPress = async(transactionId: string) => {
+
+    console.log('Success model displayed====>',transactionId);
+    await dispatch(deleteTransaction(transactionId))
+  };
+  
 
   const isExpense = transaction.type === 'Expense';
 
@@ -49,7 +58,7 @@ export default function DetailTransction() {
               <Text style={style.amount}>{transaction.amount}</Text>
             </View>
             <View>
-              <Text style={style.text}>{transaction.subtitle}</Text>
+              <Text style={style.text}>{transaction.description}</Text>
             </View>
             <View style={style.datebox}>
               <Text style={style.dateboxText}>Saturday 4 June 2021</Text>
@@ -68,11 +77,11 @@ export default function DetailTransction() {
             </View>
             <View>
               <Text style={style.box1Text}>Category</Text>
-              <Text style={style.box1Text2}>{transaction.categoryName}</Text>
+              <Text style={style.box1Text2}>{transaction.category}</Text>
             </View>
             <View>
               <Text style={style.box1Text}>Wallet</Text>
-              <Text style={style.box1Text2}>Wallet</Text>
+              <Text style={style.box1Text2}>paypal</Text>
             </View>
           </View>
           <View style={style.description}>
@@ -88,11 +97,15 @@ export default function DetailTransction() {
               <Text style={style.imageText}>Attachment</Text>
             </View>
             <View style={style.pic}>
-              <Image
-                style={style.actualpic}
-                resizeMode="cover"
-                source={IMAGES.DETAILPIC}
-              />
+              {transaction.imageUri ? (
+                <Image
+                  style={style.actualpic}
+                  resizeMode="cover"
+                  source={{uri: transaction.imageUri}} // ✅ Corrected
+                />
+              ) : (
+                <Text>No image available</Text> // Optional: Show text if image is missing
+              )}
             </View>
           </View>
           <TouchableOpacity style={style.button}>
@@ -104,6 +117,8 @@ export default function DetailTransction() {
             title="Remove this transaction?"
             description="Are you sure do you wanna remove this transaction?"
             text="Transaction has been Successfully Removed"
+            YesPress={()=>onYesPress(transaction.id)}
+            navigateToHome={true}
           />
         </View>
       </View>

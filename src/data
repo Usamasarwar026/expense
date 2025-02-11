@@ -60,3 +60,71 @@
     
   // )
   
+
+
+
+
+
+  {/* <View style={style.daybar}>
+          <TouchableOpacity style={style.barbox}>
+            <Text style={style.bar1}>Today</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={style.barbox1}>
+            <Text style={style.bar2}>Week</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={style.barbox1}>
+            <Text style={style.bar2}>Month</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={style.barbox1}>
+            <Text style={style.bar2}>Year</Text>
+          </TouchableOpacity>
+        </View> */}
+        {/* <View style={style.recentBar}>
+          <View>
+            <Text style={style.recentBarText1}>Recent Transaction</Text>
+          </View>
+          <TouchableOpacity>
+            <Text style={style.recentBarText2}>See All</Text>
+          </TouchableOpacity>
+        </View>
+        <View style={style.listbar}> */}
+         
+          {/* {transactions.length === 0 ? (
+            <View style={style.listtextBox}>
+              <Text style={style.listtext}>No transactions found.</Text>
+            </View>
+          ) : (
+            <FlatList
+              nestedScrollEnabled={true}
+              style={style.listbar}
+              data={transactions}
+              keyExtractor={(item, index) => item.id || index.toString()}
+              renderItem={({item}) => {
+                let timeString = 'N/A';
+
+                if (item.timestamp) {
+                  let dateObj = new Date(item.timestamp); // Convert timestamp string to Date object
+                  if (!isNaN(dateObj.getTime())) {
+                    timeString = dateObj.toLocaleTimeString([], {
+                      hour: '2-digit',
+                      minute: '2-digit',
+                      hour12: true,
+                    });
+                  }
+                }
+                return (
+                  <Transction
+                    title={item.category}
+                    subtitle={item.description}
+                    amount={item.amount}
+                    // time={item.timestamp ? item.timestamp : 'N/A'}
+                    time={timeString}
+                    image={{uri: item.imageUri}}
+                  />
+                );
+              }}
+            />
+          )}
+        </View> */}
+
+        
