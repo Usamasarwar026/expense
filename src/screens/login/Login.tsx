@@ -50,33 +50,35 @@ export default function Login() {
       });
       return;
     }
-    dispatch(login({email, password}))
-      .unwrap()
-      .then(() => {
+  
+    try {
+      await dispatch(login({email, password})).unwrap();
+      
+      if (user) {
         navigation.dispatch(
           CommonActions.reset({
             index: 0,
             routes: [{name: 'TabNavigation', params: {screen: 'Home'}}],
           }),
         );
-
         setEmail('');
         setPassword('');
-      })
-      .catch(errorMessage => {
-        console.log('Login Error:', errorMessage);
-        Toast.show({
-          type: 'error',
-          text1: errorMessage,
-          position: 'top',
-          visibilityTime: 2000,
-        });
+      }
+    } catch (errorMessage) {
+      console.log('Login Error:', errorMessage);
+      Toast.show({
+        type: 'error',
+        text1: errorMessage,
+        position: 'top',
+        visibilityTime: 2000,
       });
+    }
   };
+  
 
   return (
     <KeyboardAvoidingView style={style.container}>
-      <ScrollView contentContainerStyle={{flexGrow: 1}} bounces={false}>
+      <ScrollView contentContainerStyle={{flexGrow: 1}} bounces={false} >
         <View style={style.topcontainer}>
           <TouchableOpacity onPress={goToBack}>
             <Image source={IMAGES.ARROW} />

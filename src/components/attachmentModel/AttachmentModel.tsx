@@ -13,8 +13,9 @@ import React from 'react';
 import {IMAGES} from '../../constant/image';
 import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
 import DocumentPicker from 'react-native-document-picker';
+import { AttachmentProp } from '../../types/types';
 
-export default function AttachmentModel({openModel, setOpenModel, onSelectImage}: any) {
+export default function AttachmentModel({openModel, setOpenModel, onSelectImage}:AttachmentProp) {
     const openCamera = async () => {
         const options = {
           mediaType: 'photo',

@@ -8,10 +8,14 @@ import {
   TouchableOpacity,
   ScrollView,
 } from 'react-native';
-import {IMAGES} from '../../constant/image'; 
+import {IMAGES} from '../../constant/image';
 import {useFocusEffect} from '@react-navigation/native';
 
-export default function CategoryDropdown({dropdownPosition, type, style, setCategory}: any) {
+export default function CategoryDropdown({
+  dropdownPosition,
+  type,
+  style,
+}: any) {
   const [selectedValue, setSelectedValue] = useState(null);
   const [listVisible, setListVisible] = useState(false);
 
@@ -26,9 +30,10 @@ export default function CategoryDropdown({dropdownPosition, type, style, setCate
     {id: 'I-2', label: 'Transportation', value: 'Transportation'},
   ];
 
-    const dropdownData = type === 'Expense' ? ExpenseData : IncomeData;
-//   const dropdownData =
-//     type === 'All' ? category : type === 'Expense' ? ExpenseData : IncomeData;
+  const allData = [...ExpenseData, ...IncomeData];
+  const dropdownData =
+    type === 'All' ? allData : type === 'Expense' ? ExpenseData : IncomeData;
+
   useEffect(() => {
     setListVisible(false);
   }, [type]);
@@ -40,7 +45,7 @@ export default function CategoryDropdown({dropdownPosition, type, style, setCate
         setSelectedValue('Category');
       };
     }, []),
-  )
+  );
 
   return (
     <View style={styles.container}>
@@ -65,9 +70,12 @@ export default function CategoryDropdown({dropdownPosition, type, style, setCate
       {listVisible && (
         <SafeAreaView
           style={[
-            style === "AllExpense" ? styles.allListContainer : styles.listContainer,
+            style === 'AllExpense'
+              ? styles.allListContainer
+              : styles.listContainer,
             dropdownPosition === 'center' && styles.centerDropdown,
             dropdownPosition === 'left' && styles.rightDropdown,
+            dropdownPosition === 'above' && styles.aboveDropdown,
           ]}>
           <ScrollView style={styles.list}>
             {dropdownData.map(item => (
@@ -76,7 +84,6 @@ export default function CategoryDropdown({dropdownPosition, type, style, setCate
                 style={styles.itemButton}
                 onPress={() => {
                   setSelectedValue(item.value);
-                  setCategory(item.value);
                   setListVisible(false);
                 }}>
                 <Text style={styles.item}>{item.label}</Text>
@@ -99,13 +106,13 @@ const styles = StyleSheet.create({
     justifyContent: 'space-evenly',
     gap: 10,
   },
-  all:{
+  all: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
     width: '100%',
   },
-  allListContainer:{
+  allListContainer: {
     flex: 1,
     backgroundColor: '#FFFFFF',
     borderRadius: 5,
@@ -123,25 +130,35 @@ const styles = StyleSheet.create({
   label: {
     fontSize: 16,
     fontWeight: '400',
-    color: '#91919F'
+    color: '#91919F',
   },
   listContainer: {
     flex: 1,
     backgroundColor: '#FFFFFF',
     borderRadius: 5,
-    position: 'absolute',
     borderWidth: 1,
     borderColor: '#7F3DFF',
     width: 200,
-    top: 40,
-    zIndex: 100,
   },
   centerDropdown: {
     alignSelf: 'center', // Center align relative to parent
+    position: 'absolute',
+    top: 40,
+    zIndex: 100,
   },
   rightDropdown: {
     alignSelf: 'flex-start', // Align to the right side of the button
     left: 0, // Shift it to the right (equal to the button's width)
+    position: 'absolute',
+    top: 40,
+    zIndex: 100,
+  },
+  aboveDropdown: {
+    position: 'absolute',
+    top: -230,
+    left: 0,
+    right: 0,
+    zIndex: 100,
   },
   list: {
     padding: 10,

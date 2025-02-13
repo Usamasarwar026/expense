@@ -1,7 +1,8 @@
 import {View, Text, Image, StyleSheet, TouchableOpacity} from 'react-native';
 import React from 'react';
+import { TransctionProp } from '../../types/types';
 
-export default function Transction({title, subtitle, amount, time, image}:any) {
+export default function Transction({title, subtitle, amount, time, image, type}:TransctionProp) {
   return (
     <TouchableOpacity style={style.TransctionContainer}  >
       <View style={style.leftContainer}>
@@ -15,7 +16,7 @@ export default function Transction({title, subtitle, amount, time, image}:any) {
           <Text style={style.text2}>{subtitle}</Text>
         </View>
         <View>
-          <Text style={style.text3}>{amount}</Text>
+          <Text style={[type === 'Expense' ? style.red : style.green,style.text3]}>{amount}</Text>
           <Text style={style.text2}>{time}</Text>
         </View>
       </View>
@@ -69,9 +70,15 @@ const style = StyleSheet.create({
         width: '78%',
     },
     text3:{
-        color: '#FD3C4A',
+        // color: '#FD3C4A',
         fontSize: 16,
         fontWeight: '600',
     },
+    red:{
+       color: '#FD3C4A',
+    },
+    green:{
+       color: '#10B981',
+    }
 
 })

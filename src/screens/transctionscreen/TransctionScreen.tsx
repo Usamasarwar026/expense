@@ -12,8 +12,10 @@ import moment from 'moment';
 
 export default function TransctionScreen() {
   const [openModel, setOpenModel] = useState(false);
-  const [selectedMonth, setSelectedMonth] = useState(null);  // Default: Current month
-
+  const [selectedMonth, setSelectedMonth] = useState(null);  
+  const [category, setCategory] = useState('Choose Category');
+  const [filters, setFilters] = useState({ type: null, sortBy: 'Highest', category: "Choose Category" });
+  
   const navigation = useNavigation();
   const dispatch = useAppDispatch();
   const { transactions, loading } = useAppSelector((state) => state.transctions);
@@ -34,6 +36,8 @@ export default function TransctionScreen() {
   const goToFinancialReport = () => {
     navigation.navigate('FinancialReport');
   };
+
+  
 
   return (
     <>
@@ -75,6 +79,7 @@ export default function TransctionScreen() {
                     amount={item.amount}
                     time={moment(item.timestamp).format('hh:mm A')}
                     image={{ uri: item.imageUri }}
+                    type={item.type}
                   />
                 )}
               />
@@ -83,7 +88,9 @@ export default function TransctionScreen() {
         </View>
       </ScrollView>
 
-      <TransctionModel visible={openModel} onClose={() => setOpenModel(false)} />
+      {/* <TransctionModel visible={openModel} onClose={() => setOpenModel(false)} /> */}
+      <TransctionModel visible={openModel} onClose={() => setOpenModel(false)} setCategory={setCategory} filters={filters} setFilters={setFilters} />
+
     </>
   );
 }

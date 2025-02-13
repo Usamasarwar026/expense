@@ -29,6 +29,7 @@ export default function Logout({
   const handleYesPress = async () => {
     setOpenModel(false);
     const user = auth().currentUser; 
+    console.log(user);
   
   if (!user) {
     console.log('No user is currently signed in');
@@ -47,13 +48,11 @@ export default function Logout({
 
       setSuccessModelVisible(true);
 
-      setTimeout(() => {
+      setTimeout(async() => {
         setSuccessModelVisible(false);
         if (navigateToLogin) {
-          navigation.reset({
-            index: 0,
-            routes: [{name: 'Login'}],
-          });
+       
+         await auth().signOut();
         }
         if(navigateToHome){
            navigation.dispatch(

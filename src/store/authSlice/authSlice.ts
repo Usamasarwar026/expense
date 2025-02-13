@@ -176,7 +176,7 @@ export const GoogleSignup = createAsyncThunk(
     } catch (error: any) {
       console.log('Google Sign-in Error', error);
 
-      return rejectWithValue('Error while sign up');
+      return rejectWithValue(error.message);
     }
   },
 );
@@ -310,17 +310,17 @@ export const updateEmail = createAsyncThunk(
   })
 
 
-export const logout = createAsyncThunk('auth/logout', async () => {
-  try {
-    const authuser = getAuth();
-    if(authuser.currentUser){
-      await auth().signOut();
-    }
-    return null;
-  } catch (error: any) {
-    console.log('Error signing out:', error);
-  }
-});
+// export const logout = createAsyncThunk('auth/logout', async () => {
+//   try {
+//     const authuser = getAuth();
+//     if(authuser.currentUser){
+//       await auth().signOut();
+//     }
+//     return null;
+//   } catch (error: any) {
+//     console.log('Error signing out:', error);
+//   }
+// });
 
 // ✅ Redux Slice
 export const authSlice = createSlice({
@@ -331,7 +331,11 @@ export const authSlice = createSlice({
     error: null,
     status: 'idle',
   },
-  reducers: {},
+  reducers: {
+    setUser: (state, action) => {
+      state.user = action.payload;
+    },
+  },
   extraReducers: builder => {
     builder
       .addCase(signup.pending, state => {
@@ -358,20 +362,20 @@ export const authSlice = createSlice({
         state.loading = false;
         state.error = action.payload;
       })
-      .addCase(logout.pending, state => {
-        state.loading = true; // Set loading to true during the logout process
-        state.error = null; // Reset error when starting logout
-      })
-      .addCase(logout.fulfilled, state => {
-        state.loading = false; // Set loading to false once logout is complete
-        state.user = null; // Clear the user data (since the user is logged out)
-        console.log('logout successfully');
-      })
-      .addCase(logout.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.payload;
-        // console.log('Logout error:====>', action.payload);
-      })
+      // .addCase(logout.pending, state => {
+      //   state.loading = true; // Set loading to true during the logout process
+      //   state.error = null; // Reset error when starting logout
+      // })
+      // .addCase(logout.fulfilled, state => {
+      //   state.loading = false; // Set loading to false once logout is complete
+      //   state.user = null; // Clear the user data (since the user is logged out)
+      //   console.log('logout successfully');
+      // })
+      // .addCase(logout.rejected, (state, action) => {
+      //   state.loading = false;
+      //   state.error = action.payload;
+      //   // console.log('Logout error:====>', action.payload);
+      // })
       .addCase(GoogleSignup.pending, state => {
         state.loading = true;
         state.error = null;
@@ -441,5 +445,6 @@ export const authSlice = createSlice({
   },
 });
 
+export const {setUser} = authSlice.actions;
 // ✅ Export Reducer
 export default authSlice.reducer;

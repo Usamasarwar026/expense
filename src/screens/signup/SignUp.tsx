@@ -118,19 +118,21 @@ export default function SignUp() {
   
         navigation.navigate('Home'); // Navigate to home screen after login
       } else {
+        const errorMessage = resultAction.payload || 'Something went wrong! Please try again.';
         Toast.show({
           type: 'error',
           text1: 'Google Sign-In Failed!',
-          text2: resultAction.payload || 'Please try again.',
+          text2: errorMessage || 'Please try again.',
           position: 'top',
           visibilityTime: 3000,
         });
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error('Google Sign-In Error:', error);
       Toast.show({
         type: 'error',
-        text1: 'Google Sign-In Failed!',
+        text1: 'Google Sign-In Failed!==> Please try again',
+        text2: error.message || 'An unexpected error occurred.',
         position: 'top',
         visibilityTime: 3000,
       });

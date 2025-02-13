@@ -142,7 +142,7 @@ export default function Expense() {
       <AttachmentModel
         openModel={openModel}
         setOpenModel={setOpenModel}
-        onSelectImage={uri => {
+        onSelectImage={(uri) => {
           console.log('Image URI from Child:', uri); // Debugging log
           setImageUri(uri);
         }}

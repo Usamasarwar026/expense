@@ -8,56 +8,111 @@ import {
   Image,
   TouchableOpacity,
 } from 'react-native';
-import React from 'react';
+import React, {useState} from 'react';
 import {IMAGES} from '../../constant/image';
+import CategoryDropdown from '../categoryDropdown/CategoryDropdown';
 
-export default function TransctionModel({visible, onClose}: any) {
+export default function TransctionModel({
+  visible,
+  onClose,
+  filters,
+  setFilters,
+  applyFilters,
+  setCategory
+}: any) {
+ 
+  
+  
+ 
   return (
     <Modal visible={visible} animationType="slide" transparent={true}>
       <TouchableWithoutFeedback onPress={onClose}>
-        <Animated.View style={style.overlay} />
+        <View style={style.overlay} />
       </TouchableWithoutFeedback>
+
       <View style={style.modelView}>
         <View style={style.modelLine}></View>
+
+        {/* Filter Header */}
         <View style={style.firstBox}>
           <Text style={style.firstBoxText}>Filter Transaction</Text>
-          <Text style={style.firstBoxText1}>Reset</Text>
+          <TouchableOpacity
+            onPress={() =>
+            {
+              setFilters({type: null, sortBy: 'Highest', category: "choose Category"})
+            }
+            }>
+            <Text style={style.firstBoxText1}>Reset</Text>
+          </TouchableOpacity>
         </View>
+
+        {/* Filter by Type */}
         <View style={style.secondBox}>
-          <View>
-            <Text style={style.Text}>Filter By</Text>
-          </View>
+          <Text style={style.Text}>Filter By</Text>
           <View style={style.secondBoxText2}>
-            <Text style={style.text1}>Income</Text>
-            <Text style={style.text2}>Expense</Text>
+            <TouchableOpacity
+              onPress={() => setFilters({...filters, type: 'income'})}>
+              <Text
+                style={[
+                  style.text1,
+                  filters.type === 'income' && style.activeText,
+                ]}>
+                Income
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => setFilters({...filters, type: 'expense'})}>
+              <Text
+                style={[
+                  style.text1,
+                  filters.type === 'expense' && style.activeText,
+                ]}>
+                Expense
+              </Text>
+            </TouchableOpacity>
           </View>
         </View>
+
+        {/* Sort By */}
         <View style={style.secondBox}>
-          <View>
-            <Text style={style.Text}>Sort By</Text>
-          </View>
+          <Text style={style.Text}>Sort By</Text>
           <View style={style.secondBoxText2}>
-            <Text style={style.text1}>Highest</Text>
-            <Text style={style.text1}>Lowest</Text>
-            <Text style={style.text1}>Newest</Text>
-            <Text style={style.text1}>Oldest</Text>
+            {['Highest', 'Lowest', 'Newest', 'Oldest'].map(sortOption => (
+              <TouchableOpacity
+                key={sortOption}
+                onPress={() => setFilters({...filters, sortBy: sortOption})}>
+                <Text
+                  style={[
+                    style.text1,
+                    filters.sortBy === sortOption && style.activeText,
+                  ]}>
+                  {sortOption}
+                </Text>
+              </TouchableOpacity>
+            ))}
           </View>
         </View>
+
+        {/* Category Selection */}
         <View style={style.secondBox}>
-          <View>
-            <Text style={style.Text}>Category</Text>
-          </View>
-          <View style={style.chooseBox}>
-            <View>
-              <Text style={style.secondBoxText}>Choose Category</Text>
-            </View>
-            <View style={style.innerchooseBox}>
-              <Text style={style.innerchooseBoxText}>0 Selected</Text>
-              <Image source={IMAGES.RIGHT_ARROW} />
-            </View>
-          </View>
+          <Text style={style.Text}>Category</Text>
+          <TouchableOpacity
+            style={style.chooseBox}
+            onPress={() => {
+              /* Implement category selection modal */
+            }}>
+            <CategoryDropdown
+              dropdownPosition="above"
+              style="AllExpense"
+              type="All"
+              setCategory={filters.category}
+              
+            />
+          </TouchableOpacity>
         </View>
-        <TouchableOpacity style={style.Touchbtn}>
+
+        {/* Apply Button */}
+        <TouchableOpacity style={style.Touchbtn} onPress={applyFilters}>
           <Text style={style.buttonText}>Apply</Text>
         </TouchableOpacity>
       </View>
@@ -188,4 +243,58 @@ const style = StyleSheet.create({
     paddingVertical: 12,
     borderRadius: 16,
   },
+  activeText: {
+    backgroundColor: '#7F3DFF',
+    color: 'white',
+  },
 });
+
+// <Modal visible={visible} animationType="slide" transparent={true}>
+//   <TouchableWithoutFeedback onPress={onClose}>
+//     <Animated.View style={style.overlay} />
+//   </TouchableWithoutFeedback>
+//   <View style={style.modelView}>
+//     <View style={style.modelLine}></View>
+//     <View style={style.firstBox}>
+//       <Text style={style.firstBoxText}>Filter Transaction</Text>
+//       <Text style={style.firstBoxText1}>Reset</Text>
+//     </View>
+//     <View style={style.secondBox}>
+//       <View>
+//         <Text style={style.Text}>Filter By</Text>
+//       </View>
+//       <View style={style.secondBoxText2}>
+//         <Text style={style.text1}>Income</Text>
+//         <Text style={style.text2}>Expense</Text>
+//       </View>
+//     </View>
+//     <View style={style.secondBox}>
+//       <View>
+//         <Text style={style.Text}>Sort By</Text>
+//       </View>
+//       <View style={style.secondBoxText2}>
+//         <Text style={style.text1}>Highest</Text>
+//         <Text style={style.text1}>Lowest</Text>
+//         <Text style={style.text1}>Newest</Text>
+//         <Text style={style.text1}>Oldest</Text>
+//       </View>
+//     </View>
+//     <View style={style.secondBox}>
+//       <View>
+//         <Text style={style.Text}>Category</Text>
+//       </View>
+//       <View style={style.chooseBox}>
+//         <View>
+//           <Text style={style.secondBoxText}>Choose Category</Text>
+//         </View>
+//         <View style={style.innerchooseBox}>
+//           <Text style={style.innerchooseBoxText}>0 Selected</Text>
+//           <Image source={IMAGES.RIGHT_ARROW} />
+//         </View>
+//       </View>
+//     </View>
+//     <TouchableOpacity style={style.Touchbtn}>
+//       <Text style={style.buttonText}>Apply</Text>
+//     </TouchableOpacity>
+//   </View>
+// </Modal>

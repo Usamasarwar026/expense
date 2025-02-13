@@ -34,19 +34,10 @@ export default function Dropdown({dropdownPosition, setSelectedMonth}: any) {
 
   ]);
 
-  // useFocusEffect(
-  //   useCallback(() => {
-  //     return () => {
-  //       setListVisible(false);
-  //       // setSelectedValue("Month");
-  //     };
-  //   }, [])
-  // );
-
+  
   useFocusEffect(
     useCallback(() => {
-      setSelectedValue("Month"); // Reset title to "Month" on refresh
-      // setSelectedMonth(null); // Show all transactions
+      setSelectedValue("Month"); 
       return () => setListVisible(false);
     }, [])
   );

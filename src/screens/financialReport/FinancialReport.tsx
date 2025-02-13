@@ -20,14 +20,34 @@ import { fetchTransactions } from '../../store/transctionSlice/transctionSlice';
 export default function FinancialReport() {
   const [selectedTab, setSelectedTab] = useState('Expense');
   const [category, setCategory] = useState(null);
+  const [totalIncome, setTotalIncome] = useState(0);
+  const [totalExpense, setTotalExpense] = useState(0);
+  const [selectedMonth, setSelectedMonth] = useState(null);  
   const navigation = useNavigation();
   const dispatch = useAppDispatch();
   const {transactions, loading} = useAppSelector(state => state.transctions);
   
   useEffect(()=>{
-    // dispatch(fetchTransactions());
+    dispatch(fetchTransactions());
     console.log(transactions)
   },[dispatch])
+  useEffect(() => {
+      if (transactions.length > 0) {
+        const incomeTotal = transactions
+          .filter((transaction) => transaction.type === 'Income')
+          .reduce((sum, transaction) => sum + (Number(transaction.amount) || 0), 0);  // Ensure number conversion
+    
+        const expenseTotal = transactions
+          .filter((transaction) => transaction.type === 'Expense')
+          .reduce((sum, transaction) => sum + (Number(transaction.amount) || 0), 0);  // Ensure number conversion
+    
+        console.log("Total Income:", incomeTotal);
+        console.log("Total Expense:", expenseTotal);
+    
+        setTotalIncome(incomeTotal);
+        setTotalExpense(expenseTotal);
+      }
+    }, [transactions]); 
 
   const goToTransction = () => {
     try {
@@ -59,7 +79,7 @@ export default function FinancialReport() {
   
   // const dataToDisplay = selectedTab === 'Expense' ? transactions : newTransaction;
   // const dataToDisplay = transactions.filter(item => item.type === selectedTab);
-  const totalAmount = selectedTab === 'Expense' ? '$332' : '$520'; 
+  const totalAmount = selectedTab === 'Expense' ? totalExpense : totalIncome; 
   const graph = selectedTab === 'Expense' ? IMAGES.YELLOWCIRCLE : IMAGES.GREENCIRCLE;
   // console.log("Data to Display:", dataToDisplay);
 
@@ -74,7 +94,7 @@ export default function FinancialReport() {
         </View>
         <View style={style.topBar}>
           <View style={style.topBarLeft}>
-            <Dropdown dropdownPosition='left'/>
+            <Dropdown dropdownPosition='left' setSelectedMonth={setSelectedMonth}/>
           </View>
           <View>
             <TouchableOpacity>

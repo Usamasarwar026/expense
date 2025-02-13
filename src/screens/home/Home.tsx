@@ -21,7 +21,10 @@ import {fetchTransactions} from '../../store/transctionSlice/transctionSlice';
 export default function Home() {
   const [userData, setUserData] = useState(null);
   const [loader, setLoader] = useState(true);
-  const [selectedFilter, setSelectedFilter] = useState('Today'); 
+  const [selectedFilter, setSelectedFilter] = useState('Today');
+  const [selectedMonth, setSelectedMonth] = useState(null);  
+  const [totalIncome, setTotalIncome] = useState(0);
+const [totalExpense, setTotalExpense] = useState(0);
   const navigation = useNavigation();
   const dispatch = useAppDispatch();
   const {transactions, loading} = useAppSelector(state => state.transctions);
@@ -42,6 +45,24 @@ export default function Home() {
     fetchUserInfo();
   }, [dispatch]);
 
+  useEffect(() => {
+    if (transactions.length > 0) {
+      const incomeTotal = transactions
+        .filter((transaction) => transaction.type === 'Income')
+        .reduce((sum, transaction) => sum + (Number(transaction.amount) || 0), 0);  // Ensure number conversion
+  
+      const expenseTotal = transactions
+        .filter((transaction) => transaction.type === 'Expense')
+        .reduce((sum, transaction) => sum + (Number(transaction.amount) || 0), 0);  // Ensure number conversion
+  
+      console.log("Total Income:", incomeTotal);
+      console.log("Total Expense:", expenseTotal);
+  
+      setTotalIncome(incomeTotal);
+      setTotalExpense(expenseTotal);
+    }
+  }, [transactions]); 
+  
   const goToProfile = () => {
     try {
       navigation.dispatch(
@@ -111,7 +132,7 @@ export default function Home() {
               )}
             </TouchableOpacity>
             <View style={style.dropdown}>
-              <Dropdown dropdownPosition="center" />
+              <Dropdown dropdownPosition="center" setSelectedMonth={(month) => setSelectedMonth(month)} />
             </View>
             <Image source={IMAGES.NOTIFICATION} />
           </View>
@@ -130,7 +151,7 @@ export default function Home() {
               </View>
               <View>
                 <Text style={style.parentText}>Income</Text>
-                <Text style={style.parentAmount}>$5000</Text>
+                <Text style={style.parentAmount}>${totalIncome}</Text>
               </View>
             </View>
             <View style={style.balanceBox1}>
@@ -139,7 +160,7 @@ export default function Home() {
               </View>
               <View>
                 <Text style={style.parentText}>Expenses</Text>
-                <Text style={style.parentAmount}>$1200</Text>
+                <Text style={style.parentAmount}>${totalExpense}</Text>
               </View>
             </View>
           </View>
@@ -148,7 +169,7 @@ export default function Home() {
           <Text style={style.thirdcontainerText}>Spend Frequency</Text>
         </View>
         <View style={style.graphcontainer}>
-          <Image resizeMode="contain" source={IMAGES.GRAPH} />
+          <Image resizeMode="contain" style={{width: '100%'}} source={IMAGES.GRAPH} />
         </View>
         
         {/* Filters for Transactions */}
@@ -209,6 +230,7 @@ export default function Home() {
                     amount={item.amount}
                     time={timeString}
                     image={{ uri: item.imageUri }}
+                    type={item.type}
                   />
                 );
               }}

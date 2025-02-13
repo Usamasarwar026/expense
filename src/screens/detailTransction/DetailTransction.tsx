@@ -12,6 +12,7 @@ import {useNavigation, useRoute} from '@react-navigation/native';
 import Logout from '../logout/Logout';
 import { useAppDispatch } from '../../hooks/useRedux';
 import { deleteTransaction } from '../../store/transctionSlice/transctionSlice';
+import moment from 'moment';
 
 export default function DetailTransction() {
   const [openModel, setOpenModel] = React.useState(false);
@@ -19,6 +20,15 @@ export default function DetailTransction() {
   const route = useRoute();
   const dispatch = useAppDispatch();
   const transaction = route.params?.transaction || {};
+
+  console.log('Route Params:', route.params);
+console.log('Transaction Object:', transaction);
+
+const formattedDate = transaction.timestamp
+  ? moment(transaction.timestamp).format('dddd D MMMM YYYY hh:mm A')
+  : 'No Date Available';
+    console.log('Transaction Time:', transaction.time);
+
 
   const goToFinancialReport = () => {
     try {
@@ -32,6 +42,7 @@ export default function DetailTransction() {
     console.log('Success model displayed====>',transactionId);
     await dispatch(deleteTransaction(transactionId))
   };
+  
   
 
   const isExpense = transaction.type === 'Expense';
@@ -61,7 +72,7 @@ export default function DetailTransction() {
               <Text style={style.text}>{transaction.description}</Text>
             </View>
             <View style={style.datebox}>
-              <Text style={style.dateboxText}>Saturday 4 June 2021</Text>
+              <Text style={style.dateboxText}>{formattedDate}</Text>
               <Text style={style.dateboxText}>{transaction.time}</Text>
             </View>
           </View>
