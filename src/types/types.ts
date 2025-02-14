@@ -51,7 +51,7 @@ export type RootStackParamList = {
 
   // openModel, setOpenModel, onSelectImage
  export type AttachmentProp = {
-    openModel: () => void,
+    openModel: boolean,
     setOpenModel: (value: boolean) => void,
     onSelectImage: (uri: string) => void,
   //   image: ImageProp,
@@ -67,6 +67,17 @@ export type DropdownItem = {
   value: string;
   label: string;
 };
+export type CategoryDropdownProps = {
+  dropdownPosition?: 'center' | 'left' | 'above';
+  type: 'All' | 'Expense' | 'Income';
+  style?: string;
+  setCategory?: (category: string) => void;
+};
+export type DropdownProps = {
+  dropdownPosition?: "center" | "left";
+  setSelectedMonth: (month: string) => void;
+};
+
 
 // export type CategoryDropdownProps = {
 //   dropdownPosition?: 'center' | 'left' | 'above'; // Define allowed positions
@@ -87,8 +98,6 @@ export type AddModelProps = {
   modalVisible: boolean;
   setModalVisible: (visible: boolean) => void;
 };
-
-
 export type LogoutModelProps = {
   openModel: boolean;
   setOpenModel: (value: boolean) => void;
@@ -98,8 +107,7 @@ export type LogoutModelProps = {
   YesPress?: () => Promise<void> | void;
   navigateToHome?: boolean;
   navigateToLogin?: boolean;
-}
-
+};
 export type ProgressBarProps = {
   categoryName: string;
   amount: string | number;
@@ -107,19 +115,26 @@ export type ProgressBarProps = {
   color: string;
   textColor: string;
   onPress?: () => void;
-}
+};
+
 
 export type SuccessfulModelProps = {
   openModel: boolean;
   setOpenModel: (value: boolean) => void;
   text: string;
 }
+// export type Transaction = {
+//   id: string; // Unique ID for the transaction
+//   amount: number; // Transaction amount
+//   timestamp: string; // ISO date string
+//   category?: string; // Optional category
+// }
+
+
 export type Transaction = {
-  id: string; // Unique ID for the transaction
-  amount: number; // Transaction amount
-  timestamp: string; // ISO date string
-  category?: string; // Optional category
-}
+  timestamp: string; // Assuming timestamp is a string in ISO format
+  [key: string]: any;
+};
 
 export type GroupedTransactions = {
   Today: Transaction[];
@@ -127,7 +142,8 @@ export type GroupedTransactions = {
   "This Week": Transaction[];
   "This Month": Transaction[];
   Older: Transaction[];
-}
+  [key: string]: Transaction[]; // Allowing selected month cases
+};
 
 export type TimeReturnType = GroupedTransactions | Record<string, Transaction[]>;
 
@@ -168,6 +184,36 @@ export type categoryColorsType = {
   Transportation: string;
 }
 
+export type TransactionFilters = {
+  type: 'income' | 'expense' | null;
+  sortBy: 'Highest' | 'Lowest' | 'Newest' | 'Oldest';
+  category: string;
+};
+
+export type TransctionModelProps = {
+  visible: boolean;
+  onClose: () => void;
+  filters: TransactionFilters;
+  setFilters: (filters: TransactionFilters) => void;
+  applyFilters: () => void;
+  setCategory?: (category: string) => void;
+};
+
+export type UserProfile = {
+  name: string;
+  email: string;
+  profileImageUri: string | null;
+}
+
+export type ImagePickerResult = {
+  assets?: { uri: string }[];
+}
+
+export type FetchUserDataResponse = {
+  profileImageUri: string | null;
+  name: string;
+  email: string;
+};
 
 
 
@@ -181,3 +227,70 @@ export type categoryColorsType = {
   //   secureTextEntry?: boolean;
 
   // }
+  export type TransactionData = {
+    id: string; // Assuming each transaction has a unique ID
+    amount: string; // It's a string, needs conversion before calculations
+    category: string;
+    description?: string;
+    timestamp: string; // Date in ISO string format
+    type: 'Income' | 'Expense';
+    imageUri?: string;
+  };
+  
+  export type UserData = {
+    profileImageUri?: string;
+    name?: string;
+    email?: string;
+  };
+  
+  
+
+
+
+
+
+
+  export interface AuthState {
+    user: User | null;
+    loading: boolean;
+    error: string | null;
+    status: 'idle' | 'loading' | 'succeeded' | 'failed';
+    profileImageUri?: string;
+  }
+  
+  export interface User {
+    uid: string;
+    name?: string;
+    email: string;
+    profileImageUri?: string;
+  }
+  
+  export interface SignupPayload {
+    name: string;
+    email: string;
+    password: string;
+  }
+  
+  export interface LoginPayload {
+    email: string;
+    password: string;
+  }
+  
+  export interface ChangePasswordPayload {
+    email: string;
+    currentPassword: string;
+    newPassword: string;
+  }
+  
+  export interface UpdateEmailPayload {
+    email: string;
+  }
+  
+  export interface UpdateNamePayload {
+    name: string;
+  }
+  
+  export interface StoreImageUriPayload {
+    uri: string;
+  }
+  

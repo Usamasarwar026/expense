@@ -15,6 +15,7 @@ import { useAppDispatch } from '../../hooks/useRedux';
 import { resetPassword } from '../../store/authSlice/authSlice';
 import Toast from 'react-native-toast-message';
 import { styles } from './forgetStyles';
+import { navigate } from '../../navigation/navigationRef';
 
 export default function Forget() {
   const [email, setEmail] = useState('');
@@ -22,7 +23,7 @@ export default function Forget() {
   const dispatch = useAppDispatch(); // Use the Redux dispatch function
 
   const goToBack = () => {
-    navigation.navigate('Login');
+    navigate('Login');
   };
 
   const handleSendEmail = () => {

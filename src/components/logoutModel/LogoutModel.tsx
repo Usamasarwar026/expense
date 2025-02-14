@@ -12,6 +12,7 @@ import {CommonActions, useNavigation} from '@react-navigation/native';
 import Toast from 'react-native-toast-message';
 import auth from '@react-native-firebase/auth';
 import {styles} from './logoutModelStyles';
+import {LogoutModelProps} from '../../types/types';
 
 export default function LogoutModel({
   openModel,
@@ -22,7 +23,7 @@ export default function LogoutModel({
   YesPress,
   navigateToHome = false,
   navigateToLogin = false,
-}: any) {
+}: LogoutModelProps) {
   const [successModelVisible, setSuccessModelVisible] = useState(false);
   const navigation = useNavigation();
 

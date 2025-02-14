@@ -3,8 +3,8 @@ import auth, { getAuth } from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 import Toast from 'react-native-toast-message';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
+import { AuthState } from '../../types/types';
 
-// ✅ Async Thunk for Signup
 export const signup = createAsyncThunk(
   'auth/signup',
   async (
@@ -12,7 +12,6 @@ export const signup = createAsyncThunk(
     {rejectWithValue},
   ) => {
     try {
-      // 🔹 Create user in Firebase Authentication
       const response = await auth().createUserWithEmailAndPassword(
         email,
         password,
@@ -297,10 +296,10 @@ export const updateEmail = createAsyncThunk(
 
     try {
       await firestore()
-        .collection('users') // Collection name in Firestore
-        .doc(userId) // Document for the user
+        .collection('users') 
+        .doc(userId) 
         .update({
-          profileImageUri: uri, // Store the image URI
+          profileImageUri: uri, 
         });
         console.log('Image URI stored successfully');
         return uri;
@@ -323,14 +322,17 @@ export const updateEmail = createAsyncThunk(
 // });
 
 // ✅ Redux Slice
+const initialState: AuthState = {
+  user: null,
+  loading: false,
+  error: null,
+  status: 'idle',
+  
+};
+
 export const authSlice = createSlice({
   name: 'auth',
-  initialState: {
-    user: null,
-    loading: false,
-    error: null,
-    status: 'idle',
-  },
+  initialState,
   reducers: {
     setUser: (state, action) => {
       state.user = action.payload;
@@ -348,7 +350,7 @@ export const authSlice = createSlice({
       })
       .addCase(signup.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.payload;
+        state.error = action.payload as string;
       })
       .addCase(login.pending, (state, action) => {
         state.loading = true;
@@ -360,22 +362,8 @@ export const authSlice = createSlice({
       })
       .addCase(login.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.payload;
+        state.error = action.payload as string;
       })
-      // .addCase(logout.pending, state => {
-      //   state.loading = true; // Set loading to true during the logout process
-      //   state.error = null; // Reset error when starting logout
-      // })
-      // .addCase(logout.fulfilled, state => {
-      //   state.loading = false; // Set loading to false once logout is complete
-      //   state.user = null; // Clear the user data (since the user is logged out)
-      //   console.log('logout successfully');
-      // })
-      // .addCase(logout.rejected, (state, action) => {
-      //   state.loading = false;
-      //   state.error = action.payload;
-      //   // console.log('Logout error:====>', action.payload);
-      // })
       .addCase(GoogleSignup.pending, state => {
         state.loading = true;
         state.error = null;
@@ -386,7 +374,7 @@ export const authSlice = createSlice({
       })
       .addCase(GoogleSignup.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.payload;
+        state.error = action.payload as string;
       })
       .addCase(updateName.pending, state => {
         state.status = 'loading';
@@ -446,5 +434,4 @@ export const authSlice = createSlice({
 });
 
 export const {setUser} = authSlice.actions;
-// ✅ Export Reducer
 export default authSlice.reducer;

@@ -3,9 +3,9 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import {useState} from 'react';
 import AddModel from '../../components/addModel/AddModel';
 import {TABS} from '../../constant/constant';
-import {style} from './TabNavigationStyle';
+import {styles} from './TabNavigationStyle';
 import {TouchableOpacity} from 'react-native';
-import { TabItem } from '../../types/types';
+import {TabItem} from '../../types/types';
 
 const Tab = createBottomTabNavigator();
 
@@ -17,7 +17,7 @@ export default function TabNavigation() {
       <Tab.Navigator
         screenOptions={{
           tabBarShowLabel: true,
-          tabBarStyle: modalVisible ? style.curvedTabBar : style.tabBar,
+          tabBarStyle: modalVisible ? styles.curvedTabBar : styles.tabBar,
           tabBarActiveTintColor: '#7F3DFF',
           tabBarInactiveTintColor: '#C6C6C6',
         }}>
@@ -31,7 +31,7 @@ export default function TabNavigation() {
                 tabBarIcon: ({color, size}) =>
                   isAddButton ? (
                     <TouchableOpacity
-                      style={style.addButton}
+                      style={styles.addButton}
                       onPress={() => setModalVisible(true)}>
                       <Icon
                         name={modalVisible ? 'close' : 'add'}

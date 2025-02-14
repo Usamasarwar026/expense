@@ -18,22 +18,23 @@ import {fetchUserData, storeImageUriInFirestore, updateEmail, updateName} from '
 import Toast from 'react-native-toast-message';
 import {CameraOptions, ImageLibraryOptions, launchCamera, launchImageLibrary} from 'react-native-image-picker';
 import { styles } from './editProfileStyles';
+import { FetchUserDataResponse } from '../../types/types';
 
 export default function EditProfile() {
-  const [email, setEmail] = useState('');
-  const [name, setName] = useState('');
+  const [email, setEmail] = useState<string>('');
+  const [name, setName] = useState<string>('');
   const navigation = useNavigation();
-  const [imageUri, setImageUri] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [initialName, setInitialName] = useState('');
-  const [initialImageUri, setInitialImageUri] = useState(null);
-  const dispatch = useAppDispatch();// Replace with actual user ID (e.g., from authentication)
+  const [imageUri, setImageUri] = useState<string | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [initialName, setInitialName] = useState<string>('');
+  const [initialImageUri, setInitialImageUri] = useState<string | null>(null);
+  const dispatch = useAppDispatch();
   
   useEffect(() => {
     
     const fetchImage = async () => {
       try {
-        const { profileImageUri, name, email }:any = await dispatch(fetchUserData()).unwrap();
+        const { profileImageUri, name, email }:FetchUserDataResponse = await dispatch(fetchUserData()).unwrap();
         setImageUri(profileImageUri);
         setEmail(email);
         setName(name);
@@ -61,7 +62,7 @@ export default function EditProfile() {
     }
   };
 
-  const storeImage= async (uri) => {
+  const storeImage= async (uri: string): Promise<void> => {
 
     try {
       await dispatch(storeImageUriInFirestore(uri))

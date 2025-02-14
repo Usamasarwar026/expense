@@ -1,7 +1,8 @@
-import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
+import {View, Text, TouchableOpacity} from 'react-native';
 import React from 'react';
 import * as Progress from 'react-native-progress';
 import { styles } from './progressBarStyles';
+import { ProgressBarProps } from '../../types/types';
 
 export default function ProgressBar({
   categoryName,
@@ -10,7 +11,7 @@ export default function ProgressBar({
   color,
   textColor,
   onPress,
-}: any) {
+}: ProgressBarProps) {
   return (
     <TouchableOpacity style={styles.barcontainer} onPress={onPress}>
       <View style={styles.innerBarContainer}>

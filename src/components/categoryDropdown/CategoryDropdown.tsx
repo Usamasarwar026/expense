@@ -2,7 +2,6 @@ import React, {useCallback, useEffect, useState} from 'react';
 import {
   View,
   Text,
-  StyleSheet,
   SafeAreaView,
   Image,
   TouchableOpacity,
@@ -10,15 +9,16 @@ import {
 } from 'react-native';
 import {IMAGES} from '../../constant/image';
 import {useFocusEffect} from '@react-navigation/native';
-import { EXPENSE_DATA, INCOME_DATA } from '../../constant/constant';
-import {styles} from './categoryDropdownStyle'
+import {EXPENSE_DATA, INCOME_DATA} from '../../constant/constant';
+import {styles} from './categoryDropdownStyle';
+import {CategoryDropdownProps} from '../../types/types';
 
 export default function CategoryDropdown({
   dropdownPosition,
   type,
   style,
-  setCategory
-}: any) {
+  setCategory = ()=>{},
+}: CategoryDropdownProps) {
   const [selectedValue, setSelectedValue] = useState<String | null>(null);
   const [listVisible, setListVisible] = useState<boolean>(false);
 
@@ -41,7 +41,6 @@ export default function CategoryDropdown({
 
   return (
     <View style={styles.container}>
-      {/* Dropdown Button */}
       <TouchableOpacity
         style={style === 'AllExpense' ? styles.all : styles.box}
         onPress={() => setListVisible(!listVisible)}>
@@ -57,8 +56,6 @@ export default function CategoryDropdown({
           </>
         )}
       </TouchableOpacity>
-
-      {/* Dropdown List */}
       {listVisible && (
         <SafeAreaView
           style={[

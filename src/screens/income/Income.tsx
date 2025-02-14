@@ -20,11 +20,11 @@ import Toast from 'react-native-toast-message';
 import { styles } from './incomeStyles';
 
 export default function Income() {
-  const [openModel, setOpenModel] = useState(false);
-  const [successfullyModel, setSuccessfulModel] = useState(false);
+  const [openModel, setOpenModel] = useState<boolean>(false);
+  const [successfullyModel, setSuccessfulModel] = useState<boolean>(false);
   const [description, setDescription] = useState('');
-  const [category, setCategory] = useState('All Expense');
-  const [imageUri, setImageUri] = useState(null);
+  const [category, setCategory] = useState<string>('All Expense');
+  const [imageUri, setImageUri] = useState<string | null>(null);
   const [amount, setAmount] = useState('');
   const navigation = useNavigation();
   const dispatch = useAppDispatch();

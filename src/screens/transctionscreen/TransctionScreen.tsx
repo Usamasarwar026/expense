@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, Image, ScrollView, TouchableOpacity, FlatList } from 'react-native';
+import { View, Text, Image, TouchableOpacity, FlatList } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { IMAGES } from '../../constant/image';
 import Transction from '../../components/transction/Transction';
@@ -20,7 +20,7 @@ export default function TransctionScreen() {
   
   const navigation = useNavigation();
   const dispatch = useAppDispatch();
-  const { transactions, loading } = useAppSelector((state) => state.transctions);
+  const { transactions, loading } = useAppSelector((state) => state.transctions) ?? [];
 
   useEffect(() => {
     dispatch(fetchTransactions());
@@ -43,7 +43,7 @@ export default function TransctionScreen() {
 
   return (
     <>
-      <View style={{ flex: 1 }} contentContainerStyle={{ flexGrow: 1 }} bounces={false}>
+      <View style={{ flex: 1 }} >
         <View style={styles.container}>
           {/* Top Bar */}
           <View style={styles.topBar}>

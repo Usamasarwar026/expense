@@ -12,16 +12,18 @@ import Setting from '../../components/setting/Setting';
 import {ProfileData} from './profileData';
 import {useNavigation} from '@react-navigation/native';
 import { useAppDispatch } from '../../hooks/useRedux';
-import { fetchUserData, logout } from '../../store/authSlice/authSlice';
+import { fetchUserData } from '../../store/authSlice/authSlice';
 import LogoutModel from '../../components/logoutModel/LogoutModel';
 import { styles } from './profileStyles';
+import { UserData } from '../../types/types';
+import { navigate } from '../../navigation/navigationRef';
 
 
 
 export default function Profile() {
   const [openModel, setOpenModel] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [userData, setUserData] = useState(null);
+  const [userData, setUserData] = useState<UserData | null | undefined>(null);
   const navigation = useNavigation();
   const dispatch = useAppDispatch();
 
@@ -48,11 +50,12 @@ export default function Profile() {
   // }, [navigation]);
 
   const goToEditPage = () => {
-    navigation.navigate('EditProfile');
+    navigate('EditProfile');
   };
 
   const YesPress = async()=>{
-     await dispatch(logout());
+    //  await dispatch(logout());
+    console.log("clicked");
      
   }
 
@@ -95,9 +98,9 @@ export default function Profile() {
         {ProfileData.map(profile => {
           const handlePress = () => {
             if (profile.id === "1") {
-              navigation.navigate('Budget'); // Navigate to Profile screen
+              navigate('Budget'); // Navigate to Profile screen
             } else if (profile.id === "2") {
-              navigation.navigate('ResetPassword');
+              navigate('ResetPassword');
             } else if (profile.id === "3") {
               
               setOpenModel(true);

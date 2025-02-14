@@ -26,7 +26,6 @@ export default function SignUp() {
   const dispatch = useAppDispatch();
 
   const goToLogin = () => {
-    // Navigate to Login Screen
     navigate('Login');
   };
   const goToLandingPage = () => {
@@ -91,7 +90,7 @@ export default function SignUp() {
         console.log('Signup Error:', errorMessage);
         Toast.show({
           type: 'error',
-          text1: errorMessage,
+          text1: errorMessage as string,
           position: 'top',
           visibilityTime: 3000,
         });
@@ -124,7 +123,7 @@ export default function SignUp() {
         Toast.show({
           type: 'error',
           text1: 'Google Sign-In Failed!',
-          text2: errorMessage || 'Please try again.',
+          text2: String(errorMessage) || 'Please try again.',
           position: 'top',
           visibilityTime: 3000,
         });

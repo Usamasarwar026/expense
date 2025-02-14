@@ -10,8 +10,9 @@ import {
 import React from 'react';
 import { IMAGES } from '../../constant/image';
 import { styles } from './successfulModelStyles';
+import { SuccessfulModelProps } from '../../types/types';
 
-export default function SuccessfulModel({openModel,setOpenModel,text}:any) {
+export default function SuccessfulModel({openModel,setOpenModel,text}:SuccessfulModelProps) {
   return (
     <Modal visible={openModel} animationType="fade" transparent={true}>
       

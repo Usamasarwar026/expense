@@ -10,20 +10,21 @@ import React, { useEffect, useState } from 'react';
 import {IMAGES} from '../../constant/image';
 import {CommonActions, useNavigation} from '@react-navigation/native';
 import ProgressBar from '../../components/progressBar/ProgressBar';
-// import { newTransaction, transactions } from '../home/TransctionData';
 import Dropdown from '../../components/dropdown/Dropdown';
 import CategoryDropdown from '../../components/categoryDropdown/CategoryDropdown';
 import { useAppDispatch, useAppSelector } from '../../hooks/useRedux';
 import { fetchTransactions } from '../../store/transctionSlice/transctionSlice';
 import { styles } from './financialReportStyles';
+import { navigate } from '../../navigation/navigationRef';
+import { Transaction } from '../../types/types';
 
 
 export default function FinancialReport() {
-  const [selectedTab, setSelectedTab] = useState('Expense');
-  const [category, setCategory] = useState(null);
-  const [totalIncome, setTotalIncome] = useState(0);
-  const [totalExpense, setTotalExpense] = useState(0);
-  const [selectedMonth, setSelectedMonth] = useState(null);  
+  const [selectedTab, setSelectedTab] = useState<'Expense' | 'Income'>('Expense');
+  const [category, setCategory] = useState<string | null>(null);
+  const [totalIncome, setTotalIncome] = useState<number>(0);
+  const [totalExpense, setTotalExpense] = useState<number>(0);
+  const [selectedMonth, setSelectedMonth] = useState<string | null>(null);  
   const navigation = useNavigation();
   const dispatch = useAppDispatch();
   const {transactions, loading} = useAppSelector(state => state.transctions);
@@ -62,27 +63,22 @@ export default function FinancialReport() {
       );
     } catch (error) {}
   };
-  const handlepress = (transaction)=>{
+  const handlepress = (transaction: Transaction)=>{
     console.log("Pressed Transaction:", transaction);
-    navigation.navigate('DetailTransction', {transaction});
+    navigate('DetailTransction', {transaction});
 
   }
-  const toggleTab = (tab:any) => {
+  const toggleTab = (tab:'Expense' | 'Income') => {
     setSelectedTab(tab);
   };
-  const dataToDisplay = transactions?.filter(item => {
-    // console.log("Filtering Item:", item);
+  const dataToDisplay = transactions?.filter((item:Transaction)=> {
     return item?.type === selectedTab;
   });
-  // console.log("Data to Display after filtering:", dataToDisplay);
-  const maxAmount = Math.max(...dataToDisplay.map(item => item.amount), 1);
+  const maxAmount = Math.max(...dataToDisplay.map(item => Number(item.amount)), 1);
         const adjustedMaxAmount = maxAmount * 0.8;
-  
-  // const dataToDisplay = selectedTab === 'Expense' ? transactions : newTransaction;
-  // const dataToDisplay = transactions.filter(item => item.type === selectedTab);
   const totalAmount = selectedTab === 'Expense' ? totalExpense : totalIncome; 
   const graph = selectedTab === 'Expense' ? IMAGES.YELLOWCIRCLE : IMAGES.GREENCIRCLE;
-  // console.log("Data to Display:", dataToDisplay);
+
 
   return (
     <>
@@ -132,8 +128,8 @@ export default function FinancialReport() {
         <View>
       {dataToDisplay.map((item) =>{
         
-        const progress = Math.min((item.amount / adjustedMaxAmount) * 100, 100);
-        const categoryColors = {
+        const progress = Math.min((Number(item.amount) / adjustedMaxAmount) * 100, 100);
+        const categoryColors:Record<string, string>  = {
           Shopping: '#FCAC12',
           Subscription: '#7F3DFF',
           Food: '#007BFF',

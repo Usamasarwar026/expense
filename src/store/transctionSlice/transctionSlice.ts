@@ -3,6 +3,46 @@ import  firestore  from '@react-native-firebase/firestore';
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 
+// **1. Define Transaction Type**
+export interface Transaction {
+  id: string;
+  userId: string;
+  category: string;
+  description: string;
+  amount: string;
+  imageUri: string;
+  type: string;
+  timestamp: string;
+}
+
+// **2. Define Transaction State Type**
+export interface TransactionState {
+  transactions: Transaction[];
+  loading: boolean;
+  error: string | null;
+  status: "idle" | "loading" | "succeeded" | "failed";
+}
+
+// **3. Define AddTransaction Payload Type**
+interface AddTransactionPayload {
+  category: string;
+  description: string;
+  amount: string;
+  imageUri: string;
+  type: string;
+}
+
+const initialState: TransactionState = {
+  transactions: [],
+  loading: false,
+  error: null,
+  status: "idle",
+};
+
+
+
+
+
 export const addTransaction = createAsyncThunk(
     "transaction/addTransction",
     async ({ category, description, amount ,imageUri, type}:{ category: string, description: string, amount: string, imageUri:string, type: string}, { rejectWithValue }) => {
@@ -111,12 +151,7 @@ export const fetchTransactions = createAsyncThunk(
 export const transactionSlice = createSlice(
     {
         name: "transaction",
-        initialState: {
-            transactions: [],
-            loading: false,
-            error: null,
-            status: 'idle',
-        },
+        initialState,
         reducers: {},
         extraReducers: builder =>{
             builder.addCase(addTransaction.pending, (state) => {
@@ -126,12 +161,13 @@ export const transactionSlice = createSlice(
             builder.addCase(addTransaction.fulfilled, (state, action) => {
                 
                 state.loading = false;
-                state.transactions = action.payload;
+                // state.transactions = action.payload;
+                state.transactions.push(action.payload);
                 state.status ='succeeded';
             })
             builder.addCase(addTransaction.rejected, (state, action) => {
                 state.loading = false;
-                state.error = action.payload;
+                state.error = action.payload as string;
                 state.status ='failed';
             })
             builder.addCase(fetchTransactions.pending, (state) => {
@@ -146,7 +182,7 @@ export const transactionSlice = createSlice(
             })
             builder.addCase(fetchTransactions.rejected, (state, action) => {
                 state.loading = false;
-                state.error = action.payload;
+                state.error = action.payload as string;
                 state.status ='failed';
             })
             builder.addCase(deleteTransaction.pending, (state) => {
@@ -162,7 +198,7 @@ export const transactionSlice = createSlice(
               });
               builder.addCase(deleteTransaction.rejected, (state, action) => {
                 state.loading = false;
-                state.error = action.payload;
+                state.error = action.payload as string;
                 state.status = "failed";
               });
               

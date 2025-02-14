@@ -12,6 +12,7 @@ import React, {useState} from 'react';
 import {IMAGES} from '../../constant/image';
 import CategoryDropdown from '../categoryDropdown/CategoryDropdown';
 import {styles} from './transctioModelStyles';
+import {TransctionModelProps} from '../../types/types';
 
 export default function TransctionModel({
   visible,
@@ -20,7 +21,7 @@ export default function TransctionModel({
   setFilters,
   applyFilters,
   setCategory,
-}: any) {
+}: TransctionModelProps) {
   return (
     <Modal visible={visible} animationType="slide" transparent={true}>
       <TouchableWithoutFeedback onPress={onClose}>
@@ -30,14 +31,13 @@ export default function TransctionModel({
       <View style={styles.modelView}>
         <View style={styles.modelLine}></View>
 
-        {/* Filter Header */}
         <View style={styles.firstBox}>
           <Text style={styles.firstBoxText}>Filter Transaction</Text>
           <TouchableOpacity
             onPress={() => {
               setFilters({
                 type: null,
-                sortBy: 'Highest',
+                sortBy: 'Highest' as 'Highest' | 'Lowest' | 'Newest' | 'Oldest',
                 category: 'choose Category',
               });
             }}>
@@ -45,7 +45,6 @@ export default function TransctionModel({
           </TouchableOpacity>
         </View>
 
-        {/* Filter by Type */}
         <View style={styles.secondBox}>
           <Text style={styles.Text}>Filter By</Text>
           <View style={styles.secondBoxText2}>
@@ -72,14 +71,22 @@ export default function TransctionModel({
           </View>
         </View>
 
-        {/* Sort By */}
         <View style={styles.secondBox}>
           <Text style={styles.Text}>Sort By</Text>
           <View style={styles.secondBoxText2}>
             {['Highest', 'Lowest', 'Newest', 'Oldest'].map(sortOption => (
               <TouchableOpacity
                 key={sortOption}
-                onPress={() => setFilters({...filters, sortBy: sortOption})}>
+                onPress={() =>
+                  setFilters({
+                    ...filters,
+                    sortBy: sortOption as
+                      | 'Highest'
+                      | 'Lowest'
+                      | 'Newest'
+                      | 'Oldest',
+                  })
+                }>
                 <Text
                   style={[
                     styles.text1,
@@ -92,24 +99,18 @@ export default function TransctionModel({
           </View>
         </View>
 
-        {/* Category Selection */}
         <View style={styles.secondBox}>
           <Text style={styles.Text}>Category</Text>
-          <TouchableOpacity
-            style={styles.chooseBox}
-            onPress={() => {
-              /* Implement category selection modal */
-            }}>
+          <TouchableOpacity style={styles.chooseBox}>
             <CategoryDropdown
               dropdownPosition="above"
               style="AllExpense"
               type="All"
-              setCategory={filters.category}
+              setCategory ={category => setFilters({...filters, category})}
             />
           </TouchableOpacity>
         </View>
 
-        {/* Apply Button */}
         <TouchableOpacity style={styles.Touchbtn} onPress={applyFilters}>
           <Text style={styles.buttonText}>Apply</Text>
         </TouchableOpacity>

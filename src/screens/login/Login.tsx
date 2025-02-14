@@ -15,6 +15,7 @@ import Toast from 'react-native-toast-message';
 import {useAppDispatch, useAppSelector} from '../../hooks/useRedux';
 import {login} from '../../store/authSlice/authSlice';
 import {styles} from './loginStyles';
+import { navigate } from '../../navigation/navigationRef';
 
 export default function Login() {
   const [email, setEmail] = useState('');
@@ -24,18 +25,18 @@ export default function Login() {
   const {user} = useAppSelector(state => state.auth);
 
   const goToBack = () => {
-    navigation.navigate('SignUp');
+    navigate('SignUp');
   };
   const goToSignup = () => {
     try {
-      navigation.navigate('SignUp');
+      navigate('SignUp');
     } catch (error) {
       console.error('Navigation Error:', error);
     }
   };
   const goToForget = () => {
     try {
-      navigation.navigate('Forget');
+      navigate('Forget');
     } catch (error) {
       console.error('Navigation Error:', error);
     }
@@ -69,7 +70,7 @@ export default function Login() {
       console.log('Login Error:', errorMessage);
       Toast.show({
         type: 'error',
-        text1: errorMessage,
+        text1: errorMessage as string,
         position: 'top',
         visibilityTime: 2000,
       });

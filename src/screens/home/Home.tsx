@@ -18,12 +18,13 @@ import {useAppDispatch, useAppSelector} from '../../hooks/useRedux';
 import {fetchUserData} from '../../store/authSlice/authSlice';
 import {fetchTransactions} from '../../store/transctionSlice/transctionSlice';
 import {styles} from './homeStyle';
+import {Transaction, UserData} from '../../types/types';
 
 export default function Home() {
-  const [userData, setUserData] = useState(null);
+  const [userData, setUserData] = useState<UserData | null | undefined>(null);
   const [loader, setLoader] = useState(true);
   const [selectedFilter, setSelectedFilter] = useState('Today');
-  const [selectedMonth, setSelectedMonth] = useState(null);
+  const [selectedMonth, setSelectedMonth] = useState<string | null>(null);
   const [totalIncome, setTotalIncome] = useState(0);
   const [totalExpense, setTotalExpense] = useState(0);
   const navigation = useNavigation();
@@ -83,7 +84,7 @@ export default function Home() {
     }
   };
 
-  const filterTransactions = () => {
+  const filterTransactions = (): Transaction[] => {
     if (!Array.isArray(transactions)) {
       return []; // Return an empty array if transactions is undefined or not an array
     }
@@ -115,11 +116,7 @@ export default function Home() {
   };
 
   return (
-    <View
-      nestedScrollEnabled={true}
-      style={{flex: 1}}
-      contentContainerStyle={{flexGrow: 1}}
-      bounces={false}>
+    <View style={{flex: 1}}>
       <View style={styles.container}>
         <View style={styles.top}>
           <View style={styles.innertop}>
