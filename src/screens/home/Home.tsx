@@ -17,14 +17,15 @@ import {CommonActions, useNavigation} from '@react-navigation/native';
 import {useAppDispatch, useAppSelector} from '../../hooks/useRedux';
 import {fetchUserData} from '../../store/authSlice/authSlice';
 import {fetchTransactions} from '../../store/transctionSlice/transctionSlice';
+import {styles} from './homeStyle';
 
 export default function Home() {
   const [userData, setUserData] = useState(null);
   const [loader, setLoader] = useState(true);
   const [selectedFilter, setSelectedFilter] = useState('Today');
-  const [selectedMonth, setSelectedMonth] = useState(null);  
+  const [selectedMonth, setSelectedMonth] = useState(null);
   const [totalIncome, setTotalIncome] = useState(0);
-const [totalExpense, setTotalExpense] = useState(0);
+  const [totalExpense, setTotalExpense] = useState(0);
   const navigation = useNavigation();
   const dispatch = useAppDispatch();
   const {transactions, loading} = useAppSelector(state => state.transctions);
@@ -48,21 +49,27 @@ const [totalExpense, setTotalExpense] = useState(0);
   useEffect(() => {
     if (transactions.length > 0) {
       const incomeTotal = transactions
-        .filter((transaction) => transaction.type === 'Income')
-        .reduce((sum, transaction) => sum + (Number(transaction.amount) || 0), 0);  // Ensure number conversion
-  
+        .filter(transaction => transaction.type === 'Income')
+        .reduce(
+          (sum, transaction) => sum + (Number(transaction.amount) || 0),
+          0,
+        ); // Ensure number conversion
+
       const expenseTotal = transactions
-        .filter((transaction) => transaction.type === 'Expense')
-        .reduce((sum, transaction) => sum + (Number(transaction.amount) || 0), 0);  // Ensure number conversion
-  
-      console.log("Total Income:", incomeTotal);
-      console.log("Total Expense:", expenseTotal);
-  
+        .filter(transaction => transaction.type === 'Expense')
+        .reduce(
+          (sum, transaction) => sum + (Number(transaction.amount) || 0),
+          0,
+        ); // Ensure number conversion
+
+      console.log('Total Income:', incomeTotal);
+      console.log('Total Expense:', expenseTotal);
+
       setTotalIncome(incomeTotal);
       setTotalExpense(expenseTotal);
     }
-  }, [transactions]); 
-  
+  }, [transactions]);
+
   const goToProfile = () => {
     try {
       navigation.dispatch(
@@ -81,7 +88,7 @@ const [totalExpense, setTotalExpense] = useState(0);
       return []; // Return an empty array if transactions is undefined or not an array
     }
 
-    if (selectedFilter === 'All') return transactions; 
+    if (selectedFilter === 'All') return transactions;
     const now = new Date();
     return transactions.filter(transaction => {
       const transactionDate = new Date(transaction.timestamp);
@@ -107,17 +114,16 @@ const [totalExpense, setTotalExpense] = useState(0);
     });
   };
 
-
   return (
-    <ScrollView
+    <View
       nestedScrollEnabled={true}
       style={{flex: 1}}
       contentContainerStyle={{flexGrow: 1}}
       bounces={false}>
-      <View style={style.container}>
-        <View style={style.top}>
-          <View style={style.innertop}>
-            <TouchableOpacity style={style.picbox} onPress={goToProfile}>
+      <View style={styles.container}>
+        <View style={styles.top}>
+          <View style={styles.innertop}>
+            <TouchableOpacity style={styles.picbox} onPress={goToProfile}>
               {loading ? (
                 <ActivityIndicator size="small" color="#7F3DFF" />
               ) : (
@@ -127,65 +133,72 @@ const [totalExpense, setTotalExpense] = useState(0);
                       ? {uri: userData.profileImageUri}
                       : IMAGES.PROFILE
                   }
-                  style={style.picboximage}
+                  style={styles.picboximage}
                 />
               )}
             </TouchableOpacity>
-            <View style={style.dropdown}>
-              <Dropdown dropdownPosition="center" setSelectedMonth={(month) => setSelectedMonth(month)} />
+            <View style={styles.dropdown}>
+              <Dropdown
+                dropdownPosition="center"
+                setSelectedMonth={month => setSelectedMonth(month)}
+              />
             </View>
             <Image source={IMAGES.NOTIFICATION} />
           </View>
         </View>
         <View>
           <View>
-            <Text style={style.blnc}>Account Balance</Text>
+            <Text style={styles.blnc}>Account Balance</Text>
           </View>
           <View>
-            <Text style={style.blncamount}>$9400</Text>
+            <Text style={styles.blncamount}>$9400</Text>
           </View>
-          <View style={style.parentbox}>
-            <View style={style.balanceBox}>
-              <View style={style.imageBox}>
+          <View style={styles.parentbox}>
+            <View style={styles.balanceBox}>
+              <View style={styles.imageBox}>
                 <Image source={IMAGES.INCOME} />
               </View>
               <View>
-                <Text style={style.parentText}>Income</Text>
-                <Text style={style.parentAmount}>${totalIncome}</Text>
+                <Text style={styles.parentText}>Income</Text>
+                <Text style={styles.parentAmount}>${totalIncome}</Text>
               </View>
             </View>
-            <View style={style.balanceBox1}>
-              <View style={style.imageBox}>
+            <View style={styles.balanceBox1}>
+              <View style={styles.imageBox}>
                 <Image source={IMAGES.EXPENSE} />
               </View>
               <View>
-                <Text style={style.parentText}>Expenses</Text>
-                <Text style={style.parentAmount}>${totalExpense}</Text>
+                <Text style={styles.parentText}>Expenses</Text>
+                <Text style={styles.parentAmount}>${totalExpense}</Text>
               </View>
             </View>
           </View>
         </View>
-        <View style={style.thirdcontainer}>
-          <Text style={style.thirdcontainerText}>Spend Frequency</Text>
+        <View style={styles.thirdcontainer}>
+          <Text style={styles.thirdcontainerText}>Spend Frequency</Text>
         </View>
-        <View style={style.graphcontainer}>
-          <Image resizeMode="contain" style={{width: '100%'}} source={IMAGES.GRAPH} />
+        <View style={styles.graphcontainer}>
+          <Image
+            resizeMode="contain"
+            style={{width: '100%'}}
+            source={IMAGES.GRAPH}
+          />
         </View>
-        
+
         {/* Filters for Transactions */}
-        <View style={style.daybar}>
+        <View style={styles.daybar}>
           {['Today', 'Week', 'Month', 'Year'].map(filter => (
             <TouchableOpacity
               key={filter}
               style={[
-                style.filterButton,
-                selectedFilter === filter ? style.selectedFilter : null,
+                styles.filterButton,
+                selectedFilter === filter ? styles.selectedFilter : null,
               ]}
               onPress={() => setSelectedFilter(filter)}>
               <Text
                 style={[
-                  style.filterText,
-                  selectedFilter === filter ? style.selectedFilterText : null,
+                  styles.filterText,
+                  selectedFilter === filter ? styles.selectedFilterText : null,
                 ]}>
                 {filter}
               </Text>
@@ -194,24 +207,24 @@ const [totalExpense, setTotalExpense] = useState(0);
         </View>
 
         {/* Transactions List */}
-        <View style={style.recentBar}>
-          <Text style={style.recentBarText1}>Recent Transaction</Text>
+        <View style={styles.recentBar}>
+          <Text style={styles.recentBarText1}>Recent Transaction</Text>
           <TouchableOpacity onPress={() => setSelectedFilter('All')}>
-            <Text style={style.recentBarText2}>See All</Text>
+            <Text style={styles.recentBarText2}>See All</Text>
           </TouchableOpacity>
         </View>
-        <View style={style.listbar}>
+        <View style={styles.listbar}>
           {filterTransactions().length === 0 ? (
-            <View style={style.listtextBox}>
-              <Text style={style.listtext}>No transactions found.</Text>
+            <View style={styles.listtextBox}>
+              <Text style={styles.listtext}>No transactions found.</Text>
             </View>
           ) : (
             <FlatList
               nestedScrollEnabled={true}
-              style={style.listbar}
+              style={styles.listbar}
               data={filterTransactions()}
               keyExtractor={(item, index) => item.id || index.toString()}
-              renderItem={({ item }) => {
+              renderItem={({item}) => {
                 let timeString = '--:--';
                 if (item.timestamp) {
                   let dateObj = new Date(item.timestamp);
@@ -229,7 +242,7 @@ const [totalExpense, setTotalExpense] = useState(0);
                     subtitle={item.description}
                     amount={item.amount}
                     time={timeString}
-                    image={{ uri: item.imageUri }}
+                    image={{uri: item.imageUri}}
                     type={item.type}
                   />
                 );
@@ -237,210 +250,7 @@ const [totalExpense, setTotalExpense] = useState(0);
             />
           )}
         </View>
-
-
-
       </View>
-    </ScrollView>
+    </View>
   );
 }
-
-const style = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-  },
-  top: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  innertop: {
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    width: 343,
-    paddingHorizontal: 20,
-    paddingVertical: 10,
-  },
-  dropdown: {
-    // backgroundColor: '#FCEED4',
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: 10,
-    // borderWidth: 1,
-    // borderColor: '#7F3DFF',
-    marginLeft: 10,
-  },
-  picbox: {
-    width: 40,
-    height: 40,
-    borderRadius: 50,
-    borderWidth: 2,
-    borderColor: '#7F3DFF',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  picboximage: {
-    width: 33,
-    height: 33,
-    borderRadius: 50,
-  },
-
-  blnc: {
-    fontSize: 14,
-    fontWeight: '500',
-    color: '#91919F',
-    textAlign: 'center',
-  },
-  blncamount: {
-    fontSize: 40,
-    fontWeight: '600',
-    textAlign: 'center',
-  },
-  parentbox: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    paddingHorizontal: 20,
-    marginTop: 20,
-  },
-  imageBox: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    width: 48,
-    height: 48,
-    borderRadius: 10,
-    backgroundColor: '#ffffff',
-  },
-  balanceBox: {
-    flexDirection: 'row',
-    justifyContent: 'space-evenly',
-    alignItems: 'center',
-    backgroundColor: '#00A86B',
-    width: 164,
-    height: 80,
-    borderRadius: 28,
-  },
-  balanceBox1: {
-    flexDirection: 'row',
-    justifyContent: 'space-evenly',
-    alignItems: 'center',
-    backgroundColor: '#FD3C4A',
-    width: 164,
-    height: 80,
-    borderRadius: 28,
-  },
-  parentText: {
-    fontSize: 14,
-    fontWeight: '500',
-    color: '#ffffff',
-  },
-  parentAmount: {
-    fontSize: 22,
-    fontWeight: '600',
-    color: '#ffffff',
-  },
-  thirdcontainer: {
-    // flex: 1,
-    paddingTop: 10,
-  },
-  thirdcontainerText: {
-    // flex: 1,
-    paddingTop: 10,
-
-    fontSize: 18,
-    fontWeight: '600',
-    paddingHorizontal: 20,
-  },
-  graphcontainer: {
-    marginHorizontal: 0,
-    paddingHorizontal: 0,
-    alignItems: 'center',
-  },
-  daybar: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    paddingHorizontal: 20,
-    marginTop: 10,
-  },
-
-  barbox: {
-    // flex:0,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#FCEED4',
-    borderRadius: 20,
-    height: 34,
-    width: 90,
-  },
-  barbox1: {
-    // flex:0,
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: 20,
-    height: 34,
-    width: 90,
-  },
-  recentBar: {
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    paddingHorizontal: 20,
-    marginTop: 15,
-  },
-  recentBarText1: {
-    fontSize: 18,
-    fontWeight: '600',
-  },
-  recentBarText2: {
-    fontSize: 14,
-    fontWeight: '500',
-    color: '#7F3DFF',
-    backgroundColor: '#EEE5FF',
-    paddingHorizontal: 15,
-    paddingTop: 8,
-    paddingBottom: 8,
-
-    borderRadius: 20,
-    textAlign: 'center',
-  },
-  listbar: {
-    flex: 3,
-    flexDirection: 'column',
-    marginBottom: 30,
-  },
-  listtext:{
-    fontSize: 18,
-    fontWeight: '600',
-    paddingHorizontal: 20,
-    paddingVertical: 20,
-    textAlign: 'center',
-    marginBottom: 30,
-    // borderWidth: 1,
-  },
-  listtextBox: {
-    flex: 1,
-    // justifyContent: 'center',
-    // alignItems: 'center',
-    paddingHorizontal: 20,
-    paddingVertical: 20,
-    // borderWidth: 1,
-  },
-  filterButton: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: 20,
-    height: 34,
-    width: 90,
-  },
-  selectedFilter: {
-    backgroundColor: '#FCEED4',
-  },
-  filterText: {
-    color: '#91919F',
-  },
-  selectedFilterText: {
-    color: '#FCAC12',
-  },
-});

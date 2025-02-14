@@ -265,3 +265,260 @@
 //   },
 // });
 
+
+
+
+
+
+
+
+// import { KeyboardType, StyleProp, TextStyle, TextInputProps, ViewStyle } from "react-native";
+// import { FC } from 'react';
+// import { BottomTabNavigationOptions } from '@react-navigation/bottom-tabs';
+// import { NavigatorScreenParams } from '@react-navigation/native';
+// import { IconProps } from 'react-native-vector-icons/Icon';
+// import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+
+// export type TabItem = {
+//   id: number;
+//   name: string;
+//   component: FC<any>;
+//   icon: IconProps['name'];
+//   headerShown?: BottomTabNavigationOptions['headerShown'];
+//   isAddButton?: boolean;
+// };
+// export type TabsArray = TabItem[];
+
+// export type RootStackParamList = {
+//     LaunchScreen: undefined;
+//     SignUp: undefined;
+//     Login: undefined;
+//     Forget: undefined;
+//     Home: undefined;
+//     TabNavigation: undefined;
+//     EditProfile: undefined;
+//     profile: undefined;
+//     ResetPassword: undefined;
+//     Logout: undefined;
+//     FinancialReport: undefined;
+//     DetailTransction: undefined;
+//     AddModel: undefined;
+//     Expense: undefined;
+//     Income: undefined;
+//     name?: undefined;
+//   };
+//   export type NavigationProps = NativeStackNavigationProp<RootStackParamList>;
+
+//   export type TransctionProp = {
+//     title: string,
+//     subtitle: string,
+//     amount: number,
+//     time: string,
+//     image: { uri: string },
+//     type: string
+//   }
+//   export type ImageProp = {
+//     uri: string,
+    
+//   }
+
+//   // openModel, setOpenModel, onSelectImage
+//  export type AttachmentProp = {
+//     openModel: () => void,
+//     setOpenModel: (value: boolean) => void,
+//     onSelectImage: (uri: string) => void,
+//  }
+
+//  export type ImagePickerResponse = {
+//    assets?: { uri: string }[];
+//  };
+
+// export type DropdownItem = {
+//   id: string | number;
+//   value: string;
+//   label: string;
+// };
+
+// // export type CategoryDropdownProps = {
+// //   dropdownPosition?: 'center' | 'left' | 'above'; // Define allowed positions
+// //   type?: 'All' | 'Expense' | 'Income'; // Define category type
+// //   style?: string; // Accepts different styling options
+// // };
+
+// // export type DropdownProps = {
+// //   dropdownPosition?: "center" | "left";
+// //   // setSelectedMonth: (month: string) => void;
+// // };
+
+// export interface InputProps extends TextInputProps {
+//   style?: StyleProp<TextStyle>;
+// }
+
+
+// export type LogoutModelProps = {
+//   openModel: boolean;
+//   setOpenModel: (value: boolean) => void;
+//   title: string;
+//   description: string;
+//   text: string;
+//   YesPress?: () => Promise<void> | void;
+//   navigateToHome?: boolean;
+//   navigateToLogin?: boolean;
+// }
+
+// export type ProgressBarProps = {
+//   categoryName: string;
+//   amount: string | number;
+//   progress: number;
+//   color: string;
+//   textColor: string;
+//   onPress?: () => void;
+// }
+
+// export type SuccessfulModelProps = {
+//   openModel: boolean;
+//   setOpenModel: (value: boolean) => void;
+//   text: string;
+// }
+// export type Transaction = {
+//   id: string; // Unique ID for the transaction
+//   amount: number; // Transaction amount
+//   timestamp: string; // ISO date string
+//   category?: string; // Optional category
+// }
+
+// export type GroupedTransactions = {
+//   Today: Transaction[];
+//   Yesterday: Transaction[];
+//   "This Week": Transaction[];
+//   "This Month": Transaction[];
+//   Older: Transaction[];
+// }
+
+// export type TimeReturnType = GroupedTransactions | Record<string, Transaction[]>;
+
+
+
+//   // export type signupInput = {
+//   //   style: StyleProp<TextStyle>;
+//   //   keyboardType: KeyboardType;
+//   //   placeholder: string;
+//   //   placeholderTextColor: string;
+//   //   value: string;
+//   //   onChangeText: (text: string) => void;
+//   //   secureTextEntry?: boolean;
+
+//   // }
+
+
+
+// import React, { useEffect, useState } from 'react';
+// import { NavigationContainer } from '@react-navigation/native';
+// import auth from '@react-native-firebase/auth';
+// import AuthNavigation from './authNavigation/AuthNavigation';
+// import AppNavigation from './appNavigation/AppNavigation';
+// import LaunchScreen from '../screens/launchScreen/LaunchScreen';
+
+// export default function Navigation() {
+//   const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
+
+//   useEffect(() => {
+//     const unsubscribe = auth().onAuthStateChanged(user => {
+//       setIsAuthenticated(!!user);
+//     });
+
+//     return unsubscribe;
+//   }, []);
+//   if (isAuthenticated === null) {
+//     return (
+//         <NavigationContainer>
+//             <LaunchScreen />
+//         </NavigationContainer>
+//     );
+// }
+
+
+//   return (
+//     <NavigationContainer>
+//       {isAuthenticated ? <AppNavigation /> : <AuthNavigation />}
+//     </NavigationContainer>
+//   );
+// }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// // import * as React from 'react';
+// // import { NavigationContainer } from '@react-navigation/native';
+// // import { createNativeStackNavigator } from '@react-navigation/native-stack';
+// // import LaunchScreen from '../screens/launchScreen/LaunchScreen'; 
+// // import Login from '../screens/login/Login';
+// // import SignUp from '../screens/signup/SignUp';
+// // import Forget from '../screens/forget/Forget';
+// // import { RootStackParamList } from '../types/types';
+// // import TabNavigation from './tabNavigation/TabNavigation';
+// // import EditProfile from '../screens/editProfile/EditProfile';
+// // import ResetPassword from '../screens/resetPassword/ResetPassword';
+// // import Logout from '../screens/logout/Logout';
+// // import FinancialReport from '../screens/financialReport/FinancialReport';
+// // import DetailTransction from '../screens/detailTransction/DetailTransction';
+// // import AddModel from '../components/addModel/AddModel';
+// // import Expense from '../screens/expense/Expense';
+// // import Income from '../screens/income/Income';
+// // import auth from '@react-native-firebase/auth'
+
+// // const Stack = createNativeStackNavigator<RootStackParamList>();
+
+
+// // export default function Navigation() {
+// //   const [isAuthenticated, setIsAuthenticated] = React.useState<boolean>(false);
+
+// //   React.useEffect(() => {
+// //     const currentUser = auth().currentUser;
+// //     if (!currentUser) {
+// //       auth().signOut();
+// //     }
+// //     if (currentUser) {
+// //       setIsAuthenticated(true);
+// //     } else {
+// //       setIsAuthenticated(false);
+// //     }
+
+// //     const unsubscribe = auth().onAuthStateChanged(user => {
+// //       user?.reload();
+// //       setIsAuthenticated(!!user);
+// //     });
+// //     return unsubscribe;
+// //   }, []);
+// //   return (
+// //     <NavigationContainer>
+// //       <Stack.Navigator initialRouteName="LaunchScreen">
+        
+// //         <Stack.Screen name="LaunchScreen" component={LaunchScreen} options={{ headerShown: false }} />
+// //         <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
+// //         <Stack.Screen name="SignUp" component={SignUp} options={{ headerShown: false }}/>
+// //         <Stack.Screen name="Forget" component={Forget} options={{ headerShown: false }}/>
+// //         <Stack.Screen name="TabNavigation" component={TabNavigation} options={{ headerShown: false }}/>
+// //         <Stack.Screen name="EditProfile" component={EditProfile} options={{ headerShown: false }}/>
+// //         <Stack.Screen name="Logout" component={Logout} options={{ headerShown: false }}/>
+// //         <Stack.Screen name="ResetPassword" component={ResetPassword} options={{ headerShown: false }}/>
+// //         <Stack.Screen name="FinancialReport" component={FinancialReport} options={{ headerShown: false }}/>
+// //         <Stack.Screen name="DetailTransction" component={DetailTransction} options={{ headerShown: false }}/>
+// //         <Stack.Screen name="AddModel" component={AddModel} options={{ headerShown: false }}/>
+// //         <Stack.Screen name="Expense" component={Expense} options={{ headerShown: false }}/>
+// //         <Stack.Screen name="Income" component={Income} options={{ headerShown: false }}/>
+// //       </Stack.Navigator>
+// //     </NavigationContainer>
+// //   );
+// // }

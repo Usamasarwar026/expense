@@ -16,7 +16,8 @@ import {CommonActions, useNavigation} from '@react-navigation/native';
 import {useAppDispatch} from '../../hooks/useRedux';
 import {fetchUserData, storeImageUriInFirestore, updateEmail, updateName} from '../../store/authSlice/authSlice';
 import Toast from 'react-native-toast-message';
-import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
+import {CameraOptions, ImageLibraryOptions, launchCamera, launchImageLibrary} from 'react-native-image-picker';
+import { styles } from './editProfileStyles';
 
 export default function EditProfile() {
   const [email, setEmail] = useState('');
@@ -32,7 +33,7 @@ export default function EditProfile() {
     
     const fetchImage = async () => {
       try {
-        const { profileImageUri, name, email } = await dispatch(fetchUserData()).unwrap();
+        const { profileImageUri, name, email }:any = await dispatch(fetchUserData()).unwrap();
         setImageUri(profileImageUri);
         setEmail(email);
         setName(name);
@@ -70,8 +71,8 @@ export default function EditProfile() {
     }
   };
 
-  const openGallery = async () => {
-    const options = {
+  const openGallery = async (): Promise<void> => {
+    const options:ImageLibraryOptions = {
       mediaType: 'photo',
       quality: 1,
     };
@@ -86,16 +87,15 @@ export default function EditProfile() {
     }
   };
 
-  const openCamera = async () => {
-    const options = {
+  const openCamera = async (): Promise<void> => {
+    const options: CameraOptions = {
       mediaType: 'photo',
       quality: 1,
       saveToPhotos: true,
     };
     const result = await launchCamera(options);
     if (result.assets) {
-      const selectedImageUri = result.assets[0].uri; // Local URI
-    // Alert.alert('Selected Image URI:', selectedImageUri);
+      const selectedImageUri = result.assets[0].uri; 
     setImageUri(selectedImageUri);
     
     // Store the URI in Firestore
@@ -182,24 +182,24 @@ export default function EditProfile() {
   const isButtonEnabled = name !== initialName || imageUri !== initialImageUri;
 
   return (
-    <KeyboardAvoidingView style={style.container}>
+    <KeyboardAvoidingView style={styles.container}>
       <ScrollView contentContainerStyle={{flexGrow: 1}} bounces={false}>
-        <View style={style.topcontainer}>
+        <View style={styles.topcontainer}>
           <TouchableOpacity onPress={goToProfile}>
             <Image source={IMAGES.ARROW} />
           </TouchableOpacity>
-          <Text style={style.topcontainerText}>Update Profile</Text>
+          <Text style={styles.topcontainerText}>Update Profile</Text>
           <Text></Text>
         </View>
-        <View style={style.picConatiner}>
-          <View style={style.picBox}>
+        <View style={styles.picConatiner}>
+          <View style={styles.picBox}>
            {loading ? (
             <ActivityIndicator size='large' color="#7F3DFF" />
            ) : (
-            <Image style={style.pic} source={imageUri ? { uri: imageUri } : IMAGES.MAINPROFILE} />
+            <Image style={styles.pic} source={imageUri ? { uri: imageUri } : IMAGES.MAINPROFILE} />
            ) }
             <TouchableOpacity
-              style={style.editbtn}
+              style={styles.editbtn}
               // onPress={openGallery}
               onPress={openImagePicker}>
               <Image source={IMAGES.EDIT} />
@@ -207,11 +207,11 @@ export default function EditProfile() {
           </View>
         </View>
 
-        <View style={style.inputcontainer}>
-          <View style={style.inputTextfields}>
-            <Text style={style.inputText}>Email (cannot be changed)</Text>
+        <View style={styles.inputcontainer}>
+          <View style={styles.inputTextfields}>
+            <Text style={styles.inputText}>Email (cannot be changed)</Text>
             <Input
-              style={style.inputField}
+              style={styles.inputField}
               placeholder="Email"
               placeholderTextColor="#91919F"
               value={email}
@@ -220,10 +220,10 @@ export default function EditProfile() {
               // keyboardType="email-address"
             />
           </View>
-          <View style={style.inputTextfields}>
-            <Text style={style.inputText}>Name</Text>
+          <View style={styles.inputTextfields}>
+            <Text style={styles.inputText}>Name</Text>
             <Input
-              style={style.inputField}
+              style={styles.inputField}
               placeholder="name"
               placeholderTextColor="#91919F"
               value={name}
@@ -232,9 +232,9 @@ export default function EditProfile() {
           </View>
         </View>
 
-        <View style={style.btn}>
-          <TouchableOpacity style={[style.button, { backgroundColor: isButtonEnabled ? '#7F3DFF' : '#8580bc' }]}  disabled={!isButtonEnabled} onPress={handleUpdateProfile}>
-            <Text style={style.buttonText}>Update Profile</Text>
+        <View style={styles.btn}>
+          <TouchableOpacity style={[styles.button, { backgroundColor: isButtonEnabled ? '#7F3DFF' : '#8580bc' }]}  disabled={!isButtonEnabled} onPress={handleUpdateProfile}>
+            <Text style={styles.buttonText}>Update Profile</Text>
           </TouchableOpacity>
         </View>
       </ScrollView>
@@ -242,96 +242,3 @@ export default function EditProfile() {
     </KeyboardAvoidingView>
   );
 }
-
-const style = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  topcontainer: {
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    padding: 20,
-  },
-  topcontainerText: {
-    fontSize: 16,
-    fontWeight: '700',
-  },
-  inputcontainer: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'space-evenly',
-    paddingHorizontal: 30,
-  },
-  inputField: {
-    width: 343,
-    height: 56,
-    borderColor: '#ccc',
-    borderWidth: 1,
-    borderRadius: 8,
-    paddingHorizontal: 15,
-    marginBottom: 15,
-    fontSize: 16,
-    color: 'black',
-  },
-  picConatiner: {
-    flex: 2,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  picBox: {
-    borderWidth: 2,
-    width: 130,
-    height: 130,
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderColor: '#e03dff',
-
-    borderRadius: 86,
-  },
-  pic: {
-    width: 120,
-    height: 120,
-    borderRadius: 86,
-  },
-  inputTextfields: {
-    gap: 10,
-  },
-  inputText: {
-    fontSize: 18,
-    fontWeight: '600',
-  },
-
-  btn: {
-    flex: 4,
-    paddingHorizontal: 20,
-    justifyContent: 'flex-end',
-    marginBottom: 10,
-  },
-  button: {
-    width: 343,
-    height: 56,
-    backgroundColor: '#7F3DFF',
-    paddingVertical: 12,
-    borderRadius: 8,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  buttonText: {
-    color: '#fff',
-    fontSize: 18,
-    fontWeight: '700',
-  },
-  editbtn: {
-    width: 36,
-    height: 36,
-    borderRadius: 30,
-    backgroundColor: '#FFFFFF',
-    position: 'absolute',
-    bottom: 0,
-    right: 0,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-});

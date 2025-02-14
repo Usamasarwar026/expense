@@ -10,29 +10,21 @@ import {
 } from 'react-native';
 import {IMAGES} from '../../constant/image';
 import {useFocusEffect} from '@react-navigation/native';
+import { EXPENSE_DATA, INCOME_DATA } from '../../constant/constant';
+import {styles} from './categoryDropdownStyle'
 
 export default function CategoryDropdown({
   dropdownPosition,
   type,
   style,
+  setCategory
 }: any) {
-  const [selectedValue, setSelectedValue] = useState(null);
-  const [listVisible, setListVisible] = useState(false);
+  const [selectedValue, setSelectedValue] = useState<String | null>(null);
+  const [listVisible, setListVisible] = useState<boolean>(false);
 
-  const ExpenseData = [
-    {id: 'E-1', label: 'Shopping', value: 'Shopping'},
-    {id: 'E-2', label: 'Subscription', value: 'Subscription'},
-    {id: 'E-3', label: 'Food', value: 'Food'},
-  ];
-
-  const IncomeData = [
-    {id: 'I-1', label: 'Salary', value: 'Salary'},
-    {id: 'I-2', label: 'Transportation', value: 'Transportation'},
-  ];
-
-  const allData = [...ExpenseData, ...IncomeData];
+  const allData = [...EXPENSE_DATA, ...INCOME_DATA];
   const dropdownData =
-    type === 'All' ? allData : type === 'Expense' ? ExpenseData : IncomeData;
+    type === 'All' ? allData : type === 'Expense' ? EXPENSE_DATA : INCOME_DATA;
 
   useEffect(() => {
     setListVisible(false);
@@ -84,6 +76,7 @@ export default function CategoryDropdown({
                 style={styles.itemButton}
                 onPress={() => {
                   setSelectedValue(item.value);
+                  setCategory(item.value);
                   setListVisible(false);
                 }}>
                 <Text style={styles.item}>{item.label}</Text>
@@ -95,84 +88,3 @@ export default function CategoryDropdown({
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  box: {
-    flexDirection: 'row',
-    justifyContent: 'space-evenly',
-    gap: 10,
-  },
-  all: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    width: '100%',
-  },
-  allListContainer: {
-    flex: 1,
-    backgroundColor: '#FFFFFF',
-    borderRadius: 5,
-    position: 'absolute',
-    borderWidth: 1,
-    borderColor: '#7F3DFF',
-    width: '100%',
-    top: 40,
-    zIndex: 100,
-  },
-  icon: {
-    width: 20,
-    height: 20,
-  },
-  label: {
-    fontSize: 16,
-    fontWeight: '400',
-    color: '#91919F',
-  },
-  listContainer: {
-    flex: 1,
-    backgroundColor: '#FFFFFF',
-    borderRadius: 5,
-    borderWidth: 1,
-    borderColor: '#7F3DFF',
-    width: 200,
-  },
-  centerDropdown: {
-    alignSelf: 'center', // Center align relative to parent
-    position: 'absolute',
-    top: 40,
-    zIndex: 100,
-  },
-  rightDropdown: {
-    alignSelf: 'flex-start', // Align to the right side of the button
-    left: 0, // Shift it to the right (equal to the button's width)
-    position: 'absolute',
-    top: 40,
-    zIndex: 100,
-  },
-  aboveDropdown: {
-    position: 'absolute',
-    top: -230,
-    left: 0,
-    right: 0,
-    zIndex: 100,
-  },
-  list: {
-    padding: 10,
-    flex: 1,
-    overflow: 'scroll',
-    flexGrow: 1,
-    // maxHeight: 200,
-  },
-  itemButton: {
-    paddingVertical: 8,
-    paddingHorizontal: 10,
-  },
-  item: {
-    fontSize: 16,
-    fontWeight: '500',
-  },
-});

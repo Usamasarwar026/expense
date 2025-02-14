@@ -11,9 +11,10 @@ import {IMAGES} from '../../constant/image';
 import Setting from '../../components/setting/Setting';
 import {ProfileData} from './profileData';
 import {useNavigation} from '@react-navigation/native';
-import Logout from '../logout/Logout';
 import { useAppDispatch } from '../../hooks/useRedux';
 import { fetchUserData, logout } from '../../store/authSlice/authSlice';
+import LogoutModel from '../../components/logoutModel/LogoutModel';
+import { styles } from './profileStyles';
 
 
 
@@ -39,6 +40,13 @@ export default function Profile() {
     fetchUserInfo();
   }, [dispatch]);
 
+  // useEffect(() => {
+  //   const unsubscribe = navigation.addListener('focus', () => {
+  //     setOpenModel(false); // Reset modal when navigating
+  //   });
+  //   return unsubscribe;
+  // }, [navigation]);
+
   const goToEditPage = () => {
     navigation.navigate('EditProfile');
   };
@@ -49,28 +57,28 @@ export default function Profile() {
   }
 
   return (
-    <View style={style.container}>
-      <View style={style.topcontainer}>
-        <View style={style.imageBox}>
+    <View style={styles.container}>
+      <View style={styles.topcontainer}>
+        <View style={styles.imageBox}>
           {loading ? (
             <ActivityIndicator size="small" color="#7F3DFF" />
           ):
           (
-            <Image style={style.profileImage}  source={
+            <Image style={styles.profileImage}  source={
               userData?.profileImageUri ? { uri: userData.profileImageUri } : IMAGES.MAINPROFILE
             }  />
           )
           }
         </View>
 
-        <View style={style.containerRight}>
+        <View style={styles.containerRight}>
           <View>
           {loading ? (
               <ActivityIndicator size="large" color="#7F3DFF" />
             ) : (
               <>
-                <Text style={style.username}>Username</Text>
-                <Text style={style.originalName}>
+                <Text style={styles.username}>Username</Text>
+                <Text style={styles.originalName}>
                   {userData?.name || 'Guest User'}
                 </Text>
               </>
@@ -78,12 +86,12 @@ export default function Profile() {
           </View>
           <View>
             <TouchableOpacity onPress={goToEditPage}>
-              <Image style={style.editButton} source={IMAGES.EDIT} />
+              <Image style={styles.editButton} source={IMAGES.EDIT} />
             </TouchableOpacity>
           </View>
         </View>
       </View>
-      <View style={style.setComponent}>
+      <View style={styles.setComponent}>
         {ProfileData.map(profile => {
           const handlePress = () => {
             if (profile.id === "1") {
@@ -109,7 +117,7 @@ export default function Profile() {
         })}
       </View>
       <View style={{flex: 1}}></View>
-      <Logout
+      <LogoutModel
       openModel={openModel}
       setOpenModel={setOpenModel}
       title="Logout?"
@@ -124,66 +132,3 @@ export default function Profile() {
     
   );
 }
-
-const style = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#F6F6F6',
-    paddingTop: 20,
-  },
-  topcontainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-evenly',
-    alignItems: 'center',
-
-    paddingHorizontal: 20,
-    // marginBottom: 20,
-  },
-  containerRight: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    width: '60%',
-  },
-  imageBox: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    width: 90,
-    height: 90,
-    borderRadius: 60,
-    borderWidth: 2,
-    borderColor: '#e03dff',
-  },
-  profileImage: {
-    width: 80,
-    height: 80,
-    borderRadius: 40,
-  },
-  username: {
-    fontSize: 14,
-    fontWeight: '500',
-    color: '#91919F',
-  },
-  originalName: {
-    fontSize: 24,
-    fontWeight: '600',
-    color: '#161719',
-  },
-  editButton: {
-    width: 40,
-    height: 40,
-  },
-  setComponent: {
-    flex: 1,
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    backgroundColor: 'white',
-    borderRadius: 26,
-    marginTop: 40,
-    paddingHorizontal: 20,
-    marginHorizontal: 20,
-  },
-  
-
-
-});

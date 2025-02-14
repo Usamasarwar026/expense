@@ -1,26 +1,108 @@
-import { View, Text, Modal, StyleSheet } from 'react-native'
-import React, { useState } from 'react'
+import {
+  View,
+  Text,
+  Modal,
+  TouchableWithoutFeedback,
+  Animated,
+  TouchableOpacity,
+} from 'react-native';
+import React, {useState} from 'react';
+import SuccessfulModel from '../successfulModel/SuccessfulModel';
+import {CommonActions, useNavigation} from '@react-navigation/native';
+import Toast from 'react-native-toast-message';
+import auth from '@react-native-firebase/auth';
+import {styles} from './logoutModelStyles';
 
-export default function LogoutModel() {
-    
+export default function LogoutModel({
+  openModel,
+  setOpenModel,
+  title,
+  description,
+  text,
+  YesPress,
+  navigateToHome = false,
+  navigateToLogin = false,
+}: any) {
+  const [successModelVisible, setSuccessModelVisible] = useState(false);
+  const navigation = useNavigation();
+
+  const handleYesPress = async () => {
+    setOpenModel(false);
+    const user = auth().currentUser;
+    console.log(user);
+
+    if (!user) {
+      console.log('No user is currently signed in');
+      Toast.show({
+        text1: 'Error',
+        text2: 'No user is currently signed in',
+        type: 'error',
+        visibilityTime: 3000,
+      });
+      return;
+    }
+
+    if (YesPress) {
+      await YesPress();
+
+      setSuccessModelVisible(true);
+
+      setTimeout(async () => {
+        setSuccessModelVisible(false);
+        if (navigateToLogin) {
+          await auth().signOut();
+        }
+        if (navigateToHome) {
+          navigation.dispatch(
+            CommonActions.reset({
+              index: 0,
+              routes: [{name: 'TabNavigation', params: {screen: 'Home'}}],
+            }),
+          );
+        }
+      }, 3000);
+    } else {
+      setOpenModel(false);
+      console.log('No user is currently signed in');
+      Toast.show({
+        text1: 'Error',
+        text2: 'No user is currently signed in',
+        type: 'error',
+        visibilityTime: 3000,
+      });
+    }
+  };
   return (
-    <Modal  animationType='slide' transparent={true}>
-        <View style={style.container}>
-
+    <>
+      <Modal visible={openModel} animationType="slide" transparent={true}>
+        <TouchableWithoutFeedback onPress={() => setOpenModel(false)}>
+          <Animated.View style={styles.overlay} />
+        </TouchableWithoutFeedback>
+        <View style={styles.modalView}>
+          <Text style={styles.logoutline}></Text>
+          <Text style={styles.logout}>{title}</Text>
+          <Text style={styles.modalText}>{description}</Text>
+          <View style={styles.logoutbtn}>
+            <TouchableOpacity
+              onPress={() => {
+                setOpenModel(false);
+              }}
+              style={styles.button}>
+              <Text style={styles.buttonText}>No</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={handleYesPress} style={styles.button1}>
+              <Text style={styles.buttonText1}>Yes</Text>
+            </TouchableOpacity>
+          </View>
         </View>
+      </Modal>
 
-    </Modal>
-  )
+      <SuccessfulModel
+        openModel={successModelVisible}
+        setOpenModel={setSuccessModelVisible}
+        text={text}
+      />
+      <Toast />
+    </>
+  );
 }
-
-const style = StyleSheet.create({
-    container: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: 'rgba(0,0,0,0.5)',
-        padding: 20,
-    },
-
- 
-})

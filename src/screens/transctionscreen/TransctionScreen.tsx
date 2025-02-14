@@ -9,6 +9,8 @@ import { Time } from '../../components/time/Time';
 import { useAppDispatch, useAppSelector } from '../../hooks/useRedux';
 import { fetchTransactions } from '../../store/transctionSlice/transctionSlice';
 import moment from 'moment';
+import { styles } from './transctionScreenStyles';
+import { navigate } from '../../navigation/navigationRef';
 
 export default function TransctionScreen() {
   const [openModel, setOpenModel] = useState(false);
@@ -34,17 +36,17 @@ export default function TransctionScreen() {
   );
 
   const goToFinancialReport = () => {
-    navigation.navigate('FinancialReport');
+    navigate('FinancialReport');
   };
 
   
 
   return (
     <>
-      <ScrollView style={{ flex: 1 }} contentContainerStyle={{ flexGrow: 1 }} bounces={false}>
-        <View style={style.container}>
+      <View style={{ flex: 1 }} contentContainerStyle={{ flexGrow: 1 }} bounces={false}>
+        <View style={styles.container}>
           {/* Top Bar */}
-          <View style={style.topBar}>
+          <View style={styles.topBar}>
             <Dropdown dropdownPosition="left" setSelectedMonth={(month) => setSelectedMonth(month)} />
             <TouchableOpacity onPress={() => setOpenModel(true)}>
               <Image source={IMAGES.MENU} />
@@ -53,8 +55,8 @@ export default function TransctionScreen() {
 
           {/* Financial Report */}
           <TouchableOpacity onPress={goToFinancialReport}>
-            <View style={style.financialBox}>
-              <Text style={style.financialBoxText}>See your financial report</Text>
+            <View style={styles.financialBox}>
+              <Text style={styles.financialBoxText}>See your financial report</Text>
               <Image source={IMAGES.RIGHT_ARROW} />
             </View>
           </TouchableOpacity>
@@ -63,13 +65,13 @@ export default function TransctionScreen() {
           {nonEmptyPeriods.map((period) => (
             <View key={period}>
               {/* Section Title */}
-              <View style={style.periodHeader}>
-                <Text style={style.periodText}>{period}</Text>
+              <View style={styles.periodHeader}>
+                <Text style={styles.periodText}>{period}</Text>
               </View>
 
               {/* Render Transactions */}
               <FlatList
-                style={style.listbar}
+                style={styles.listbar}
                 data={groupedTransactions[period]}
                 keyExtractor={(item) => item.id.toString()}
                 renderItem={({ item }) => (
@@ -86,7 +88,7 @@ export default function TransctionScreen() {
             </View>
           ))}
         </View>
-      </ScrollView>
+      </View>
 
       {/* <TransctionModel visible={openModel} onClose={() => setOpenModel(false)} /> */}
       <TransctionModel visible={openModel} onClose={() => setOpenModel(false)} setCategory={setCategory} filters={filters} setFilters={setFilters} />
@@ -94,45 +96,3 @@ export default function TransctionScreen() {
     </>
   );
 }
-
-const style = StyleSheet.create({
-  container: {
-    flex: 1,
-    borderWidth: 1,
-  },
-  topBar: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    paddingHorizontal: 20,
-    marginTop: 10,
-  },
-  financialBox: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingHorizontal: 20,
-    justifyContent: 'space-between',
-    marginHorizontal: 20,
-    borderRadius: 8,
-    backgroundColor: '#EEE5FF',
-    marginTop: 20,
-  },
-  financialBoxText: {
-    color: '#7F3DFF',
-    fontSize: 16,
-    fontWeight: '400',
-    paddingVertical: 15,
-  },
-  periodHeader: {
-    paddingHorizontal: 20,
-    paddingVertical: 15,
-    justifyContent: 'center',
-  },
-  periodText: {
-    fontSize: 18,
-    fontWeight: '600',
-  },
-  listbar: {
-    backgroundColor: '#F5F5F5',
-    paddingHorizontal: 20,
-  },
-});

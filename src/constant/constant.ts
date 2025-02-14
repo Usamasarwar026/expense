@@ -4,7 +4,7 @@ import Budget from '../screens/budget/Budget';
 import Profile from '../screens/profile/Profile';
 import { TabsArray } from '../types/types';
 import Login from '../screens/login/Login';
-import SignUp from '../screens/signup/SignUp';
+import SignUp from '../screens/signUp/SignUp';
 import Forget from '../screens/forget/Forget';
 import TabNavigation from '../navigation/tabNavigation/TabNavigation';
 import EditProfile from '../screens/editProfile/EditProfile';
@@ -72,3 +72,34 @@ export const TABS: TabsArray = [
     headerShown: false,
   },
 ];
+
+
+
+export  const EXPENSE_DATA = [
+    {id: 'E-1', label: 'Shopping', value: 'Shopping'},
+    {id: 'E-2', label: 'Subscription', value: 'Subscription'},
+    {id: 'E-3', label: 'Food', value: 'Food'},
+  ];
+
+export  const INCOME_DATA = [
+    {id: 'I-1', label: 'Salary', value: 'Salary'},
+    {id: 'I-2', label: 'Transportation', value: 'Transportation'},
+  ];
+
+
+export const MONTH = [
+      { id: 1, label: "All", value: "All" },
+      { id: 2, label: "January", value: "January" },
+      { id: 3, label: "February", value: "February" },
+      { id: 4, label: "March", value: "March" },
+      { id: 5, label: "April", value: "April" },
+      { id: 6, label: "May", value: "May" },
+      { id: 7, label: "June", value: "June" },
+      { id: 8, label: "July", value: "July" },
+      { id: 9, label: "August", value: "August" },
+      { id: 10, label: "September", value: "September" },
+      { id: 11, label: "October", value: "October" },
+      { id: 12, label: "November", value: "November" },
+      { id: 13, label: "December", value: "December" },
+  
+    ];

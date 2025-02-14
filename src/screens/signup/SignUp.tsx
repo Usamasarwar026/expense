@@ -14,6 +14,8 @@ import {useNavigation} from '@react-navigation/native';
 import {useAppDispatch} from '../../hooks/useRedux';
 import {GoogleSignup, signup} from '../../store/authSlice/authSlice';
 import Toast from 'react-native-toast-message';
+import {styles} from './signUpStyles';
+import {navigate} from '../../navigation/navigationRef';
 
 export default function SignUp() {
   const [name, setName] = useState('');
@@ -25,11 +27,11 @@ export default function SignUp() {
 
   const goToLogin = () => {
     // Navigate to Login Screen
-    navigation.navigate('Login');
+    navigate('Login');
   };
   const goToLandingPage = () => {
     try {
-      navigation.navigate('LaunchScreen');
+      navigate('LaunchScreen');
     } catch (error) {
       console.error('Navigation Error:', error);
     }
@@ -55,7 +57,7 @@ export default function SignUp() {
         });
         return;
       }
-      if(password.length < 6){
+      if (password.length < 6) {
         Toast.show({
           type: 'error',
           text1: 'Password must be at least 6 characters long.',
@@ -67,7 +69,7 @@ export default function SignUp() {
 
       const resultAction = await dispatch(signup({name, email, password}));
       if (signup.fulfilled.match(resultAction)) {
-        navigation.navigate('Login');
+        navigate('Login');
 
         setTimeout(() => {
           Toast.show({
@@ -104,7 +106,6 @@ export default function SignUp() {
     }
   };
 
-
   const dispatchGoogleSignIn = async () => {
     try {
       const resultAction = await dispatch(GoogleSignup());
@@ -115,10 +116,11 @@ export default function SignUp() {
           position: 'top',
           visibilityTime: 3000,
         });
-  
-        navigation.navigate('Home'); // Navigate to home screen after login
+
+        navigate('Home'); // Navigate to home screen after login
       } else {
-        const errorMessage = resultAction.payload || 'Something went wrong! Please try again.';
+        const errorMessage =
+          resultAction.payload || 'Something went wrong! Please try again.';
         Toast.show({
           type: 'error',
           text1: 'Google Sign-In Failed!',
@@ -138,29 +140,28 @@ export default function SignUp() {
       });
     }
   };
-  
 
   return (
-    <KeyboardAvoidingView style={style.container}>
+    <KeyboardAvoidingView style={styles.container}>
       <ScrollView contentContainerStyle={{flexGrow: 1}} bounces={false}>
-        <View style={style.topcontainer}>
+        <View style={styles.topcontainer}>
           <TouchableOpacity onPress={goToLandingPage}>
             <Image source={IMAGES.ARROW} />
           </TouchableOpacity>
-          <Text style={style.topcontainerText}>Sign Up</Text>
+          <Text style={styles.topcontainerText}>Sign Up</Text>
           <Text></Text>
         </View>
 
-        <View style={style.inputcontainer}>
+        <View style={styles.inputcontainer}>
           <Input
-            style={style.inputField}
+            style={styles.inputField}
             placeholder="Name"
             placeholderTextColor="#91919F"
             value={name}
             onChangeText={setName}
           />
           <Input
-            style={style.inputField}
+            style={styles.inputField}
             placeholder="Email"
             placeholderTextColor="#91919F"
             value={email}
@@ -168,7 +169,7 @@ export default function SignUp() {
             keyboardType="email-address"
           />
           <Input
-            style={style.inputField}
+            style={styles.inputField}
             placeholder="Password"
             placeholderTextColor="#91919F"
             value={password}
@@ -177,38 +178,40 @@ export default function SignUp() {
           />
         </View>
 
-        <View style={style.label}>
+        <View style={styles.label}>
           <TouchableOpacity
-            style={[style.checkbox, isChecked && style.checked]}
+            style={[styles.checkbox, isChecked && styles.checked]}
             onPress={() => setChecked(!isChecked)}>
-            {isChecked && <Text style={style.checkmark}>✔</Text>}
+            {isChecked && <Text style={styles.checkmark}>✔</Text>}
           </TouchableOpacity>
           <Text>
             By signing up, you agree to the{' '}
-            <Text style={style.labelText}>
+            <Text style={styles.labelText}>
               Terms of Service and Privacy Policy
             </Text>
           </Text>
         </View>
 
-        <View style={style.btn}>
-          <TouchableOpacity style={style.button} onPress={signupfunction}>
-            <Text style={style.buttonText}>Sign Up</Text>
+        <View style={styles.btn}>
+          <TouchableOpacity style={styles.button} onPress={signupfunction}>
+            <Text style={styles.buttonText}>Sign Up</Text>
           </TouchableOpacity>
         </View>
 
-        <View style={style.orText}>
+        <View style={styles.orText}>
           <Text>or</Text>
         </View>
 
-        <TouchableOpacity style={style.googleSign} onPress={dispatchGoogleSignIn}>
+        <TouchableOpacity
+          style={styles.googleSign}
+          onPress={dispatchGoogleSignIn}>
           <Image source={IMAGES.GOOGLE}></Image>
-          <Text style={style.googletext}>Sign Up with Google</Text>
+          <Text style={styles.googletext}>Sign Up with Google</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={style.login} onPress={goToLogin}>
+        <TouchableOpacity style={styles.login} onPress={goToLogin}>
           <Text>
-            Already have an account? <Text style={style.labelText}>Login</Text>
+            Already have an account? <Text style={styles.labelText}>Login</Text>
           </Text>
         </TouchableOpacity>
       </ScrollView>
@@ -217,114 +220,3 @@ export default function SignUp() {
     </KeyboardAvoidingView>
   );
 }
-
-const style = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  topcontainer: {
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    padding: 20,
-  },
-  topcontainerText: {
-    fontSize: 16,
-    fontWeight: '700',
-  },
-  inputcontainer: {
-    flex: 3,
-    alignItems: 'center',
-    justifyContent: 'space-evenly',
-    paddingHorizontal: 30,
-  },
-  inputField: {
-    width: 343,
-    height: 56,
-    borderColor: '#ccc',
-    borderWidth: 1,
-    borderRadius: 8,
-    paddingHorizontal: 15,
-    marginBottom: 15,
-    fontSize: 16,
-    color: 'black',
-  },
-  label: {
-    flex: 1,
-    paddingHorizontal: 30,
-    flexDirection: 'row',
-    gap: 10,
-  },
-  labelText: {
-    color: '#7F00FF',
-  },
-  check: {
-    width: 20,
-    height: 20,
-    borderRadius: 2,
-    borderWidth: 2,
-    borderColor: '#7F00FF',
-  },
-  btn: {
-    flex: 1,
-    paddingHorizontal: 20,
-    // width: 343,
-    // height: 56,
-  },
-  button: {
-    width: 343,
-    height: 56,
-    backgroundColor: '#7F3DFF',
-    paddingVertical: 12,
-    borderRadius: 8,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  buttonText: {
-    color: '#fff',
-    fontSize: 18,
-    fontWeight: '700',
-  },
-  orText: {
-    flex: 0,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginBottom: 10,
-    fontSize: 16,
-    color: 'black',
-  },
-  googletext: {
-    fontSize: 16,
-    fontWeight: '600',
-    marginTop: 5,
-  },
-  googleSign: {
-    flex: 1,
-    justifyContent: 'center',
-    flexDirection: 'row',
-    gap: 10,
-  },
-  login: {
-    flex: 3,
-    alignItems: 'center',
-    fontSize: 16,
-  },
-
-  checkbox: {
-    width: 24,
-    height: 24,
-    borderWidth: 2,
-    borderColor: '#7F3DFF',
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: 5,
-  },
-  checked: {
-    backgroundColor: '#7F3DFF',
-  },
-  checkmark: {
-    color: 'white',
-    fontSize: 16,
-  },
-});
