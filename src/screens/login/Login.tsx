@@ -2,7 +2,6 @@ import {
   View,
   Text,
   Image,
-  StyleSheet,
   TouchableOpacity,
   KeyboardAvoidingView,
   ScrollView,
@@ -13,7 +12,7 @@ import Input from '../../components/input/Input';
 import {CommonActions, useNavigation} from '@react-navigation/native';
 import Toast from 'react-native-toast-message';
 import {useAppDispatch, useAppSelector} from '../../hooks/useRedux';
-import {login} from '../../store/authSlice/authSlice';
+import {GoogleSignup, login} from '../../store/authSlice/authSlice';
 import {styles} from './loginStyles';
 import {navigate} from '../../navigation/navigationRef';
 
@@ -86,6 +85,41 @@ export default function Login() {
     }
   };
 
+  const dispatchGoogleSignIn = async () => {
+    try {
+      const resultAction = await dispatch(GoogleSignup());
+      if (GoogleSignup.fulfilled.match(resultAction)) {
+        Toast.show({
+          type: 'success',
+          text1: 'Google Sign-In Successful!',
+          position: 'top',
+          visibilityTime: 3000,
+        });
+
+        navigate('Home');
+      } else {
+        const errorMessage =
+          resultAction.payload || 'Something went wrong! Please try again.';
+        Toast.show({
+          type: 'error',
+          text1: 'Google Sign-In Failed!',
+          text2: String(errorMessage) || 'Please try again.',
+          position: 'top',
+          visibilityTime: 3000,
+        });
+      }
+    } catch (error: any) {
+      console.error('Google Sign-In Error:', error);
+      Toast.show({
+        type: 'error',
+        text1: 'Google Sign-In Failed!==> Please try again',
+        text2: error.message || 'An unexpected error occurred.',
+        position: 'top',
+        visibilityTime: 3000,
+      });
+    }
+  };
+
   return (
     <KeyboardAvoidingView style={styles.container}>
       <ScrollView contentContainerStyle={{flexGrow: 1}} bounces={false}>
@@ -131,10 +165,12 @@ export default function Login() {
           <Text>or</Text>
         </View>
 
-        <View style={styles.googleSign}>
+        <TouchableOpacity
+          style={styles.googleSign}
+          onPress={dispatchGoogleSignIn}>
           <Image source={IMAGES.GOOGLE}></Image>
           <Text style={styles.googletext}>Sign Up with Google</Text>
-        </View>
+        </TouchableOpacity>
 
         <View style={styles.login}>
           <TouchableOpacity onPress={goToSignup}>

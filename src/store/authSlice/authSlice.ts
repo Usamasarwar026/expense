@@ -2,7 +2,11 @@ import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit';
 import auth, {getAuth} from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 import Toast from 'react-native-toast-message';
-// import {GoogleSignin} from '@react-native-google-signin/google-signin';
+import {
+  GoogleSignin,
+  SignInResponse,
+  SignInSuccessResponse,
+} from '@react-native-google-signin/google-signin';
 import {AuthState, AuthUser} from '../../types/types';
 
 export const signup = createAsyncThunk(
@@ -145,37 +149,44 @@ export const resetPassword = createAsyncThunk(
   },
 );
 
-// export const GoogleSignup = createAsyncThunk(
-//   'auth/GoogleSignup',
-//   async (_, {rejectWithValue}) => {
-//     try {
-//       await GoogleSignin.hasPlayServices({showPlayServicesUpdateDialog: true});
-//       const {idToken} = await GoogleSignin.signIn();
-//       if (!idToken) {
-//         throw new Error('No ID token found');
-//       }
-//       const googleCredential = auth.GoogleAuthProvider.credential(idToken);
-//       const response = await auth().signInWithCredential(googleCredential);
-//       console.log('User signed in with Google', response.user);
-//       await firestore().collection('users').doc(response.user.uid).set({
-//         uid: response.user.uid,
-//         name: response.user.displayName,
-//         email: response.user.email,
-//         createdAt: firestore.FieldValue.serverTimestamp(),
-//       });
-//       const user = {
-//         uid: response.user.uid,
-//         email: response.user.email,
-//         name: response.user.displayName,
-//       };
-//       return user;
-//     } catch (error: any) {
-//       console.log('Google Sign-in Error', error);
+export const GoogleSignup = createAsyncThunk(
+  'auth/GoogleSignup',
+  async (_, {rejectWithValue}) => {
+    try {
+      await GoogleSignin.hasPlayServices({showPlayServicesUpdateDialog: true});
+      const responses: SignInResponse = await GoogleSignin.signIn();
 
-//       return rejectWithValue(error.message);
-//     }
-//   },
-// );
+      if ('idToken' in responses) {
+        const {idToken} = responses;
+        const token: string = idToken as string;
+        if (!token) {
+          throw new Error('No ID token found');
+        }
+        const googleCredential = auth.GoogleAuthProvider.credential(token);
+        const response = await auth().signInWithCredential(googleCredential);
+        console.log('User signed in with Google', response.user);
+        await firestore().collection('users').doc(response.user.uid).set({
+          uid: response.user.uid,
+          name: response.user.displayName,
+          email: response.user.email,
+          createdAt: firestore.FieldValue.serverTimestamp(),
+        });
+        const user = {
+          uid: response.user.uid,
+          email: response.user.email,
+          name: response.user.displayName,
+        };
+        return user;
+      } else {
+        throw new Error('Google sign-in was canceled or failed.');
+      }
+    } catch (error: any) {
+      console.log('Google Sign-in Error', error);
+
+      return rejectWithValue(error.message);
+    }
+  },
+);
 
 export const updateName = createAsyncThunk(
   'auth/updateName',
@@ -348,18 +359,18 @@ export const authSlice = createSlice({
         state.loading = false;
         state.error = action.payload as string;
       })
-      // .addCase(GoogleSignup.pending, state => {
-      //   state.loading = true;
-      //   state.error = null;
-      // })
-      // .addCase(GoogleSignup.fulfilled, (state, action) => {
-      //   state.loading = false;
-      //   state.user = action.payload as AuthUser;
-      // })
-      // .addCase(GoogleSignup.rejected, (state, action) => {
-      //   state.loading = false;
-      //   state.error = action.payload as string;
-      // })
+      .addCase(GoogleSignup.pending, state => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(GoogleSignup.fulfilled, (state, action) => {
+        state.loading = false;
+        state.user = action.payload as AuthUser;
+      })
+      .addCase(GoogleSignup.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string;
+      })
       .addCase(updateName.pending, state => {
         state.status = 'loading';
       })
