@@ -32,7 +32,6 @@ export default function Logout({
     const user = auth().currentUser;
 
     if (!user) {
-      console.log('No user is currently signed in');
       Toast.show({
         text1: 'Error',
         text2: 'No user is currently signed in',
@@ -60,7 +59,7 @@ export default function Logout({
             }),
           );
         }
-      }, 3000);
+      }, 1000);
     } else {
       setOpenModel(false);
       Toast.show({
