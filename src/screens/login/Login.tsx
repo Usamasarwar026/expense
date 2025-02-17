@@ -15,7 +15,7 @@ import Toast from 'react-native-toast-message';
 import {useAppDispatch, useAppSelector} from '../../hooks/useRedux';
 import {login} from '../../store/authSlice/authSlice';
 import {styles} from './loginStyles';
-import { navigate } from '../../navigation/navigationRef';
+import {navigate} from '../../navigation/navigationRef';
 
 export default function Login() {
   const [email, setEmail] = useState('');
@@ -65,6 +65,15 @@ export default function Login() {
         );
         setEmail('');
         setPassword('');
+
+        setTimeout(() => {
+          Toast.show({
+            type: 'success',
+            text1: 'Logged in successfully',
+            position: 'top',
+            visibilityTime: 2000,
+          });
+        }, 1500);
       }
     } catch (errorMessage) {
       console.log('Login Error:', errorMessage);
@@ -128,12 +137,12 @@ export default function Login() {
         </View>
 
         <View style={styles.login}>
-          <Text>
-            Don’t have an account yet?
-            <Text style={styles.labelText} onPress={goToSignup}>
-              Sign Up
+          <TouchableOpacity onPress={goToSignup}>
+            <Text>
+              Don’t have an account yet?
+              <Text style={styles.labelText}>Sign Up</Text>
             </Text>
-          </Text>
+          </TouchableOpacity>
         </View>
       </ScrollView>
 

@@ -2,8 +2,6 @@ import {
   View,
   Text,
   Image,
-  StyleSheet,
-  ScrollView,
   TouchableOpacity,
   ActivityIndicator,
   FlatList,
@@ -11,7 +9,6 @@ import {
 import React, {useEffect, useState} from 'react';
 import {IMAGES} from '../../constant/image';
 import Transction from '../../components/transction/Transction';
-// import {transactions} from './TransctionData';
 import Dropdown from '../../components/dropdown/Dropdown';
 import {CommonActions, useNavigation} from '@react-navigation/native';
 import {useAppDispatch, useAppSelector} from '../../hooks/useRedux';
@@ -54,17 +51,14 @@ export default function Home() {
         .reduce(
           (sum, transaction) => sum + (Number(transaction.amount) || 0),
           0,
-        ); // Ensure number conversion
+        );
 
       const expenseTotal = transactions
         .filter(transaction => transaction.type === 'Expense')
         .reduce(
           (sum, transaction) => sum + (Number(transaction.amount) || 0),
           0,
-        ); // Ensure number conversion
-
-      console.log('Total Income:', incomeTotal);
-      console.log('Total Expense:', expenseTotal);
+        );
 
       setTotalIncome(incomeTotal);
       setTotalExpense(expenseTotal);
@@ -86,7 +80,7 @@ export default function Home() {
 
   const filterTransactions = (): Transaction[] => {
     if (!Array.isArray(transactions)) {
-      return []; // Return an empty array if transactions is undefined or not an array
+      return [];
     }
 
     if (selectedFilter === 'All') return transactions;
@@ -98,7 +92,7 @@ export default function Home() {
           return transactionDate.toDateString() === now.toDateString();
         case 'Week': {
           const startOfWeek = new Date();
-          startOfWeek.setDate(now.getDate() - now.getDay()); // Start of the current week (Sunday)
+          startOfWeek.setDate(now.getDate() - now.getDay());
           return transactionDate >= startOfWeek;
         }
         case 'Month': {
@@ -182,7 +176,6 @@ export default function Home() {
           />
         </View>
 
-        {/* Filters for Transactions */}
         <View style={styles.daybar}>
           {['Today', 'Week', 'Month', 'Year'].map(filter => (
             <TouchableOpacity
@@ -203,7 +196,6 @@ export default function Home() {
           ))}
         </View>
 
-        {/* Transactions List */}
         <View style={styles.recentBar}>
           <Text style={styles.recentBarText1}>Recent Transaction</Text>
           <TouchableOpacity onPress={() => setSelectedFilter('All')}>

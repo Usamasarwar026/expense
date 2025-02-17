@@ -1,11 +1,18 @@
 import {View, Text, Image, StyleSheet, TouchableOpacity} from 'react-native';
 import React from 'react';
-import { TransctionProp } from '../../types/types';
-import { styles } from './transctionStyles';
+import {TransctionProp} from '../../types/types';
+import {styles} from './transctionStyles';
 
-export default function Transction({title, subtitle, amount, time, image, type}:TransctionProp) {
+export default function Transction({
+  title,
+  subtitle,
+  amount,
+  time,
+  image,
+  type,
+}: TransctionProp) {
   return (
-    <TouchableOpacity style={styles.TransctionContainer}  >
+    <TouchableOpacity style={styles.TransctionContainer}>
       <View style={styles.leftContainer}>
         <View style={styles.leftContainerImage}>
           <Image style={styles.containerImage} source={image} />
@@ -17,11 +24,16 @@ export default function Transction({title, subtitle, amount, time, image, type}:
           <Text style={styles.text2}>{subtitle}</Text>
         </View>
         <View>
-          <Text style={[type === 'Expense' ? styles.red : styles.green,styles.text3]}>{amount}</Text>
+          <Text
+            style={[
+              type === 'Expense' ? styles.red : styles.green,
+              styles.text3,
+            ]}>
+            {amount}
+          </Text>
           <Text style={styles.text2}>{time}</Text>
         </View>
       </View>
     </TouchableOpacity>
   );
 }
-

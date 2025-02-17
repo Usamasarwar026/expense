@@ -11,10 +11,10 @@ import SuccessfulModel from '../successfulModel/SuccessfulModel';
 import {CommonActions, useNavigation} from '@react-navigation/native';
 import Toast from 'react-native-toast-message';
 import auth from '@react-native-firebase/auth';
-import {styles} from './logoutModelStyles';
+import {styles} from './logoutStyles';
 import {LogoutModelProps} from '../../types/types';
 
-export default function LogoutModel({
+export default function Logout({
   openModel,
   setOpenModel,
   title,
@@ -30,7 +30,6 @@ export default function LogoutModel({
   const handleYesPress = async () => {
     setOpenModel(false);
     const user = auth().currentUser;
-    console.log(user);
 
     if (!user) {
       console.log('No user is currently signed in');
@@ -64,7 +63,6 @@ export default function LogoutModel({
       }, 3000);
     } else {
       setOpenModel(false);
-      console.log('No user is currently signed in');
       Toast.show({
         text1: 'Error',
         text2: 'No user is currently signed in',

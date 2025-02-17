@@ -13,18 +13,18 @@ import {IMAGES} from '../../constant/image';
 import Input from '../../components/input/Input';
 import {CommonActions, useNavigation} from '@react-navigation/native';
 import Toast from 'react-native-toast-message';
-import { useAppDispatch } from '../../hooks/useRedux';
-import { changePassword } from '../../store/authSlice/authSlice';
+import {useAppDispatch} from '../../hooks/useRedux';
+import {changePassword} from '../../store/authSlice/authSlice';
 import auth from '@react-native-firebase/auth';
-import { styles } from './resetPasswordStyles';
+import {styles} from './resetPasswordStyles';
 
 export default function ResetPassword() {
   const [oldpassword, setOldpassword] = React.useState('');
   const [newpassword, setNewpassword] = React.useState('');
   const [confirmPassword, setConfirmPassword] = React.useState('');
-  const [isLoading, setIsLoading] = React.useState(false); 
+  const [isLoading, setIsLoading] = React.useState(false);
   const navigation = useNavigation();
-  const dispatch = useAppDispatch(); // Use the Redux dispatch function
+  const dispatch = useAppDispatch();
 
   const goToBack = () => {
     try {
@@ -39,80 +39,79 @@ export default function ResetPassword() {
     }
   };
 
-  
-
-const handleChangePassword = async () => {
-  if (newpassword !== confirmPassword) {
-    Toast.show({
-      type: 'error',
-      text1: 'Passwords do not match',
-      position: 'top',
-      visibilityTime: 2000,
-      autoHide: true,
-    });
-    return;
-  }
-
-  if (!oldpassword || !newpassword || !confirmPassword) {
-    Toast.show({
-      type: 'error',
-      text1: 'All fields are required',
-      position: 'top',
-      visibilityTime: 2000,
-      autoHide: true,
-    });
-    return;
-  }
-
-  try {
-    setIsLoading(true); // Set loading state to true
-
-    const email = auth().currentUser?.email; // Get the current user's email
-
-    if (!email) {
+  const handleChangePassword = async () => {
+    if (newpassword !== confirmPassword) {
       Toast.show({
         type: 'error',
-        text1: 'User is not authenticated',
+        text1: 'Passwords do not match',
         position: 'top',
-        visibilityTime: 200,
+        visibilityTime: 2000,
         autoHide: true,
       });
       return;
     }
 
+    if (!oldpassword || !newpassword || !confirmPassword) {
+      Toast.show({
+        type: 'error',
+        text1: 'All fields are required',
+        position: 'top',
+        visibilityTime: 2000,
+        autoHide: true,
+      });
+      return;
+    }
 
-    const actionResult = await dispatch(
-      changePassword({email, currentPassword: oldpassword, newPassword: newpassword })
-    );
+    try {
+      setIsLoading(true);
 
-    setIsLoading(false); 
+      const email = auth().currentUser?.email;
 
-    if (changePassword.fulfilled.match(actionResult)) {
-      
-      goToBack();
-      setTimeout(() => {
+      if (!email) {
         Toast.show({
-          type: 'success',
-          text1: 'Password successfully updated!',
+          type: 'error',
+          text1: 'User is not authenticated',
           position: 'top',
-          visibilityTime: 2000,
+          visibilityTime: 200,
           autoHide: true,
         });
-      }, 1500);
+        return;
+      }
+
+      const actionResult = await dispatch(
+        changePassword({
+          email,
+          currentPassword: oldpassword,
+          newPassword: newpassword,
+        }),
+      );
+
+      setIsLoading(false);
+
+      if (changePassword.fulfilled.match(actionResult)) {
+        goToBack();
+        setTimeout(() => {
+          Toast.show({
+            type: 'success',
+            text1: 'Password successfully updated!',
+            position: 'top',
+            visibilityTime: 2000,
+            autoHide: true,
+          });
+        }, 1500);
+      }
+    } catch (error: any) {
+      setIsLoading(false);
+
+      Toast.show({
+        type: 'error',
+        text1: error.message,
+        position: 'top',
+        visibilityTime: 2000,
+        autoHide: true,
+      });
     }
-  } catch (error:any) {
-    setIsLoading(false); // Set loading state to false in case of error
-
-    Toast.show({
-      type: 'error',
-      text1: error.message,
-      position: 'top',
-      visibilityTime: 2000,
-      autoHide: true,
-    });
-  }
-};
-
+  };
 
   return (
     <KeyboardAvoidingView style={styles.container}>
@@ -132,7 +131,7 @@ const handleChangePassword = async () => {
             placeholderTextColor="#91919F"
             value={oldpassword}
             onChangeText={setOldpassword}
-            secureTextEntry={true} 
+            secureTextEntry={true}
           />
           <Input
             style={styles.inputField}
@@ -140,7 +139,7 @@ const handleChangePassword = async () => {
             placeholderTextColor="#91919F"
             value={newpassword}
             onChangeText={setNewpassword}
-            secureTextEntry={true} 
+            secureTextEntry={true}
           />
           <Input
             style={styles.inputField}
@@ -148,17 +147,19 @@ const handleChangePassword = async () => {
             placeholderTextColor="#91919F"
             value={confirmPassword}
             onChangeText={setConfirmPassword}
-            secureTextEntry={true} 
+            secureTextEntry={true}
           />
         </View>
 
         <View style={styles.btn}>
-          <TouchableOpacity style={styles.button} onPress={handleChangePassword}>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={handleChangePassword}>
             <Text style={styles.buttonText}>Change Password</Text>
           </TouchableOpacity>
         </View>
       </ScrollView>
-      <Toast/>
+      <Toast />
     </KeyboardAvoidingView>
   );
 }

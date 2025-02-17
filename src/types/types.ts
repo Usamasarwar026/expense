@@ -1,9 +1,16 @@
-import { KeyboardType, StyleProp, TextInputProps, TextStyle, ViewStyle } from "react-native";
-import { FC } from 'react';
-import { BottomTabNavigationOptions } from '@react-navigation/bottom-tabs';
-import { NavigatorScreenParams, RouteProp } from '@react-navigation/native';
-import { IconProps } from 'react-native-vector-icons/Icon';
-import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import {
+  ImageSourcePropType,
+  KeyboardType,
+  StyleProp,
+  TextInputProps,
+  TextStyle,
+  ViewStyle,
+} from 'react-native';
+import {FC, Component} from 'react';
+import {BottomTabNavigationOptions} from '@react-navigation/bottom-tabs';
+import {NavigatorScreenParams, RouteProp} from '@react-navigation/native';
+import {IconProps} from 'react-native-vector-icons/Icon';
+import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 
 export type TabItem = {
   id: number;
@@ -16,51 +23,47 @@ export type TabItem = {
 export type TabsArray = TabItem[];
 
 export type RootStackParamList = {
-    LaunchScreen: undefined;
-    SignUp: undefined;
-    Login: undefined;
-    Forget: undefined;
-    Home: undefined;
-    TabNavigation: undefined;
-    EditProfile: undefined;
-    profile: undefined;
-    ResetPassword: undefined;
-    Logout: undefined;
-    FinancialReport: undefined;
-    DetailTransction: undefined;
-    AddModel: undefined;
-    Expense: undefined;
-    Income: undefined;
-    name?: undefined;
-  };
+  LaunchScreen: undefined;
+  SignUp: undefined;
+  Login: undefined;
+  Forget: undefined;
+  Home: undefined;
+  TabNavigation: undefined;
+  EditProfile: undefined;
+  profile: undefined;
+  ResetPassword: undefined;
+  Logout: undefined;
+  FinancialReport: undefined;
+  DetailTransction: undefined;
+  AddModel: undefined;
+  Expense: undefined;
+  Income: undefined;
+  name?: undefined;
+};
 
-  export type NavigationProps = NativeStackNavigationProp<RootStackParamList>;
+export type NavigationProps = NativeStackNavigationProp<RootStackParamList>;
 
-  export type TransctionProp = {
-    title: string,
-    subtitle: string,
-    amount: number,
-    time: string,
-    image: { uri: string },
-    type: string
-  }
-  export type ImageProp = {
-    uri: string,
-    
-  }
+export type TransctionProp = {
+  title: string;
+  subtitle: string;
+  amount: number;
+  time: string;
+  image: {uri: string};
+  type: string;
+};
+export type ImageProp = {
+  uri: string;
+};
 
-  // openModel, setOpenModel, onSelectImage
- export type AttachmentProp = {
-    openModel: boolean,
-    setOpenModel: (value: boolean) => void,
-    onSelectImage: (uri: string) => void,
-  //   image: ImageProp,
-  //   style?: StyleProp<ViewStyle>,
- }
+export type AttachmentProp = {
+  openModel: boolean;
+  setOpenModel: (value: boolean) => void;
+  onSelectImage: (uri: string) => void;
+};
 
- export type ImagePickerResponse = {
-   assets?: { uri: string }[];
- };
+export type ImagePickerResponse = {
+  assets?: {uri: string}[];
+};
 
 export type DropdownItem = {
   id: string | number;
@@ -74,21 +77,9 @@ export type CategoryDropdownProps = {
   setCategory?: (category: string) => void;
 };
 export type DropdownProps = {
-  dropdownPosition?: "center" | "left";
+  dropdownPosition?: 'center' | 'left';
   setSelectedMonth: (month: string) => void;
 };
-
-
-// export type CategoryDropdownProps = {
-//   dropdownPosition?: 'center' | 'left' | 'above'; // Define allowed positions
-//   type?: 'All' | 'Expense' | 'Income'; // Define category type
-//   style?: string; // Accepts different styling options
-// };
-
-// export type DropdownProps = {
-//   dropdownPosition?: "center" | "left";
-//   // setSelectedMonth: (month: string) => void;
-// };
 
 export interface InputProps extends TextInputProps {
   style?: StyleProp<TextStyle>;
@@ -104,7 +95,7 @@ export type LogoutModelProps = {
   title: string;
   description: string;
   text: string;
-  YesPress?: () => Promise<void> | void;
+  YesPress?: () => Promise<void> | void | undefined;
   navigateToHome?: boolean;
   navigateToLogin?: boolean;
 };
@@ -117,35 +108,41 @@ export type ProgressBarProps = {
   onPress?: () => void;
 };
 
-
 export type SuccessfulModelProps = {
   openModel: boolean;
   setOpenModel: (value: boolean) => void;
   text: string;
-}
-// export type Transaction = {
-//   id: string; // Unique ID for the transaction
-//   amount: number; // Transaction amount
-//   timestamp: string; // ISO date string
-//   category?: string; // Optional category
-// }
-
-
+};
 export type Transaction = {
-  timestamp: string; // Assuming timestamp is a string in ISO format
+  timestamp: string;
   [key: string]: any;
 };
+
+
+export type TransactionHeader = {
+  type: 'header';
+  title: string;
+}
+
+export type TransactionItem = {
+  type: 'transaction';
+  data: Transaction;
+}
+
+export type CombinedData = (TransactionHeader | TransactionItem)[];
 
 export type GroupedTransactions = {
   Today: Transaction[];
   Yesterday: Transaction[];
-  "This Week": Transaction[];
-  "This Month": Transaction[];
+  'This Week': Transaction[];
+  'This Month': Transaction[];
   Older: Transaction[];
-  [key: string]: Transaction[]; // Allowing selected month cases
+  [key: string]: Transaction[];
 };
 
-export type TimeReturnType = GroupedTransactions | Record<string, Transaction[]>;
+export type TimeReturnType =
+  | GroupedTransactions
+  | Record<string, Transaction[]>;
 
 export type ParamTransaction = {
   id: string;
@@ -159,22 +156,14 @@ export type ParamTransaction = {
 };
 
 export type RootStackParamList1 = {
-  DetailTransaction: { transaction: ParamTransaction };
+  DetailTransaction: {transaction: ParamTransaction};
   FinancialReport: undefined;
 };
 
-// Define the type for route and navigation props
-export type DetailTransactionRouteProp = RouteProp<RootStackParamList1, 'DetailTransaction'>;
-//   // export type signupInput = {
-//   //   style: StyleProp<TextStyle>;
-//   //   keyboardType: KeyboardType;
-//   //   placeholder: string;
-//   //   placeholderTextColor: string;
-//   //   value: string;
-//   //   onChangeText: (text: string) => void;
-//   //   secureTextEntry?: boolean;
-
-//   // }
+export type DetailTransactionRouteProp = RouteProp<
+  RootStackParamList1,
+  'DetailTransaction'
+>;
 
 export type categoryColorsType = {
   Shopping: string;
@@ -182,7 +171,7 @@ export type categoryColorsType = {
   Food: string;
   Salary: string;
   Transportation: string;
-}
+};
 
 export type TransactionFilters = {
   type: 'income' | 'expense' | null;
@@ -203,11 +192,11 @@ export type UserProfile = {
   name: string;
   email: string;
   profileImageUri: string | null;
-}
+};
 
 export type ImagePickerResult = {
-  assets?: { uri: string }[];
-}
+  assets?: {uri: string}[];
+};
 
 export type FetchUserDataResponse = {
   profileImageUri: string | null;
@@ -215,82 +204,84 @@ export type FetchUserDataResponse = {
   email: string;
 };
 
+export type TransactionData = {
+  id: string;
+  amount: string;
+  category: string;
+  description?: string;
+  timestamp: string;
+  type: 'Income' | 'Expense';
+  imageUri?: string;
+};
 
+export type UserData = {
+  profileImageUri?: string;
+  name?: string;
+  email?: string;
+};
 
-  // export type signupInput = {
-  //   style: StyleProp<TextStyle>;
-  //   keyboardType: KeyboardType;
-  //   placeholder: string;
-  //   placeholderTextColor: string;
-  //   value: string;
-  //   onChangeText: (text: string) => void;
-  //   secureTextEntry?: boolean;
+export type SliceTransaction = {
+  id: string;
+  userId: string;
+  category: string;
+  description: string;
+  amount: string;
+  imageUri: string;
+  type: string;
+  timestamp: string;
+};
 
-  // }
-  export type TransactionData = {
-    id: string; // Assuming each transaction has a unique ID
-    amount: string; // It's a string, needs conversion before calculations
-    category: string;
-    description?: string;
-    timestamp: string; // Date in ISO string format
-    type: 'Income' | 'Expense';
-    imageUri?: string;
-  };
-  
-  export type UserData = {
-    profileImageUri?: string;
-    name?: string;
-    email?: string;
-  };
-  
-  
+export interface TransactionDataSlice {
+  id: string;
+  userId: string;
+  category: string;
+  description: string;
+  amount: string;
+  imageUri: string;
+  type: string;
+  timestamp: string;
+}
 
+export interface TransactionState {
+  transactions: TransactionDataSlice[];
+  loading: boolean;
+  error: string | null;
+  status: 'idle' | 'loading' | 'succeeded' | 'failed';
+}
 
+export interface AddTransactionPayload {
+  category: string;
+  description: string;
+  amount: string;
+  imageUri: string;
+  type: string;
+}
 
+export type DeleteTransactionPayload = string;
 
+export type AuthUser = {
+  uid: string;
+  name?: string;
+  email: string;
+};
 
+export type AuthState = {
+  user: User | null;
+  loading: boolean;
+  error: string | null;
+  status: 'idle' | 'loading' | 'succeeded' | 'failed';
+  profileImageUri?: string | null;
+};
 
-  export interface AuthState {
-    user: User | null;
-    loading: boolean;
-    error: string | null;
-    status: 'idle' | 'loading' | 'succeeded' | 'failed';
-    profileImageUri?: string;
-  }
-  
-  export interface User {
-    uid: string;
-    name?: string;
-    email: string;
-    profileImageUri?: string;
-  }
-  
-  export interface SignupPayload {
-    name: string;
-    email: string;
-    password: string;
-  }
-  
-  export interface LoginPayload {
-    email: string;
-    password: string;
-  }
-  
-  export interface ChangePasswordPayload {
-    email: string;
-    currentPassword: string;
-    newPassword: string;
-  }
-  
-  export interface UpdateEmailPayload {
-    email: string;
-  }
-  
-  export interface UpdateNamePayload {
-    name: string;
-  }
-  
-  export interface StoreImageUriPayload {
-    uri: string;
-  }
-  
+export type User = {
+  uid: string;
+  name?: string;
+  email: string;
+  profileImageUri?: string;
+};
+
+export type SettingProps = {
+  name: string;
+  image: ImageSourcePropType;
+  onPress: () => void;
+}

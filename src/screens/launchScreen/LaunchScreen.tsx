@@ -1,7 +1,7 @@
-import {View, Text, StyleSheet, Image} from 'react-native';
+import {View, Text, Image} from 'react-native';
 import React, {useEffect} from 'react';
 import {navigate} from '../../navigation/navigationRef';
-import { styles } from './launchScreenStyles';
+import {styles} from './launchScreenStyles';
 
 export default function LaunchScreen() {
   useEffect(() => {

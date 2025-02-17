@@ -8,8 +8,7 @@ import {
 } from 'react-native';
 import React from 'react';
 import {IMAGES} from '../../constant/image';
-import {useNavigation} from '@react-navigation/native';
-import {AddModelProps, NavigationProps} from '../../types/types';
+import {AddModelProps} from '../../types/types';
 import {styles} from './addModelStyles';
 import {navigate} from '../../navigation/navigationRef';
 
@@ -17,7 +16,6 @@ export default function AddModel({
   modalVisible,
   setModalVisible,
 }: AddModelProps) {
-  const navigation = useNavigation<NavigationProps>();
 
   const goToExpense = () => {
     navigate('Expense');

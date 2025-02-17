@@ -2,29 +2,25 @@ import {
   View,
   Text,
   Image,
-  StyleSheet,
   TouchableOpacity,
   ActivityIndicator,
 } from 'react-native';
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import {IMAGES} from '../../constant/image';
 import Setting from '../../components/setting/Setting';
-import {ProfileData} from './profileData';
 import {useNavigation} from '@react-navigation/native';
-import { useAppDispatch } from '../../hooks/useRedux';
-import { fetchUserData } from '../../store/authSlice/authSlice';
-import LogoutModel from '../../components/logoutModel/LogoutModel';
-import { styles } from './profileStyles';
-import { UserData } from '../../types/types';
-import { navigate } from '../../navigation/navigationRef';
-
-
+import {useAppDispatch} from '../../hooks/useRedux';
+import {fetchUserData} from '../../store/authSlice/authSlice';
+import {styles} from './profileStyles';
+import {UserData} from '../../types/types';
+import {navigate} from '../../navigation/navigationRef';
+import Logout from '../../components/logout/Logout';
+import { PROFILE_DATA } from '../../constant/constant';
 
 export default function Profile() {
   const [openModel, setOpenModel] = useState(false);
   const [loading, setLoading] = useState(true);
   const [userData, setUserData] = useState<UserData | null | undefined>(null);
-  const navigation = useNavigation();
   const dispatch = useAppDispatch();
 
   useEffect(() => {
@@ -42,22 +38,13 @@ export default function Profile() {
     fetchUserInfo();
   }, [dispatch]);
 
-  // useEffect(() => {
-  //   const unsubscribe = navigation.addListener('focus', () => {
-  //     setOpenModel(false); // Reset modal when navigating
-  //   });
-  //   return unsubscribe;
-  // }, [navigation]);
-
   const goToEditPage = () => {
     navigate('EditProfile');
   };
 
-  const YesPress = async()=>{
-    //  await dispatch(logout());
-    console.log("clicked");
-     
-  }
+  const YesPress = () => {
+    console.log('Button Pressed');
+  };
 
   return (
     <View style={styles.container}>
@@ -65,18 +52,21 @@ export default function Profile() {
         <View style={styles.imageBox}>
           {loading ? (
             <ActivityIndicator size="small" color="#7F3DFF" />
-          ):
-          (
-            <Image style={styles.profileImage}  source={
-              userData?.profileImageUri ? { uri: userData.profileImageUri } : IMAGES.MAINPROFILE
-            }  />
-          )
-          }
+          ) : (
+            <Image
+              style={styles.profileImage}
+              source={
+                userData?.profileImageUri
+                  ? {uri: userData.profileImageUri}
+                  : IMAGES.MAINPROFILE
+              }
+            />
+          )}
         </View>
 
         <View style={styles.containerRight}>
           <View>
-          {loading ? (
+            {loading ? (
               <ActivityIndicator size="large" color="#7F3DFF" />
             ) : (
               <>
@@ -95,14 +85,13 @@ export default function Profile() {
         </View>
       </View>
       <View style={styles.setComponent}>
-        {ProfileData.map(profile => {
+        {PROFILE_DATA.map(profile => {
           const handlePress = () => {
-            if (profile.id === "1") {
-              navigate('Budget'); // Navigate to Profile screen
-            } else if (profile.id === "2") {
+            if (profile.id === '1') {
+              navigate('SettingScreen');
+            } else if (profile.id === '2') {
               navigate('ResetPassword');
-            } else if (profile.id === "3") {
-              
+            } else if (profile.id === '3') {
               setOpenModel(true);
             } else {
               console.log('Different Action for:', profile.name);
@@ -120,18 +109,15 @@ export default function Profile() {
         })}
       </View>
       <View style={{flex: 1}}></View>
-      <LogoutModel
-      openModel={openModel}
-      setOpenModel={setOpenModel}
-      title="Logout?"
-      description="Are you sure do you wanna logout?"
-      text="You have been logged out successfully"
-      YesPress={()=>YesPress}
-      navigateToLogin={true} 
-      
+      <Logout
+        openModel={openModel}
+        setOpenModel={setOpenModel}
+        title="Logout?"
+        description="Are you sure do you wanna logout?"
+        text="You have been logged out successfully"
+        YesPress={() => YesPress()}
+        navigateToLogin={true}
       />
     </View>
-
-    
   );
 }

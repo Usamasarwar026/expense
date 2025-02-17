@@ -8,8 +8,7 @@ import {
   Image,
   TouchableOpacity,
 } from 'react-native';
-import React, {useState} from 'react';
-import {IMAGES} from '../../constant/image';
+import React from 'react';
 import CategoryDropdown from '../categoryDropdown/CategoryDropdown';
 import {styles} from './transctioModelStyles';
 import {TransctionModelProps} from '../../types/types';
@@ -106,7 +105,7 @@ export default function TransctionModel({
               dropdownPosition="above"
               style="AllExpense"
               type="All"
-              setCategory ={category => setFilters({...filters, category})}
+              setCategory={category => setFilters({...filters, category})}
             />
           </TouchableOpacity>
         </View>

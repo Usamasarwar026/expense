@@ -9,16 +9,26 @@ import {
   Alert,
   ActivityIndicator,
 } from 'react-native';
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import Input from '../../components/input/Input';
 import {IMAGES} from '../../constant/image';
 import {CommonActions, useNavigation} from '@react-navigation/native';
 import {useAppDispatch} from '../../hooks/useRedux';
-import {fetchUserData, storeImageUriInFirestore, updateEmail, updateName} from '../../store/authSlice/authSlice';
+import {
+  fetchUserData,
+  storeImageUriInFirestore,
+  updateEmail,
+  updateName,
+} from '../../store/authSlice/authSlice';
 import Toast from 'react-native-toast-message';
-import {CameraOptions, ImageLibraryOptions, launchCamera, launchImageLibrary} from 'react-native-image-picker';
-import { styles } from './editProfileStyles';
-import { FetchUserDataResponse } from '../../types/types';
+import {
+  CameraOptions,
+  ImageLibraryOptions,
+  launchCamera,
+  launchImageLibrary,
+} from 'react-native-image-picker';
+import {styles} from './editProfileStyles';
+import {FetchUserDataResponse} from '../../types/types';
 
 export default function EditProfile() {
   const [email, setEmail] = useState<string>('');
@@ -29,18 +39,16 @@ export default function EditProfile() {
   const [initialName, setInitialName] = useState<string>('');
   const [initialImageUri, setInitialImageUri] = useState<string | null>(null);
   const dispatch = useAppDispatch();
-  
+
   useEffect(() => {
-    
     const fetchImage = async () => {
       try {
-        const { profileImageUri, name, email }:FetchUserDataResponse = await dispatch(fetchUserData()).unwrap();
-        setImageUri(profileImageUri);
-        setEmail(email);
-        setName(name);
-        setInitialName(name);
-        setInitialImageUri(profileImageUri);
-        
+        const userData = await dispatch(fetchUserData()).unwrap();
+        setImageUri(userData?.profileImageUri);
+        setEmail(userData?.email);
+        setName(userData?.name);
+        setInitialName(userData?.name);
+        setInitialImageUri(userData?.profileImageUri);
       } catch (error) {
         console.error('Error fetching image URI:', error);
       }
@@ -62,10 +70,9 @@ export default function EditProfile() {
     }
   };
 
-  const storeImage= async (uri: string): Promise<void> => {
-
+  const storeImage = async (uri: string): Promise<void> => {
     try {
-      await dispatch(storeImageUriInFirestore(uri))
+      await dispatch(storeImageUriInFirestore(uri));
       console.log('Image URI stored successfully');
     } catch (error) {
       console.error('Error storing image URI:', error);
@@ -73,18 +80,17 @@ export default function EditProfile() {
   };
 
   const openGallery = async (): Promise<void> => {
-    const options:ImageLibraryOptions = {
+    const options: ImageLibraryOptions = {
       mediaType: 'photo',
       quality: 1,
     };
     const result = await launchImageLibrary(options);
     if (result.assets) {
-      const selectedImageUri = result.assets[0].uri; // Local URI
-    console.log('Selected Image URI from Gallery:', selectedImageUri);
-    setImageUri(selectedImageUri)
-    
-    // Store the URI in Firestore
-    await storeImage(selectedImageUri);
+      const selectedImageUri = result.assets?.[0]?.uri ?? null;
+      if (selectedImageUri) {
+        setImageUri(selectedImageUri);
+        await storeImage(selectedImageUri);
+      }
     }
   };
 
@@ -96,49 +102,47 @@ export default function EditProfile() {
     };
     const result = await launchCamera(options);
     if (result.assets) {
-      const selectedImageUri = result.assets[0].uri; 
-    setImageUri(selectedImageUri);
-    
-    // Store the URI in Firestore
-    await storeImage(selectedImageUri);
+      const selectedImageUri = result.assets?.[0]?.uri ?? null;
+      if (selectedImageUri) {
+        setImageUri(selectedImageUri);
+        await storeImage(selectedImageUri);
+      }
     }
   };
 
   const openImagePicker = () => {
     Alert.alert(
-      "Select an option",
-      "Choose an image from the gallery or take a new photo.",
+      'Select an option',
+      'Choose an image from the gallery or take a new photo.',
       [
         {
-          text: "Gallery",
+          text: 'Gallery',
           onPress: openGallery,
         },
         {
-          text: "Camera",
+          text: 'Camera',
           onPress: openCamera,
         },
       ],
-      { cancelable: true }
+      {cancelable: true},
     );
   };
 
   const handleUpdateProfile = async () => {
     try {
-      // let profileUpdated = false;
       let nameUpdated = false;
       let imageUpdated = false;
-  
+
       if (name !== initialName) {
         await dispatch(updateName(name));
         nameUpdated = true;
       }
-  
-      if (imageUri !== initialImageUri) {
+
+      if (imageUri && imageUri !== initialImageUri) {
         await storeImage(imageUri);
         imageUpdated = true;
       }
-  
-      // Show toast messages based on what was updated
+
       if (nameUpdated || imageUpdated) {
         setTimeout(() => {
           if (nameUpdated && imageUpdated) {
@@ -163,13 +167,10 @@ export default function EditProfile() {
               text2: 'Your profile picture was updated successfully.',
             });
           }
-        }, 500); // 500ms delay
-  
-        
-          goToProfile(); // Navigate after the toast appears
-         // Delay navigation to ensure toast is visible
+        }, 500);
+
+        goToProfile();
       }
-      
     } catch (error: any) {
       Toast.show({
         type: 'error',
@@ -194,15 +195,15 @@ export default function EditProfile() {
         </View>
         <View style={styles.picConatiner}>
           <View style={styles.picBox}>
-           {loading ? (
-            <ActivityIndicator size='large' color="#7F3DFF" />
-           ) : (
-            <Image style={styles.pic} source={imageUri ? { uri: imageUri } : IMAGES.MAINPROFILE} />
-           ) }
-            <TouchableOpacity
-              style={styles.editbtn}
-              // onPress={openGallery}
-              onPress={openImagePicker}>
+            {loading ? (
+              <ActivityIndicator size="large" color="#7F3DFF" />
+            ) : (
+              <Image
+                style={styles.pic}
+                source={imageUri ? {uri: imageUri} : IMAGES.MAINPROFILE}
+              />
+            )}
+            <TouchableOpacity style={styles.editbtn} onPress={openImagePicker}>
               <Image source={IMAGES.EDIT} />
             </TouchableOpacity>
           </View>
@@ -216,9 +217,7 @@ export default function EditProfile() {
               placeholder="Email"
               placeholderTextColor="#91919F"
               value={email}
-              // onChangeText={setEmail}
               editable={false}
-              // keyboardType="email-address"
             />
           </View>
           <View style={styles.inputTextfields}>
@@ -234,7 +233,13 @@ export default function EditProfile() {
         </View>
 
         <View style={styles.btn}>
-          <TouchableOpacity style={[styles.button, { backgroundColor: isButtonEnabled ? '#7F3DFF' : '#8580bc' }]}  disabled={!isButtonEnabled} onPress={handleUpdateProfile}>
+          <TouchableOpacity
+            style={[
+              styles.button,
+              {backgroundColor: isButtonEnabled ? '#7F3DFF' : '#8580bc'},
+            ]}
+            disabled={!isButtonEnabled}
+            onPress={handleUpdateProfile}>
             <Text style={styles.buttonText}>Update Profile</Text>
           </TouchableOpacity>
         </View>

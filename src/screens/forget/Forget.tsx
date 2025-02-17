@@ -7,20 +7,18 @@ import {
   KeyboardAvoidingView,
   ScrollView,
 } from 'react-native';
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import {IMAGES} from '../../constant/image';
 import Input from '../../components/input/Input';
-import {useNavigation} from '@react-navigation/native';
-import { useAppDispatch } from '../../hooks/useRedux';
-import { resetPassword } from '../../store/authSlice/authSlice';
+import {useAppDispatch} from '../../hooks/useRedux';
+import {resetPassword} from '../../store/authSlice/authSlice';
 import Toast from 'react-native-toast-message';
-import { styles } from './forgetStyles';
-import { navigate } from '../../navigation/navigationRef';
+import {styles} from './forgetStyles';
+import {navigate} from '../../navigation/navigationRef';
 
 export default function Forget() {
   const [email, setEmail] = useState('');
-  const navigation = useNavigation();
-  const dispatch = useAppDispatch(); // Use the Redux dispatch function
+  const dispatch = useAppDispatch();
 
   const goToBack = () => {
     navigate('Login');
@@ -28,22 +26,21 @@ export default function Forget() {
 
   const handleSendEmail = () => {
     if (email) {
-      
       dispatch(resetPassword(email))
-        .unwrap() 
-       .then(()=>{
-        setEmail('');
-       })
-       .catch((error) => {
-        console.error('Failed to send email:', error);
-        Toast.show({
-          type: 'error',
-          text1: 'Error!',
-          text2: 'Failed to send the reset email. Please try again.',
-          position: 'top',
-          visibilityTime: 3000,
+        .unwrap()
+        .then(() => {
+          setEmail('');
+        })
+        .catch(error => {
+          console.error('Failed to send email:', error);
+          Toast.show({
+            type: 'error',
+            text1: 'Error!',
+            text2: 'Failed to send the reset email. Please try again.',
+            position: 'top',
+            visibilityTime: 3000,
+          });
         });
-      });
     } else {
       Toast.show({
         type: 'error',
@@ -51,11 +48,8 @@ export default function Forget() {
         position: 'top',
         visibilityTime: 3000,
       });
-      
-      
     }
-  }
-  
+  };
 
   return (
     <KeyboardAvoidingView style={styles.container}>
@@ -91,7 +85,7 @@ export default function Forget() {
           </TouchableOpacity>
         </View>
       </ScrollView>
-      <Toast/>
+      <Toast />
     </KeyboardAvoidingView>
   );
 }

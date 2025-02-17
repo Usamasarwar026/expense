@@ -1,35 +1,23 @@
-import {
-  View,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
-  Image,
-} from 'react-native';
+import {View, Text, StyleSheet, TouchableOpacity, Image} from 'react-native';
 import React from 'react';
 import {IMAGES} from '../../constant/image';
 import {useRoute} from '@react-navigation/native';
-import { useAppDispatch } from '../../hooks/useRedux';
-import { deleteTransaction } from '../../store/transctionSlice/transctionSlice';
+import {useAppDispatch} from '../../hooks/useRedux';
+import {deleteTransaction} from '../../store/transctionSlice/transctionSlice';
 import moment from 'moment';
-import LogoutModel from '../../components/logoutModel/LogoutModel';
-import { navigate } from '../../navigation/navigationRef';
-import { styles } from './detailTransctionStyles';
-import { DetailTransactionRouteProp, ParamTransaction } from '../../types/types';
+import {navigate} from '../../navigation/navigationRef';
+import {styles} from './detailTransctionStyles';
+import {DetailTransactionRouteProp, ParamTransaction} from '../../types/types';
+import Logout from '../../components/logout/Logout';
 
 export default function DetailTransction() {
   const [openModel, setOpenModel] = React.useState(false);
   const route = useRoute<DetailTransactionRouteProp>();
   const dispatch = useAppDispatch();
-  const transaction:ParamTransaction = route.params?.transaction || {};
-
-  console.log('Route Params:', route.params);
-console.log('Transaction Object:', transaction);
-
-const formattedDate = transaction.timestamp
-  ? moment(transaction.timestamp).format('dddd D MMMM YYYY hh:mm A')
-  : 'No Date Available';
-    console.log('Transaction Time:', transaction.time);
-
+  const transaction: ParamTransaction = route.params?.transaction || {};
+  const formattedDate = transaction.timestamp
+    ? moment(transaction.timestamp).format('dddd D MMMM YYYY hh:mm A')
+    : 'No Date Available';
 
   const goToFinancialReport = () => {
     try {
@@ -38,13 +26,9 @@ const formattedDate = transaction.timestamp
       console.error('Navigation Error:', error);
     }
   };
-  const onYesPress = async(transactionId: string) => {
-
-    console.log('Success model displayed====>',transactionId);
-    await dispatch(deleteTransaction(transactionId))
+  const onYesPress = async (transactionId: string) => {
+    await dispatch(deleteTransaction(transactionId));
   };
-  
-  
 
   const isExpense = transaction.type === 'Expense';
 
@@ -113,23 +97,23 @@ const formattedDate = transaction.timestamp
                 <Image
                   style={styles.actualpic}
                   resizeMode="cover"
-                  source={{uri: transaction.imageUri}} 
+                  source={{uri: transaction.imageUri}}
                 />
               ) : (
-                <Text>No image available</Text> 
+                <Text>No image available</Text>
               )}
             </View>
           </View>
           <TouchableOpacity style={styles.button}>
             <Text style={styles.btnText}>Edit</Text>
           </TouchableOpacity>
-          <LogoutModel
+          <Logout
             openModel={openModel}
             setOpenModel={setOpenModel}
             title="Remove this transaction?"
             description="Are you sure do you wanna remove this transaction?"
             text="Transaction has been Successfully Removed"
-            YesPress={()=>onYesPress(transaction.id)}
+            YesPress={() => onYesPress(transaction.id)}
             navigateToHome={true}
           />
         </View>

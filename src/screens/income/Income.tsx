@@ -1,7 +1,6 @@
 import {
   View,
   Text,
-  StyleSheet,
   TouchableOpacity,
   Image,
   TextInput,
@@ -17,7 +16,7 @@ import {useAppDispatch} from '../../hooks/useRedux';
 import {addTransaction} from '../../store/transctionSlice/transctionSlice';
 import SuccessfulModel from '../../components/successfulModel/SuccessfulModel';
 import Toast from 'react-native-toast-message';
-import { styles } from './incomeStyles';
+import {styles} from './incomeStyles';
 
 export default function Income() {
   const [openModel, setOpenModel] = useState<boolean>(false);
@@ -32,21 +31,14 @@ export default function Income() {
 
   const saveData = () => {
     if (!description || !category || !amount || !imageUri) {
-      Toast.show(
-        {
-          text1: 'All fields are required',
-          type: 'error',
-        },
-      )
+      Toast.show({
+        text1: 'All fields are required',
+        type: 'error',
+      });
       return;
     }
-    console.log('Category:', category);
-    console.log('Amount:', amount);
-    console.log('Description:', description);
-    console.log('Image URI:', imageUri);
-
     dispatch(addTransaction({description, category, amount, imageUri, type}));
-    console.log('Transaction added successfully');
+
     setDescription('');
     setCategory('Category');
     setAmount('');
@@ -71,8 +63,10 @@ export default function Income() {
   };
   return (
     <>
-      <ScrollView style={styles.container } contentContainerStyle={{flexGrow: 1}}
-      bounces={false}>
+      <ScrollView
+        style={styles.container}
+        contentContainerStyle={{flexGrow: 1}}
+        bounces={false}>
         <View style={styles.topcontainer}>
           <TouchableOpacity onPress={goToHome}>
             <Image source={IMAGES.WHITEARROW} />
@@ -81,7 +75,7 @@ export default function Income() {
         </View>
         <View style={styles.secondContainer}>
           <Text style={styles.secondContainerText}>How much?</Text>
-          <Text style={styles.secondContaineramount}>$0</Text>
+          <Text style={styles.secondContaineramount}>$..</Text>
         </View>
         <View style={styles.belowContainer}>
           <View style={styles.belowinnerContainer}>
@@ -142,7 +136,7 @@ export default function Income() {
         openModel={openModel}
         setOpenModel={setOpenModel}
         onSelectImage={uri => {
-          console.log('Image URI from Child:', uri); // Debugging log
+          console.log('Image URI from Child:', uri);
           setImageUri(uri);
         }}
       />
@@ -151,7 +145,7 @@ export default function Income() {
         setOpenModel={setSuccessfulModel}
         text="Transaction has been successfully added"
       />
-      <Toast/>
+      <Toast />
     </>
   );
 }
