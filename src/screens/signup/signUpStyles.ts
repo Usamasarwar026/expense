@@ -3,6 +3,11 @@ import { StyleSheet } from "react-native";
 export const styles = StyleSheet.create({
     container: {
       flex: 1,
+      width: '100%',
+    },
+    scroll:{
+      flexGrow: 1,
+      width: '100%',
     },
     topcontainer: {
       flex: 1,
@@ -34,25 +39,21 @@ export const styles = StyleSheet.create({
     },
     label: {
       flex: 1,
-      paddingHorizontal: 30,
+      paddingHorizontal: 33,
       flexDirection: 'row',
+      justifyContent: 'center',
+      alignItems: 'center',
       gap: 10,
+      marginBottom: 10,
     },
     labelText: {
       color: '#7F00FF',
     },
-    check: {
-      width: 20,
-      height: 20,
-      borderRadius: 2,
-      borderWidth: 2,
-      borderColor: '#7F00FF',
-    },
     btn: {
       flex: 1,
       paddingHorizontal: 20,
-      // width: 343,
-      // height: 56,
+      justifyContent: 'center',
+      alignItems: 'center',
     },
     button: {
       width: 343,
@@ -91,6 +92,7 @@ export const styles = StyleSheet.create({
       flex: 3,
       alignItems: 'center',
       fontSize: 16,
+      marginBottom: 10,
     },
   
     checkbox: {

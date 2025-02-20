@@ -13,7 +13,11 @@ import Dropdown from '../../components/dropdown/Dropdown';
 import {CommonActions, useNavigation} from '@react-navigation/native';
 import {useAppDispatch, useAppSelector} from '../../hooks/useRedux';
 import {fetchUserData} from '../../store/authSlice/authSlice';
-import {fetchTransactions} from '../../store/transctionSlice/transctionSlice';
+import {
+  fetchExchangeRates,
+  fetchSelectedCurrency,
+  fetchTransactions,
+} from '../../store/transctionSlice/transctionSlice';
 import {styles} from './homeStyle';
 import {Transaction, UserData} from '../../types/types';
 
@@ -27,6 +31,20 @@ export default function Home() {
   const navigation = useNavigation();
   const dispatch = useAppDispatch();
   const {transactions, loading} = useAppSelector(state => state.transctions);
+  const selectedCurrency = useAppSelector(
+    state => state.transctions.selectedCurrency,
+  );
+  const exchangeRates = useAppSelector(
+    state => state.transctions.exchangeRates,
+  );
+
+  useEffect(() => {
+    dispatch(fetchSelectedCurrency());
+  }, []);
+  
+  useEffect(() => {
+    dispatch(fetchExchangeRates());
+  }, [dispatch]);
 
   useEffect(() => {
     dispatch(fetchTransactions());
@@ -109,6 +127,17 @@ export default function Home() {
     });
   };
 
+  const convertAmount = (amount: number, currency: string) => {
+    const rate = exchangeRates[currency] || 1;
+    const convertedAmount = amount * rate;
+    return new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: currency,
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0,
+    }).format(convertedAmount);
+  };
+
   return (
     <View style={{flex: 1}}>
       <View style={styles.container}>
@@ -142,7 +171,9 @@ export default function Home() {
             <Text style={styles.blnc}>Account Balance</Text>
           </View>
           <View>
-            <Text style={styles.blncamount}>$9400</Text>
+            <Text style={styles.blncamount}>
+              {convertAmount(totalIncome - totalExpense, selectedCurrency)}
+            </Text>
           </View>
           <View style={styles.parentbox}>
             <View style={styles.balanceBox}>
@@ -151,7 +182,9 @@ export default function Home() {
               </View>
               <View>
                 <Text style={styles.parentText}>Income</Text>
-                <Text style={styles.parentAmount}>${totalIncome}</Text>
+                <Text style={styles.parentAmount}>
+                  {convertAmount(totalIncome, selectedCurrency)}
+                </Text>
               </View>
             </View>
             <View style={styles.balanceBox1}>
@@ -160,7 +193,9 @@ export default function Home() {
               </View>
               <View>
                 <Text style={styles.parentText}>Expenses</Text>
-                <Text style={styles.parentAmount}>${totalExpense}</Text>
+                <Text style={styles.parentAmount}>
+                  {convertAmount(totalExpense, selectedCurrency)}
+                </Text>
               </View>
             </View>
           </View>

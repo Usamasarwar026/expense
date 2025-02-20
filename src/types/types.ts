@@ -186,7 +186,15 @@ export type TransctionModelProps = {
   setFilters: (filters: TransactionFilters) => void;
   applyFilters: () => void;
   setCategory?: (category: string) => void;
+  resetFilters?: ()=>void
 };
+
+export type CurrencyModalProps = {
+  visible: boolean;
+  onClose: () => void;
+  onSelectCurrency: (currency: string) => void;
+}
+
 
 export type UserProfile = {
   name: string;
@@ -242,11 +250,16 @@ export interface TransactionDataSlice {
   timestamp: string;
 }
 
+export type ExchangeRates ={
+  [currency: string]: number;
+}
 export interface TransactionState {
   transactions: TransactionDataSlice[];
   loading: boolean;
   error: string | null;
   status: 'idle' | 'loading' | 'succeeded' | 'failed';
+  selectedCurrency: string ;
+  exchangeRates: ExchangeRates;
 }
 
 export interface AddTransactionPayload {

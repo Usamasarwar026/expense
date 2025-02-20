@@ -8,14 +8,19 @@ import {
   Alert,
   ScrollView,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {IMAGES} from '../../constant/image';
 import {CommonActions, useNavigation} from '@react-navigation/native';
 import AttachmentModel from '../../components/attachmentModel/AttachmentModel';
 import CategoryDropdown from '../../components/categoryDropdown/CategoryDropdown';
 import Input from '../../components/input/Input';
-import {useAppDispatch} from '../../hooks/useRedux';
-import {addTransaction} from '../../store/transctionSlice/transctionSlice';
+import {useAppDispatch, useAppSelector} from '../../hooks/useRedux';
+import {
+  addTransaction,
+  fetchExchangeRates,
+  fetchSelectedCurrency,
+  fetchTransactions,
+} from '../../store/transctionSlice/transctionSlice';
 import SuccessfulModel from '../../components/successfulModel/SuccessfulModel';
 import Toast from 'react-native-toast-message';
 import {styles} from './expenseStyles';
@@ -26,11 +31,54 @@ export default function Expense() {
   const [description, setDescription] = useState<string>('');
   const [category, setCategory] = useState<string>('All Expense');
   const [imageUri, setImageUri] = useState<string | null>(null);
+  const [totalExpense, setTotalExpense] = useState(0);
   const [amount, setAmount] = useState('');
   const navigation = useNavigation();
   const dispatch = useAppDispatch();
+  const {transactions} = useAppSelector(state => state.transctions);
   const type = 'Expense';
+   const selectedCurrency = useAppSelector(
+        state => state.transctions.selectedCurrency,
+      );
+      const exchangeRates = useAppSelector(
+        state => state.transctions.exchangeRates,
+      );
+    
+      useEffect(() => {
+        dispatch(fetchSelectedCurrency());
+      }, []);
+      
+      useEffect(() => {
+        dispatch(fetchExchangeRates());
+      }, [dispatch]);
+    
+      
+    const convertAmount = (amount: number, currency: string) => {
+      const rate = exchangeRates[currency] || 1;
+      const convertedAmount = amount * rate;
+      return new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: currency,
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 0,
+      }).format(convertedAmount);
+    };
 
+  useEffect(() => {
+    dispatch(fetchTransactions());
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (transactions.length > 0) {
+      const expenseTotal = transactions
+        .filter(transaction => transaction.type === 'Expense')
+        .reduce(
+          (sum, transaction) => sum + (Number(transaction.amount) || 0),
+          0,
+        );
+      setTotalExpense(expenseTotal);
+    }
+  }, [transactions]);
   const saveData = () => {
     if (!description || !category || !amount || !imageUri) {
       Toast.show({
@@ -78,7 +126,7 @@ export default function Expense() {
         </View>
         <View style={styles.secondContainer}>
           <Text style={styles.secondContainerText}>How much?</Text>
-          <Text style={styles.secondContaineramount}>$...</Text>
+          <Text style={styles.secondContaineramount}>{convertAmount(totalExpense, selectedCurrency)}</Text>
         </View>
         <View style={styles.belowContainer}>
           <View style={styles.belowinnerContainer}>

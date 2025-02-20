@@ -8,7 +8,6 @@ import {
 import React, {useEffect, useState} from 'react';
 import {IMAGES} from '../../constant/image';
 import Setting from '../../components/setting/Setting';
-import {useNavigation} from '@react-navigation/native';
 import {useAppDispatch} from '../../hooks/useRedux';
 import {fetchUserData} from '../../store/authSlice/authSlice';
 import {styles} from './profileStyles';

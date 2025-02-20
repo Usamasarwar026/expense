@@ -73,7 +73,6 @@ export default function EditProfile() {
   const storeImage = async (uri: string): Promise<void> => {
     try {
       await dispatch(storeImageUriInFirestore(uri));
-      console.log('Image URI stored successfully');
     } catch (error) {
       console.error('Error storing image URI:', error);
     }

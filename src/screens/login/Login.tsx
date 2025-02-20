@@ -75,7 +75,7 @@ export default function Login() {
         }, 1500);
       }
     } catch (errorMessage) {
-      console.log('Login Error:', errorMessage);
+      console.error('Login Error:', errorMessage);
       Toast.show({
         type: 'error',
         text1: errorMessage as string,

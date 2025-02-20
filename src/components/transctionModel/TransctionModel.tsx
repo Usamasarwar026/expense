@@ -2,10 +2,7 @@ import {
   View,
   Text,
   Modal,
-  StyleSheet,
-  Animated,
   TouchableWithoutFeedback,
-  Image,
   TouchableOpacity,
 } from 'react-native';
 import React from 'react';
@@ -20,6 +17,7 @@ export default function TransctionModel({
   setFilters,
   applyFilters,
   setCategory,
+  resetFilters
 }: TransctionModelProps) {
   return (
     <Modal visible={visible} animationType="slide" transparent={true}>
@@ -33,13 +31,8 @@ export default function TransctionModel({
         <View style={styles.firstBox}>
           <Text style={styles.firstBoxText}>Filter Transaction</Text>
           <TouchableOpacity
-            onPress={() => {
-              setFilters({
-                type: null,
-                sortBy: 'Highest' as 'Highest' | 'Lowest' | 'Newest' | 'Oldest',
-                category: 'choose Category',
-              });
-            }}>
+          onPress={resetFilters}
+            >
             <Text style={styles.firstBoxText1}>Reset</Text>
           </TouchableOpacity>
         </View>

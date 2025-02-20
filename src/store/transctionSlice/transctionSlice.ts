@@ -1,6 +1,6 @@
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
-import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
+import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {TransactionDataSlice, TransactionState} from '../../types/types';
 
 const initialState: TransactionState = {
@@ -8,7 +8,62 @@ const initialState: TransactionState = {
   loading: false,
   error: null,
   status: 'idle',
+  selectedCurrency: 'USD',
+  exchangeRates: {},
 };
+
+export const fetchSelectedCurrency = createAsyncThunk(
+  'transaction/fetchSelectedCurrency',
+  async (_, {rejectWithValue}) => {
+    const user = auth().currentUser;
+    if (!user) return rejectWithValue('User not logged in');
+
+    try {
+      const doc = await firestore().collection('users').doc(user.uid).get();
+      if (doc.exists) {
+        const currencyrate = doc.data()?.selectedCurrency;
+        return currencyrate;
+      } else {
+        return 'USD';
+      }
+    } catch (error: any) {
+      return rejectWithValue(error.message);
+    }
+  },
+);
+
+export const saveSelectedCurrency = createAsyncThunk(
+  'transaction/saveSelectedCurrency',
+  async (currency: string, {rejectWithValue}) => {
+    const user = auth().currentUser;
+    if (!user) return rejectWithValue('User not logged in');
+
+    try {
+      await firestore()
+        .collection('users')
+        .doc(user.uid)
+        .set({selectedCurrency: currency}, {merge: true});
+      return currency;
+    } catch (error: any) {
+      return rejectWithValue(error.message);
+    }
+  },
+);
+
+export const fetchExchangeRates = createAsyncThunk(
+  'transactions/fetchExchangeRates',
+  async (_, {rejectWithValue}) => {
+    try {
+      const response = await fetch(
+        'https://api.exchangerate-api.com/v4/latest/USD',
+      );
+      const data = await response.json();
+      return data.rates;
+    } catch (error: any) {
+      return rejectWithValue(error.message);
+    }
+  },
+);
 
 export const addTransaction = createAsyncThunk(
   'transaction/addTransction',
@@ -83,8 +138,7 @@ export const fetchTransactions = createAsyncThunk(
       const snapshot = await transactionsRef.get();
 
       if (snapshot.empty) {
-        console.log('No transactions found.');
-        return []; 
+        return [];
       }
 
       const transactions = snapshot.docs.map(doc => ({
@@ -115,7 +169,7 @@ export const deleteTransaction = createAsyncThunk(
 
       await transactionRef.delete();
 
-      return transactionId; 
+      return transactionId;
     } catch (error: any) {
       console.error('Error deleting transaction:', error);
       return rejectWithValue(error.message);
@@ -126,7 +180,11 @@ export const deleteTransaction = createAsyncThunk(
 export const transactionSlice = createSlice({
   name: 'transaction',
   initialState,
-  reducers: {},
+  reducers: {
+    setCurrency: (state, action: PayloadAction<string>) => {
+      state.selectedCurrency = action.payload;
+    },
+  },
   extraReducers: builder => {
     builder.addCase(addTransaction.pending, state => {
       state.loading = true;
@@ -136,7 +194,7 @@ export const transactionSlice = createSlice({
       state.loading = false;
       state.transactions.push({
         ...action.payload,
-        userId: action.payload.userId ?? '', 
+        userId: action.payload.userId ?? '',
       });
       state.status = 'succeeded';
     });
@@ -175,7 +233,23 @@ export const transactionSlice = createSlice({
       state.error = action.payload as string;
       state.status = 'failed';
     });
+    builder.addCase(fetchExchangeRates.fulfilled, (state, action) => {
+      state.exchangeRates = action.payload;
+    });
+    builder.addCase(saveSelectedCurrency.fulfilled, (state, action) => {
+      state.selectedCurrency = action.payload;
+    });
+    builder.addCase(saveSelectedCurrency.rejected, (state, action) => {
+      state.error = action.payload as string;
+    });
+    builder.addCase(fetchSelectedCurrency.fulfilled, (state, action) => {
+      state.selectedCurrency = action.payload;
+    });
+    builder.addCase(fetchSelectedCurrency.rejected, (state, action) => {
+      state.error = action.payload as string;
+    });
   },
 });
 
+export const {setCurrency} = transactionSlice.actions;
 export default transactionSlice.reducer;

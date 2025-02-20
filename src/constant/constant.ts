@@ -117,3 +117,5 @@ export const PROFILE_DATA = [
     name: 'Logout',
   },
 ];
+
+ export const CURRENCY_LIST = ['USD', 'EUR', 'GBP', 'PKR', 'INR',];

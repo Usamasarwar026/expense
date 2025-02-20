@@ -6,7 +6,6 @@ import {
   Animated,
   TouchableOpacity,
   Image,
-  Alert,
 } from 'react-native';
 import React from 'react';
 import {IMAGES} from '../../constant/image';
@@ -34,7 +33,6 @@ export default function AttachmentModel({
     const result = await launchCamera(options);
     if (result.assets && result.assets.length > 0) {
       const imageUri: string = result.assets[0].uri ?? '';
-      Alert.alert('Selected Image:', imageUri);
       onSelectImage(imageUri);
       setOpenModel(false);
     }
@@ -48,7 +46,6 @@ export default function AttachmentModel({
     const result = await launchImageLibrary(options);
     if (result.assets && result.assets.length > 0) {
       const imageUri: string = result.assets[0].uri ?? '';
-      console.log('Selected Image from Gallery:', imageUri);
       onSelectImage(imageUri);
       setOpenModel(false);
     }
@@ -59,12 +56,10 @@ export default function AttachmentModel({
       const result = await DocumentPicker.pickSingle({
         type: [DocumentPicker.types.allFiles],
       });
-      console.log('Selected Document:', result.uri);
       onSelectImage(result.uri);
       setOpenModel(false);
     } catch (err) {
       if (DocumentPicker.isCancel(err)) {
-        console.log('User canceled document picker');
       } else {
         console.error('Error picking document:', err);
       }

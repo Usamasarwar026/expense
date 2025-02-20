@@ -34,7 +34,7 @@ export const styles = StyleSheet.create({
   label: {
     fontSize: 16,
     fontWeight: '400',
-    color: '#91919F',
+    // color: '#91919F',
   },
   listContainer: {
     flex: 1,

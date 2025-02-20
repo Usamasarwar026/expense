@@ -17,7 +17,7 @@ export default function CategoryDropdown({
   dropdownPosition,
   type,
   style,
-  setCategory = ()=>{},
+  setCategory = () => {},
 }: CategoryDropdownProps) {
   const [selectedValue, setSelectedValue] = useState<String | null>(null);
   const [listVisible, setListVisible] = useState<boolean>(false);
@@ -46,7 +46,10 @@ export default function CategoryDropdown({
         onPress={() => setListVisible(!listVisible)}>
         {style === 'AllExpense' ? (
           <>
-            <Text style={styles.label}>{selectedValue || 'Category'}</Text>
+            <Text
+              style={[styles.label, {color: selectedValue ? 'black' : 'grey'}]}>
+              {selectedValue || 'Category'}
+            </Text>
             <Image source={IMAGES.ARROW_DOWN} style={styles.icon} />
           </>
         ) : (

@@ -21,7 +21,6 @@ export const signup = createAsyncThunk(
         password,
       );
       const user = response.user;
-      console.log('user data from slice', user.uid);
 
       await firestore().collection('users').doc(user.uid).set({
         uid: user.uid,
@@ -32,7 +31,7 @@ export const signup = createAsyncThunk(
 
       return {uid: user.uid, name: name, email: user.email};
     } catch (error: any) {
-      console.log('Firebase Auth Error:', error.code, error.message);
+      console.error('Firebase Auth Error:', error.code, error.message);
       let errorMessage = 'Authentication failed';
 
       if (error.code === 'auth/email-already-in-use') {
@@ -45,7 +44,7 @@ export const signup = createAsyncThunk(
       ) {
         errorMessage =
           'Weak password! Password must be at least 6 characters long';
-        console.log(errorMessage);
+        console.error(errorMessage);
       }
       Toast.show({
         type: 'error',
@@ -72,7 +71,6 @@ export const login = createAsyncThunk(
         uid: response.user.uid,
         email: response.user.email,
       };
-      console.log(user);
 
       return user;
     } catch (error: any) {
@@ -137,7 +135,7 @@ export const resetPassword = createAsyncThunk(
         });
       }
     } catch (error: any) {
-      console.log('Error sending password reset email:', error);
+      console.error('Error sending password reset email:', error);
       Toast.show({
         type: 'error',
         text1: 'Failed to send password reset email. Please try again.',
@@ -163,8 +161,7 @@ export const GoogleSignup = createAsyncThunk(
           throw new Error('No ID token found');
         }
         const googleCredential = auth.GoogleAuthProvider.credential(token);
-        const response = await auth().signInWithCredential(googleCredential);
-        console.log('User signed in with Google', response.user);
+        const response = await auth().signInWithCredential(googleCredential)
         await firestore().collection('users').doc(response.user.uid).set({
           uid: response.user.uid,
           name: response.user.displayName,
@@ -181,7 +178,7 @@ export const GoogleSignup = createAsyncThunk(
         throw new Error('Google sign-in was canceled or failed.');
       }
     } catch (error: any) {
-      console.log('Google Sign-in Error', error);
+      console.error('Google Sign-in Error', error);
 
       return rejectWithValue(error.message);
     }
@@ -201,7 +198,7 @@ export const updateName = createAsyncThunk(
       });
       return name;
     } catch (error: any) {
-      console.log('Error updating name:', error);
+      console.error('Error updating name:', error);
       return rejectWithValue(error.message);
     }
   },
@@ -227,7 +224,6 @@ export const updateEmail = createAsyncThunk(
           'This operation requires recent authentication. Log in again and try again.',
         );
       }
-      console.log('Error updating email:', error);
       return rejectWithValue(error.message || 'Failed to update email');
     }
   },
@@ -261,7 +257,7 @@ export const changePassword = createAsyncThunk(
         throw new Error('User not found');
       }
     } catch (error: any) {
-      console.log(error);
+      console.error(error);
       if (error.code === 'auth/wrong-password' || 'auth/invalid-credential') {
         Toast.show({
           type: 'error',
@@ -281,7 +277,6 @@ export const fetchUserData = createAsyncThunk(
   async () => {
     const userId = auth().currentUser?.uid;
     if (!userId) {
-      console.log('Error', 'User is not authenticated');
       return;
     }
     try {
@@ -310,7 +305,6 @@ export const storeImageUriInFirestore = createAsyncThunk<
     await firestore().collection('users').doc(userId).update({
       profileImageUri: uri,
     });
-    console.log('Image URI stored successfully');
     return {profileImageUri: uri};
   } catch (error: any) {
     console.error('Error storing image URI:', error);

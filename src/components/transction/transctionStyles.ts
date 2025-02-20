@@ -36,6 +36,14 @@ export const styles = StyleSheet.create({
     fontSize: 13,
     fontWeight: '500',
     color: '#91919F',
+    
+  },
+  text4: {
+    fontSize: 13,
+    fontWeight: '500',
+    color: '#91919F',
+    textAlign: 'right',
+    
   },
   rightContainer: {
     flexDirection: 'row',
@@ -53,4 +61,9 @@ export const styles = StyleSheet.create({
   green: {
     color: '#10B981',
   },
+  pricebox:{
+    borderWidth: 1,
+    borderColor: 'red',
+    justifyContent: 'flex-end',
+  }
 });

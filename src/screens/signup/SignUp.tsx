@@ -21,7 +21,6 @@ export default function SignUp() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isChecked, setChecked] = useState(false);
-  const navigation = useNavigation();
   const dispatch = useAppDispatch();
 
   const goToLogin = () => {
@@ -140,7 +139,7 @@ export default function SignUp() {
 
   return (
     <KeyboardAvoidingView style={styles.container}>
-      <ScrollView contentContainerStyle={{flexGrow: 1}} bounces={false}>
+      <ScrollView contentContainerStyle={styles.scroll} bounces={false}>
         <View style={styles.topcontainer}>
           <TouchableOpacity onPress={goToLandingPage}>
             <Image source={IMAGES.ARROW} />
@@ -174,19 +173,20 @@ export default function SignUp() {
             secureTextEntry={true} 
           />
         </View>
-
         <View style={styles.label}>
           <TouchableOpacity
             style={[styles.checkbox, isChecked && styles.checked]}
             onPress={() => setChecked(!isChecked)}>
             {isChecked && <Text style={styles.checkmark}>✔</Text>}
           </TouchableOpacity>
+          <View>
           <Text>
             By signing up, you agree to the{' '}
             <Text style={styles.labelText}>
               Terms of Service and Privacy Policy
             </Text>
           </Text>
+          </View>
         </View>
 
         <View style={styles.btn}>

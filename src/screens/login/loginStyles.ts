@@ -49,6 +49,8 @@ export const styles = StyleSheet.create({
     btn: {
       flex: 1,
       paddingHorizontal: 20,
+      alignItems: 'center',
+      justifyContent: 'center',
     },
     button: {
       width: 343,
@@ -87,6 +89,7 @@ export const styles = StyleSheet.create({
       flex: 6,
       alignItems: 'center',
       fontSize: 16,
+      marginBottom: 10,
     },
   });
   

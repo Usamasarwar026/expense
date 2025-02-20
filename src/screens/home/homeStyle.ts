@@ -20,12 +20,9 @@ export const styles = StyleSheet.create({
       paddingVertical: 10,
     },
     dropdown: {
-      // backgroundColor: '#FCEED4',
       justifyContent: 'center',
       alignItems: 'center',
       borderRadius: 10,
-      // borderWidth: 1,
-      // borderColor: '#7F3DFF',
       marginLeft: 10,
     },
     picbox: {
@@ -57,7 +54,7 @@ export const styles = StyleSheet.create({
     parentbox: {
       flexDirection: 'row',
       justifyContent: 'space-between',
-      paddingHorizontal: 20,
+      paddingHorizontal: 10,
       marginTop: 20,
     },
     imageBox: {
@@ -73,7 +70,7 @@ export const styles = StyleSheet.create({
       justifyContent: 'space-evenly',
       alignItems: 'center',
       backgroundColor: '#00A86B',
-      width: 164,
+      width: 175,
       height: 80,
       borderRadius: 28,
     },
@@ -82,7 +79,7 @@ export const styles = StyleSheet.create({
       justifyContent: 'space-evenly',
       alignItems: 'center',
       backgroundColor: '#FD3C4A',
-      width: 164,
+      width: 175,
       height: 80,
       borderRadius: 28,
     },
@@ -92,16 +89,14 @@ export const styles = StyleSheet.create({
       color: '#ffffff',
     },
     parentAmount: {
-      fontSize: 22,
+      fontSize: 16,
       fontWeight: '600',
       color: '#ffffff',
     },
     thirdcontainer: {
-      // flex: 1,
       paddingTop: 10,
     },
     thirdcontainerText: {
-      // flex: 1,
       paddingTop: 10,
   
       fontSize: 18,
@@ -121,7 +116,6 @@ export const styles = StyleSheet.create({
     },
   
     barbox: {
-      // flex:0,
       justifyContent: 'center',
       alignItems: 'center',
       backgroundColor: '#FCEED4',
@@ -130,7 +124,6 @@ export const styles = StyleSheet.create({
       width: 90,
     },
     barbox1: {
-      // flex:0,
       justifyContent: 'center',
       alignItems: 'center',
       borderRadius: 20,
@@ -172,15 +165,11 @@ export const styles = StyleSheet.create({
       paddingVertical: 20,
       textAlign: 'center',
       marginBottom: 30,
-      // borderWidth: 1,
     },
     listtextBox: {
       flex: 1,
-      // justifyContent: 'center',
-      // alignItems: 'center',
       paddingHorizontal: 20,
       paddingVertical: 20,
-      // borderWidth: 1,
     },
     filterButton: {
       justifyContent: 'center',

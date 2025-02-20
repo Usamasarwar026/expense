@@ -33,7 +33,7 @@ export const styles = StyleSheet.create({
       color: '#FCFCFC',
     },
     secondContaineramount: {
-      fontSize: 64,
+      fontSize: 50,
       fontWeight: '600',
       color: '#FCFCFC',
       paddingTop: 20,
