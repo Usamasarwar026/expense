@@ -40,8 +40,8 @@ useEffect(() => {
       console.error('Navigation Error:', error);
     }
   };
-  const handleCurrencySelect = (currency: string) => {
-    dispatch(saveSelectedCurrency(currency));
+  const handleCurrencySelect = async(currency: string) => {
+    await dispatch(saveSelectedCurrency(currency));
     setCurrency(currency); 
     setModalVisible(false);
   };

@@ -128,15 +128,28 @@ export default function Home() {
   };
 
   const convertAmount = (amount: number, currency: string) => {
-    const rate = exchangeRates[currency] || 1;
+    if (!currency) {
+      console.error("Currency is required but received:", currency);
+      return "Invalid currency";
+    }
+  
+    const rate = exchangeRates[currency] ?? 1;
     const convertedAmount = amount * rate;
-    return new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: currency,
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 0,
-    }).format(convertedAmount);
+  
+    try {
+      return new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: currency.toUpperCase(), 
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 0,
+      }).format(convertedAmount);
+    } catch (error) {
+      console.error("Invalid currency format:", currency, error);
+      return "Invalid ";
+    }
   };
+  
+
 
   return (
     <View style={{flex: 1}}>
