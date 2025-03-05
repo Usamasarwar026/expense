@@ -39,8 +39,9 @@ export default function Home() {
   const {transactions, loading, selectedCurrency, exchangeRates} =
     useAppSelector(state => state.transctions);
 
-  useEffect(() => {
-    dispatch(fetchSelectedCurrency());
+    
+    useEffect(() => {
+      dispatch(fetchSelectedCurrency());
   }, []);
 
   useEffect(() => {

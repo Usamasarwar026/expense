@@ -11,7 +11,7 @@ import {
 import React, {useEffect, useState} from 'react';
 import Input from '../../components/input/Input';
 import {IMAGES} from '../../constant/image';
-import {useNavigation} from '@react-navigation/native';
+import {CommonActions, useNavigation} from '@react-navigation/native';
 import {useAppDispatch} from '../../hooks/useRedux';
 import {
   fetchUserData,
@@ -56,7 +56,12 @@ export default function EditProfile() {
   }, []);
   const goToProfile = () => {
     try {
-      navigation.goBack();
+      navigation.dispatch(
+              CommonActions.reset({
+                index: 0,
+                routes: [{name: 'TabNavigation', params: {screen: 'Profile'}}],
+              }),
+            );
     } catch (error) {
       console.error('Navigation Error:', error);
     }
@@ -102,7 +107,7 @@ export default function EditProfile() {
   const openImagePicker = () => {
     Alert.alert(
       'Select an option',
-      'Choose an image from the gallery or take a new photo.',
+      'Choose an image from the Gallery or take a new photo.',
       [
         {
           text: 'Gallery',

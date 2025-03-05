@@ -282,8 +282,15 @@ export type AuthState = {
   loading: boolean;
   error: string | null;
   status: 'idle' | 'loading' | 'succeeded' | 'failed';
-  profileImageUri?: string | null;
+  profileImageUri?: string;
 };
+export type UserDatas ={
+  profileImageUri?: string;
+  name?: string;
+  email?: string;
+}
+
+export type UsersData = Record<string, UserData>;
 
 export type User = {
   uid: string;
