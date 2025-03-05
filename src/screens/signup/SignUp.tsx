@@ -9,7 +9,6 @@ import {
 import React, {useState} from 'react';
 import {IMAGES} from '../../constant/image';
 import Input from '../../components/input/Input';
-import {useNavigation} from '@react-navigation/native';
 import {useAppDispatch} from '../../hooks/useRedux';
 import { GoogleSignup, signup} from '../../store/authSlice/authSlice';
 import Toast from 'react-native-toast-message';
@@ -209,7 +208,7 @@ export default function SignUp() {
 
         <View style={styles.login}>
             <TouchableOpacity  onPress={goToLogin}>
-          <Text>
+          <Text style={styles.btntext}>
             Already have an account? 
             <Text style={styles.labelText}>Login</Text>
           </Text>

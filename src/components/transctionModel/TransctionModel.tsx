@@ -7,7 +7,7 @@ import {
 } from 'react-native';
 import React from 'react';
 import CategoryDropdown from '../categoryDropdown/CategoryDropdown';
-import {styles} from './transctioModelStyles';
+import {styles} from './transctionModelStyles';
 import {TransctionModelProps} from '../../types/types';
 
 export default function TransctionModel({

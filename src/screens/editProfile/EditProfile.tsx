@@ -5,19 +5,17 @@ import {
   ScrollView,
   TouchableOpacity,
   Image,
-  StyleSheet,
   Alert,
   ActivityIndicator,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import Input from '../../components/input/Input';
 import {IMAGES} from '../../constant/image';
-import {CommonActions, useNavigation} from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 import {useAppDispatch} from '../../hooks/useRedux';
 import {
   fetchUserData,
   storeImageUriInFirestore,
-  updateEmail,
   updateName,
 } from '../../store/authSlice/authSlice';
 import Toast from 'react-native-toast-message';
@@ -28,7 +26,6 @@ import {
   launchImageLibrary,
 } from 'react-native-image-picker';
 import {styles} from './editProfileStyles';
-import {FetchUserDataResponse} from '../../types/types';
 
 export default function EditProfile() {
   const [email, setEmail] = useState<string>('');
@@ -59,12 +56,7 @@ export default function EditProfile() {
   }, []);
   const goToProfile = () => {
     try {
-      navigation.dispatch(
-        CommonActions.reset({
-          index: 0,
-          routes: [{name: 'TabNavigation', params: {screen: 'Profile'}}],
-        }),
-      );
+      navigation.goBack();
     } catch (error) {
       console.error('Navigation Error:', error);
     }
@@ -88,7 +80,6 @@ export default function EditProfile() {
       const selectedImageUri = result.assets?.[0]?.uri ?? null;
       if (selectedImageUri) {
         setImageUri(selectedImageUri);
-        await storeImage(selectedImageUri);
       }
     }
   };
@@ -104,7 +95,6 @@ export default function EditProfile() {
       const selectedImageUri = result.assets?.[0]?.uri ?? null;
       if (selectedImageUri) {
         setImageUri(selectedImageUri);
-        await storeImage(selectedImageUri);
       }
     }
   };

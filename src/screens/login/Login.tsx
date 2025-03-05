@@ -24,7 +24,7 @@ export default function Login() {
   const {user} = useAppSelector(state => state.auth);
 
   const goToBack = () => {
-    navigate('SignUp');
+    navigation.goBack();
   };
   const goToSignup = () => {
     try {
@@ -174,7 +174,7 @@ export default function Login() {
 
         <View style={styles.login}>
           <TouchableOpacity onPress={goToSignup}>
-            <Text>
+            <Text style={styles.btntext}>
               Don’t have an account yet?
               <Text style={styles.labelText}>Sign Up</Text>
             </Text>

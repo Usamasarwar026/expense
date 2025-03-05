@@ -2,6 +2,7 @@ import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {TransactionDataSlice, TransactionState} from '../../types/types';
+import {uploadToCloudinary} from '../imageSlice/imageSlice';
 
 const initialState: TransactionState = {
   transactions: [],
@@ -81,9 +82,16 @@ export const addTransaction = createAsyncThunk(
       imageUri: string;
       type: string;
     },
-    {rejectWithValue},
+    {dispatch, rejectWithValue},
   ) => {
     try {
+      let uploadedImageUrl = imageUri;
+
+      if (imageUri) {
+        const result = await dispatch(uploadToCloudinary(imageUri)).unwrap();
+        uploadedImageUrl = result;
+      }
+
       const uid = auth().currentUser?.uid;
       const useRef = await firestore().collection('users').doc(uid);
 
@@ -98,7 +106,7 @@ export const addTransaction = createAsyncThunk(
         category,
         description,
         amount,
-        imageUri,
+        imageUri: uploadedImageUrl,
         type,
         timestamp: firestore.FieldValue.serverTimestamp(),
       });
@@ -112,7 +120,7 @@ export const addTransaction = createAsyncThunk(
         category,
         description,
         amount,
-        imageUri,
+        imageUri: uploadedImageUrl,
         type,
         timestamp:
           transactionData?.timestamp?.toDate().toISOString() ||
@@ -182,7 +190,7 @@ export const transactionSlice = createSlice({
   initialState,
   reducers: {
     setCurrency: (state, action: PayloadAction<string>) => {
-      state.selectedCurrency = action.payload;
+      state.selectedCurrency = action.payload || '';
     },
   },
   extraReducers: builder => {
@@ -243,7 +251,7 @@ export const transactionSlice = createSlice({
       state.error = action.payload as string;
     });
     builder.addCase(fetchSelectedCurrency.fulfilled, (state, action) => {
-      state.selectedCurrency = action.payload;
+      state.selectedCurrency = action.payload || 'USD';
     });
     builder.addCase(fetchSelectedCurrency.rejected, (state, action) => {
       state.error = action.payload as string;

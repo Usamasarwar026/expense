@@ -8,7 +8,6 @@ import SignUp from '../screens/signUp/SignUp';
 import Forget from '../screens/forget/Forget';
 import TabNavigation from '../navigation/tabNavigation/TabNavigation';
 import EditProfile from '../screens/editProfile/EditProfile';
-import Logout from '../components/logout/Logout';
 import ResetPassword from '../screens/resetPassword/ResetPassword';
 import FinancialReport from '../screens/financialReport/FinancialReport';
 import DetailTransction from '../screens/detailTransction/DetailTransction';
@@ -119,3 +118,38 @@ export const PROFILE_DATA = [
 ];
 
  export const CURRENCY_LIST = ['USD', 'EUR', 'GBP', 'PKR', 'INR',];
+
+ export const TRANSACTION_IMAGE = (category: string) => {
+  switch (category.toLowerCase()) {
+    case 'salary':
+      return IMAGES.SALARY
+    case 'food':
+      return IMAGES.RESTAURANT
+    case 'transportation':
+      return IMAGES.CAR
+    case 'shopping':
+      return IMAGES.SHOPPING
+    case 'subscription':
+      return IMAGES.RECURRING_BILL
+    default:
+      return IMAGES.SHOPPING;
+    
+  }
+};
+
+export const IMAGE_BACKGROUND_COLOR = (category: string) => {
+  switch (category.toLowerCase()) {
+    case 'salary':
+      return '#CFFAEA'; 
+    case 'food':
+      return '#FDD5D7'; 
+    case 'transportation':
+      return '#BDDCFF'; 
+    case 'shopping':
+      return '#FCEED4'; 
+    case 'subscription':
+    default:
+      return '#F0F0F0'; 
+  }
+};
+

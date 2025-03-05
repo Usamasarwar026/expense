@@ -1,7 +1,10 @@
 import { StyleSheet } from "react-native";
 
 export const styles = StyleSheet.create({
-    container: {
+  maincontainer:{
+    flex: 1,
+  },  
+  container: {
       flex: 1,
       backgroundColor: '#fff',
     },
@@ -112,7 +115,6 @@ export const styles = StyleSheet.create({
       flexDirection: 'row',
       justifyContent: 'space-around',
       paddingHorizontal: 20,
-      marginTop: 10,
     },
   
     barbox: {

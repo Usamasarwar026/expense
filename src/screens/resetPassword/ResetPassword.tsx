@@ -2,16 +2,14 @@ import {
   View,
   Text,
   Image,
-  StyleSheet,
   TouchableOpacity,
   KeyboardAvoidingView,
   ScrollView,
-  Alert,
 } from 'react-native';
 import React from 'react';
 import {IMAGES} from '../../constant/image';
 import Input from '../../components/input/Input';
-import {CommonActions, useNavigation} from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 import Toast from 'react-native-toast-message';
 import {useAppDispatch} from '../../hooks/useRedux';
 import {changePassword} from '../../store/authSlice/authSlice';
@@ -28,12 +26,7 @@ export default function ResetPassword() {
 
   const goToBack = () => {
     try {
-      navigation.dispatch(
-        CommonActions.reset({
-          index: 0,
-          routes: [{name: 'TabNavigation', params: {screen: 'Profile'}}],
-        }),
-      );
+      navigation.goBack();
     } catch (error) {
       console.error('Navigation Error:', error);
     }

@@ -8,12 +8,17 @@ import {
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {IMAGES} from '../../constant/image';
-import {CommonActions, useNavigation} from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 import AttachmentModel from '../../components/attachmentModel/AttachmentModel';
 import CategoryDropdown from '../../components/categoryDropdown/CategoryDropdown';
 import Input from '../../components/input/Input';
 import {useAppDispatch, useAppSelector} from '../../hooks/useRedux';
-import {addTransaction, fetchExchangeRates, fetchSelectedCurrency, fetchTransactions} from '../../store/transctionSlice/transctionSlice';
+import {
+  addTransaction,
+  fetchExchangeRates,
+  fetchSelectedCurrency,
+  fetchTransactions,
+} from '../../store/transctionSlice/transctionSlice';
 import SuccessfulModel from '../../components/successfulModel/SuccessfulModel';
 import Toast from 'react-native-toast-message';
 import {styles} from './incomeStyles';
@@ -30,22 +35,18 @@ export default function Income() {
   const dispatch = useAppDispatch();
   const {transactions} = useAppSelector(state => state.transctions);
   const type = 'Income';
-    const selectedCurrency = useAppSelector(
-      state => state.transctions.selectedCurrency,
-    );
-    const exchangeRates = useAppSelector(
-      state => state.transctions.exchangeRates,
-    );
-  
-    useEffect(() => {
-      dispatch(fetchSelectedCurrency());
-    }, []);
-    
-    useEffect(() => {
-      dispatch(fetchExchangeRates());
-    }, [dispatch]);
-  
-    
+  const {selectedCurrency, exchangeRates} = useAppSelector(
+    state => state.transctions,
+  );
+
+  useEffect(() => {
+    dispatch(fetchSelectedCurrency());
+  }, []);
+
+  useEffect(() => {
+    dispatch(fetchExchangeRates());
+  }, [dispatch]);
+
   const convertAmount = (amount: number, currency: string) => {
     const rate = exchangeRates[currency] || 1;
     const convertedAmount = amount * rate;
@@ -56,22 +57,21 @@ export default function Income() {
       maximumFractionDigits: 0,
     }).format(convertedAmount);
   };
-    
-    useEffect(() => {
-      dispatch(fetchTransactions());
-      
-    }, [dispatch]);
-   useEffect(() => {
-      if (transactions.length > 0) {
-        const incomeTotal = transactions
-          .filter(transaction => transaction.type === 'Income')
-          .reduce(
-            (sum, transaction) => sum + (Number(transaction.amount) || 0),
-            0,
-          );
-        setTotalIncome(incomeTotal);
-      }
-    }, [transactions]);
+
+  useEffect(() => {
+    dispatch(fetchTransactions());
+  }, [dispatch]);
+  useEffect(() => {
+    if (transactions.length > 0) {
+      const incomeTotal = transactions
+        .filter(transaction => transaction.type === 'Income')
+        .reduce(
+          (sum, transaction) => sum + (Number(transaction.amount) || 0),
+          0,
+        );
+      setTotalIncome(incomeTotal);
+    }
+  }, [transactions]);
 
   const saveData = () => {
     if (!description || !category || !amount || !imageUri) {
@@ -95,12 +95,7 @@ export default function Income() {
   };
   const goToHome = () => {
     try {
-      navigation.dispatch(
-        CommonActions.reset({
-          index: 0,
-          routes: [{name: 'TabNavigation', params: {screen: 'Home'}}],
-        }),
-      );
+      navigation.goBack();
     } catch (error) {
       console.error('Navigation Error:', error);
     }
@@ -119,7 +114,9 @@ export default function Income() {
         </View>
         <View style={styles.secondContainer}>
           <Text style={styles.secondContainerText}>How much?</Text>
-          <Text style={styles.secondContaineramount}>{convertAmount(totalIncome, selectedCurrency)}</Text>
+          <Text style={styles.secondContaineramount}>
+            {convertAmount(totalIncome, selectedCurrency)}
+          </Text>
         </View>
         <View style={styles.belowContainer}>
           <View style={styles.belowinnerContainer}>

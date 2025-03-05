@@ -1,7 +1,7 @@
 import {View, Text, ScrollView, TouchableOpacity, Image} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {IMAGES} from '../../constant/image';
-import {CommonActions, useNavigation} from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 import ProgressBar from '../../components/progressBar/ProgressBar';
 import Dropdown from '../../components/dropdown/Dropdown';
 import CategoryDropdown from '../../components/categoryDropdown/CategoryDropdown';
@@ -10,6 +10,7 @@ import {fetchTransactions} from '../../store/transctionSlice/transctionSlice';
 import {styles} from './financialReportStyles';
 import {navigate} from '../../navigation/navigationRef';
 import {Transaction} from '../../types/types';
+import PieChart from '../../components/pieChart/PieChart';
 
 export default function FinancialReport() {
   const [selectedTab, setSelectedTab] = useState<'Expense' | 'Income'>(
@@ -21,7 +22,10 @@ export default function FinancialReport() {
   const [selectedMonth, setSelectedMonth] = useState<string | null>(null);
   const navigation = useNavigation();
   const dispatch = useAppDispatch();
-  const {transactions, loading} = useAppSelector(state => state.transctions);
+  const {transactions} = useAppSelector(state => state.transctions);
+  const [pieData, setPieData] = useState<{percentage: number; color: string}[]>(
+    [],
+  );
 
   useEffect(() => {
     dispatch(fetchTransactions());
@@ -49,14 +53,7 @@ export default function FinancialReport() {
 
   const goToTransction = () => {
     try {
-      navigation.dispatch(
-        CommonActions.reset({
-          index: 0,
-          routes: [
-            {name: 'TabNavigation', params: {screen: 'TransctionScreen'}},
-          ],
-        }),
-      );
+      navigation.goBack();
     } catch (error) {}
   };
   const handlepress = (transaction: Transaction) => {
@@ -72,10 +69,42 @@ export default function FinancialReport() {
     ...dataToDisplay.map(item => Number(item.amount)),
     1,
   );
-  const adjustedMaxAmount = maxAmount * 0.8;
+
   const totalAmount = selectedTab === 'Expense' ? totalExpense : totalIncome;
-  const graph =
-    selectedTab === 'Expense' ? IMAGES.YELLOWCIRCLE : IMAGES.GREENCIRCLE;
+
+  useEffect(() => {
+    const filteredTransactions = transactions.filter(
+      t => t.type === selectedTab,
+    );
+    const totalAmount = selectedTab === 'Expense' ? totalExpense : totalIncome;
+
+    if (totalAmount > 0) {
+      const categoryTotals = filteredTransactions.reduce((acc, transaction) => {
+        acc[transaction.category] =
+          (acc[transaction.category] || 0) + Number(transaction.amount);
+        return acc;
+      }, {} as Record<string, number>);
+
+      const categoryColors: Record<string, string> = {
+        Shopping: '#FCAC12',
+        Subscription: '#7F3DFF',
+        Food: '#007BFF',
+        Salary: '#00A86B',
+        Transportation: 'black',
+        Other: '#BDC3C7',
+      };
+      const sections = Object.entries(categoryTotals).map(
+        ([category, amount]) => ({
+          percentage: (amount / totalAmount) * 100,
+          color: categoryColors[category] || categoryColors.Other,
+        }),
+      );
+      setPieData([]);
+      setPieData([...sections]);
+    } else {
+      setPieData([]);
+    }
+  }, [selectedTab, transactions, totalIncome, totalExpense]);
 
   return (
     <>
@@ -100,7 +129,7 @@ export default function FinancialReport() {
           </View>
         </View>
         <View style={styles.imageContainer}>
-          <Image style={styles.img} source={graph} />
+          <PieChart radius={80} strokeWidth={30} sections={pieData} />
           <Text style={styles.imageContainerText}>{totalAmount}</Text>
         </View>
         <View>
@@ -143,10 +172,8 @@ export default function FinancialReport() {
         </View>
         <View>
           {dataToDisplay.map(item => {
-            const progress = Math.min(
-              (Number(item.amount) / adjustedMaxAmount) * 100,
-              100,
-            );
+            const maxAmount = 1000;
+            const progress = Math.min((Number(item.amount) / maxAmount) * 100);
             const categoryColors: Record<string, string> = {
               Shopping: '#FCAC12',
               Subscription: '#7F3DFF',

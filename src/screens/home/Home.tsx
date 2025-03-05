@@ -5,8 +5,9 @@ import {
   TouchableOpacity,
   ActivityIndicator,
   FlatList,
+  Dimensions,
 } from 'react-native';
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useMemo, useState} from 'react';
 import {IMAGES} from '../../constant/image';
 import Transction from '../../components/transction/Transction';
 import Dropdown from '../../components/dropdown/Dropdown';
@@ -19,7 +20,12 @@ import {
   fetchTransactions,
 } from '../../store/transctionSlice/transctionSlice';
 import {styles} from './homeStyle';
-import {Transaction, UserData} from '../../types/types';
+import {ChartData, Transaction, UserData} from '../../types/types';
+import {navigate} from '../../navigation/navigationRef';
+import {LineChart} from 'react-native-chart-kit';
+import moment from 'moment';
+
+const width = Dimensions.get('window').width + 120;
 
 export default function Home() {
   const [userData, setUserData] = useState<UserData | null | undefined>(null);
@@ -30,18 +36,13 @@ export default function Home() {
   const [totalExpense, setTotalExpense] = useState(0);
   const navigation = useNavigation();
   const dispatch = useAppDispatch();
-  const {transactions, loading} = useAppSelector(state => state.transctions);
-  const selectedCurrency = useAppSelector(
-    state => state.transctions.selectedCurrency,
-  );
-  const exchangeRates = useAppSelector(
-    state => state.transctions.exchangeRates,
-  );
+  const {transactions, loading, selectedCurrency, exchangeRates} =
+    useAppSelector(state => state.transctions);
 
   useEffect(() => {
     dispatch(fetchSelectedCurrency());
   }, []);
-  
+
   useEffect(() => {
     dispatch(fetchExchangeRates());
   }, [dispatch]);
@@ -63,7 +64,7 @@ export default function Home() {
   }, [dispatch]);
 
   useEffect(() => {
-    if (transactions.length > 0) {
+    if (Array.isArray(transactions) && transactions.length > 0) {
       const incomeTotal = transactions
         .filter(transaction => transaction.type === 'Income')
         .reduce(
@@ -96,6 +97,29 @@ export default function Home() {
     }
   };
 
+  const convertAmount = (amount: number, currency: string) => {
+    if (!currency) {
+      console.error('Currency is required but received:', currency);
+      return 'Invalid currency';
+    }
+    const rate = exchangeRates[currency] ?? 1;
+    const convertedAmount = amount * rate;
+    try {
+      return new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: currency.toUpperCase(),
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 0,
+      }).format(convertedAmount);
+    } catch (error) {
+      console.error('Invalid currency format:', currency, error);
+      return 'Invalid ';
+    }
+  };
+  const handlepress = (transaction: Transaction) => {
+    navigate('DetailTransction', {transaction});
+  };
+
   const filterTransactions = (): Transaction[] => {
     if (!Array.isArray(transactions)) {
       return [];
@@ -114,9 +138,11 @@ export default function Home() {
           return transactionDate >= startOfWeek;
         }
         case 'Month': {
+          const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+          const endOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0);
+
           return (
-            transactionDate.getMonth() === now.getMonth() &&
-            transactionDate.getFullYear() === now.getFullYear()
+            transactionDate >= startOfMonth && transactionDate <= endOfMonth
           );
         }
         case 'Year':
@@ -127,32 +153,74 @@ export default function Home() {
     });
   };
 
-  const convertAmount = (amount: number, currency: string) => {
-    if (!currency) {
-      console.error("Currency is required but received:", currency);
-      return "Invalid currency";
-    }
-  
-    const rate = exchangeRates[currency] ?? 1;
-    const convertedAmount = amount * rate;
-  
-    try {
-      return new Intl.NumberFormat('en-US', {
-        style: 'currency',
-        currency: currency.toUpperCase(), 
-        minimumFractionDigits: 0,
-        maximumFractionDigits: 0,
-      }).format(convertedAmount);
-    } catch (error) {
-      console.error("Invalid currency format:", currency, error);
-      return "Invalid ";
-    }
-  };
-  
+  const filteredTransactions = filterTransactions();
 
+  const expenseData = useMemo(() => {
+    if (!Array.isArray(filteredTransactions)) return [];
+    const individualExpenses = filteredTransactions
+      .filter(transaction => transaction.type === 'Expense')
+      .map(transaction => {
+        const dateKey = moment(transaction.timestamp).format('YYYY-MM-DD');
+        const numericAmount = parseFloat(transaction.amount);
+
+        if (!dateKey) {
+          console.error('Invalid timestamp:', transaction.timestamp);
+          return null;
+        }
+
+        if (isNaN(numericAmount)) {
+          console.error('Invalid amount detected:', transaction.amount);
+          return null;
+        }
+
+        return {
+          date: dateKey,
+          amounts: numericAmount,
+        };
+      })
+      .filter(entry => entry !== null);
+
+    const sortedExpenses = individualExpenses.sort((a, b) =>
+      moment(a.date).diff(moment(b.date)),
+    );
+
+    if (sortedExpenses.length < 2) {
+      const today = moment().format('YYYY-MM-DD');
+      sortedExpenses.unshift({date: today, amounts: 0});
+    }
+    return sortedExpenses;
+  }, [filteredTransactions]);
+
+  const data:ChartData = {
+    labels: [],
+    datasets: [
+      {
+        data: expenseData.map(entry => entry.amounts),
+        color: (opacity = 1) => `rgba(127, 17, 244, ${opacity})`,
+        strokeWidth: 4,
+      },
+    ],
+  };
+
+  const chartConfig = {
+    backgroundGradientFrom: 'white',
+    backgroundGradientFromOpacity: 1,
+    backgroundGradientTo: 'white',
+    backgroundGradientToOpacity: 0.5,
+    color: (opacity = 1) => `rgba(255, 0, 0, ${opacity})`,
+    strokeWidth: 2,
+    barPercentage: 0.5,
+    useShadowColorFromDataset: false,
+    propsForBackgroundLines: {
+      strokeWidth: 0,
+    },
+    fillShadowGradientFrom: 'rgba(159, 120, 235, 0.6)',
+    fillShadowGradientTo: 'rgba(255, 255, 255, 0)',
+    fillShadowGradientOpacity: 0.3,
+  };
 
   return (
-    <View style={{flex: 1}}>
+    <View style={styles.maincontainer}>
       <View style={styles.container}>
         <View style={styles.top}>
           <View style={styles.innertop}>
@@ -217,10 +285,16 @@ export default function Home() {
           <Text style={styles.thirdcontainerText}>Spend Frequency</Text>
         </View>
         <View style={styles.graphcontainer}>
-          <Image
-            resizeMode="contain"
-            style={{width: '100%'}}
-            source={IMAGES.GRAPH}
+          <LineChart
+            data={data}
+            width={width}
+            height={200}
+            verticalLabelRotation={30}
+            chartConfig={chartConfig}
+            withHorizontalLabels={false}
+            withVerticalLabels={false}
+            withDots={false}
+            bezier
           />
         </View>
 
@@ -281,6 +355,7 @@ export default function Home() {
                     time={timeString}
                     image={{uri: item.imageUri}}
                     type={item.type}
+                    onPress={() => handlepress(item)}
                   />
                 );
               }}

@@ -1,16 +1,14 @@
 import {
   View,
   Text,
-  StyleSheet,
   TouchableOpacity,
   Image,
   TextInput,
-  Alert,
   ScrollView,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {IMAGES} from '../../constant/image';
-import {CommonActions, useNavigation} from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 import AttachmentModel from '../../components/attachmentModel/AttachmentModel';
 import CategoryDropdown from '../../components/categoryDropdown/CategoryDropdown';
 import Input from '../../components/input/Input';
@@ -37,32 +35,28 @@ export default function Expense() {
   const dispatch = useAppDispatch();
   const {transactions} = useAppSelector(state => state.transctions);
   const type = 'Expense';
-   const selectedCurrency = useAppSelector(
-        state => state.transctions.selectedCurrency,
-      );
-      const exchangeRates = useAppSelector(
-        state => state.transctions.exchangeRates,
-      );
-    
-      useEffect(() => {
-        dispatch(fetchSelectedCurrency());
-      }, []);
-      
-      useEffect(() => {
-        dispatch(fetchExchangeRates());
-      }, [dispatch]);
-    
-      
-    const convertAmount = (amount: number, currency: string) => {
-      const rate = exchangeRates[currency] || 1;
-      const convertedAmount = amount * rate;
-      return new Intl.NumberFormat('en-US', {
-        style: 'currency',
-        currency: currency,
-        minimumFractionDigits: 0,
-        maximumFractionDigits: 0,
-      }).format(convertedAmount);
-    };
+  const {selectedCurrency, exchangeRates} = useAppSelector(
+    state => state.transctions,
+  );
+
+  useEffect(() => {
+    dispatch(fetchSelectedCurrency());
+  }, []);
+
+  useEffect(() => {
+    dispatch(fetchExchangeRates());
+  }, [dispatch]);
+
+  const convertAmount = (amount: number, currency: string) => {
+    const rate = exchangeRates[currency] || 1;
+    const convertedAmount = amount * rate;
+    return new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: currency,
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0,
+    }).format(convertedAmount);
+  };
 
   useEffect(() => {
     dispatch(fetchTransactions());
@@ -102,12 +96,7 @@ export default function Expense() {
   };
   const goToHome = () => {
     try {
-      navigation.dispatch(
-        CommonActions.reset({
-          index: 0,
-          routes: [{name: 'TabNavigation', params: {screen: 'Home'}}],
-        }),
-      );
+      navigation.goBack();
     } catch (error) {
       console.error('Navigation Error:', error);
     }
@@ -126,7 +115,9 @@ export default function Expense() {
         </View>
         <View style={styles.secondContainer}>
           <Text style={styles.secondContainerText}>How much?</Text>
-          <Text style={styles.secondContaineramount}>{convertAmount(totalExpense, selectedCurrency)}</Text>
+          <Text style={styles.secondContaineramount}>
+            {convertAmount(totalExpense, selectedCurrency)}
+          </Text>
         </View>
         <View style={styles.belowContainer}>
           <View style={styles.belowinnerContainer}>

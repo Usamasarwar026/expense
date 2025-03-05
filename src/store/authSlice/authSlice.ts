@@ -1,13 +1,13 @@
-import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit';
-import auth, {getAuth} from '@react-native-firebase/auth';
+import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
+import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 import Toast from 'react-native-toast-message';
 import {
   GoogleSignin,
   SignInResponse,
-  SignInSuccessResponse,
 } from '@react-native-google-signin/google-signin';
 import {AuthState, AuthUser} from '../../types/types';
+import {uploadToCloudinary} from '../imageSlice/imageSlice';
 
 export const signup = createAsyncThunk(
   'auth/signup',
@@ -161,7 +161,7 @@ export const GoogleSignup = createAsyncThunk(
           throw new Error('No ID token found');
         }
         const googleCredential = auth.GoogleAuthProvider.credential(token);
-        const response = await auth().signInWithCredential(googleCredential)
+        const response = await auth().signInWithCredential(googleCredential);
         await firestore().collection('users').doc(response.user.uid).set({
           uid: response.user.uid,
           name: response.user.displayName,
@@ -298,12 +298,20 @@ export const storeImageUriInFirestore = createAsyncThunk<
   {profileImageUri: string},
   string,
   {rejectValue: string}
->('auth/storeImageUriInFirestore', async (uri, {rejectWithValue}) => {
+>('auth/storeImageUriInFirestore', async (uri, {dispatch, rejectWithValue}) => {
   const userId = auth().currentUser?.uid;
+  if (!userId) {
+    return rejectWithValue('User not authenticated');
+  }
 
   try {
+    let uploadedImageUrl = uri;
+    if (uri) {
+      const result = await dispatch(uploadToCloudinary(uri)).unwrap();
+      uploadedImageUrl = result;
+    }
     await firestore().collection('users').doc(userId).update({
-      profileImageUri: uri,
+      profileImageUri: uploadedImageUrl,
     });
     return {profileImageUri: uri};
   } catch (error: any) {

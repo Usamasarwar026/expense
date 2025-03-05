@@ -10,9 +10,7 @@ export const styles = StyleSheet.create({
       flexDirection: 'row',
       justifyContent: 'space-evenly',
       alignItems: 'center',
-  
       paddingHorizontal: 20,
-      // marginBottom: 20,
     },
     containerRight: {
       flexDirection: 'row',

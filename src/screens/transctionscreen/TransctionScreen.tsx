@@ -120,6 +120,9 @@ export default function TransctionScreen() {
     });
   };
 
+  const handlepress = (transaction: Transaction) => {
+    navigate('DetailTransction', {transaction});
+  };
   const renderTransactionItem = ({item}: {item: CombinedData[number]}) => {
     return item.type === 'header' ? (
       <View style={styles.periodHeader}>
@@ -133,6 +136,9 @@ export default function TransctionScreen() {
         time={moment(item.data.timestamp).format('hh:mm A')}
         image={{uri: item.data.imageUri}}
         type={item.data.type}
+        onPress={() => {
+          handlepress(item.data);
+        }}
       />
     );
   };

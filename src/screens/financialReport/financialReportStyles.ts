@@ -74,7 +74,6 @@ export const styles = StyleSheet.create({
       fontWeight: '500',
       borderRadius: 32,
       paddingVertical: 12,
-      // backgroundColor: '#EEE5FF',
       color: '#7F3DFF',
       textAlign: 'center',
     },

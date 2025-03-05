@@ -1,14 +1,12 @@
 import {
   ImageSourcePropType,
-  KeyboardType,
   StyleProp,
   TextInputProps,
   TextStyle,
-  ViewStyle,
 } from 'react-native';
-import {FC, Component} from 'react';
+import {FC} from 'react';
 import {BottomTabNavigationOptions} from '@react-navigation/bottom-tabs';
-import {NavigatorScreenParams, RouteProp} from '@react-navigation/native';
+import { RouteProp} from '@react-navigation/native';
 import {IconProps} from 'react-native-vector-icons/Icon';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 
@@ -50,6 +48,7 @@ export type TransctionProp = {
   time: string;
   image: {uri: string};
   type: string;
+  onPress?: ()=>void;
 };
 export type ImageProp = {
   uri: string;
@@ -297,4 +296,25 @@ export type SettingProps = {
   name: string;
   image: ImageSourcePropType;
   onPress: () => void;
+}
+
+export type PieChartSection = {
+  percentage: number;
+  color: string;
+};
+
+export type PieChartProps = {
+  radius: number;
+  sections: PieChartSection[];
+  strokeWidth?: number;
+};
+
+
+export type ChartData = {
+  labels: string[];
+  datasets: {
+    data: number[]; 
+    color?: (opacity: number) => string; 
+    strokeWidth?: number; 
+  }[];
 }

@@ -22,9 +22,8 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
   },
   containerImage: {
-    width: 40,
-    height: 40,
-    borderRadius: 10,
+    width: 30,
+    height: 30,
     resizeMode: 'contain',
   },
 
@@ -65,5 +64,12 @@ export const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: 'red',
     justifyContent: 'flex-end',
-  }
+  },
+  loader: {
+    position: 'absolute',
+    left: '50%',
+    top: '50%',
+    transform: [{translateX: -12}, {translateY: -12}], 
+  },
+  
 });

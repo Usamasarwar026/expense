@@ -58,20 +58,21 @@ export const styles = StyleSheet.create({
       height: 150,
       marginTop: -50,
       alignItems: 'center',
-      // width: 150,
       marginHorizontal: 20,
       borderTopLeftRadius: 20,
       borderTopRightRadius: 20,
       paddingHorizontal: 20,
+      
     },
     belowBox1: {
-      // flex: 1,
       flexDirection: 'row',
       justifyContent: 'space-between',
       width: '100%',
       padding: 15,
-      // borderBottomWidth: 1,
       borderColor: '#E6E6E6',
+      borderBottomWidth: 2,
+      borderBottomColor: '#E3E5E5',
+      borderStyle: 'dashed', 
     },
     box1Text: {
       fontSize: 14,
@@ -89,9 +90,9 @@ export const styles = StyleSheet.create({
       fontSize: 14,
       fontWeight: '500',
       color: '#91919F',
-      textAlign: 'justify',
+      width: '100%',
       lineHeight: 20,
-      // marginBottom: 20,
+      marginBottom: 50,
     },
     descriptionHead: {
       fontSize: 16,
@@ -109,13 +110,13 @@ export const styles = StyleSheet.create({
       flex: 1,
       width: '100%',
       marginBottom: 20,
+      padding: 15,
     },
     pic: {
       width: '100%',
       height: 116,
       marginBottom: 10,
       borderRadius: 8,
-      // overflow: 'hidden',
     },
     imageText: {
       fontSize: 16,
@@ -144,6 +145,33 @@ export const styles = StyleSheet.create({
       color: 'white',
       textAlign: 'center',
       padding: 5,
+    },
+
+    modalBackground: {
+      flex: 1,
+      backgroundColor: 'black',
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+    fullScreenImage: {
+      width: '100%',
+      height: '100%',
+      resizeMode: 'contain',
+    },
+    closeButton: {
+      position: 'absolute',
+      top: 40,
+      right: 20,
+      backgroundColor: 'rgba(0,0,0,0.6)',
+      padding: 10,
+      borderRadius: 20,
+      zIndex: 10,
+    },
+    closeIcon: {
+      width: 24,
+      height: 24,
+      padding: 15,
+      tintColor: '#fff',
     },
   });
   
