@@ -1,4 +1,4 @@
-import React, {useCallback, useState} from 'react';
+import React from 'react';
 import {
   View,
   Text,
@@ -8,30 +8,20 @@ import {
   ScrollView,
 } from 'react-native';
 import {IMAGES} from '../../constant/image';
-import {useFocusEffect} from '@react-navigation/native';
-import {MONTH} from '../../constant/constant';
 import {styles} from './dropdownStyles';
 import {DropdownProps} from '../../types/types';
+import {useDropdown} from './useDropdown';
 
 export default function Dropdown({
   dropdownPosition,
   setSelectedMonth,
 }: DropdownProps) {
-  const [selectedValue, setSelectedValue] = useState<string | null>(null);
-  const [listVisible, setListVisible] = useState<boolean>(false);
-
-  useFocusEffect(
-    useCallback(() => {
-      setSelectedValue('Month');
-      return () => setListVisible(false);
-    }, []),
-  );
+  const {selectedValue, listVisible, toggleList, handleSelectMonth, months} =
+    useDropdown(setSelectedMonth);
 
   return (
     <View>
-      <TouchableOpacity
-        style={styles.box}
-        onPress={() => setListVisible(!listVisible)}>
+      <TouchableOpacity style={styles.box} onPress={toggleList}>
         <Text style={styles.label}>{selectedValue || 'Month'}</Text>
         <Image source={IMAGES.ARROW_DOWN} style={styles.icon} />
       </TouchableOpacity>
@@ -44,15 +34,11 @@ export default function Dropdown({
             dropdownPosition === 'left' && styles.rightDropdown,
           ]}>
           <ScrollView style={styles.list}>
-            {MONTH.map(item => (
+            {months?.map(item => (
               <TouchableOpacity
                 key={item.id}
                 style={styles.itemButton}
-                onPress={() => {
-                  setSelectedValue(item.value);
-                  setSelectedMonth(item.value);
-                  setListVisible(false);
-                }}>
+                onPress={() => handleSelectMonth(item.value)}>
                 <Text style={styles.item}>{item.label}</Text>
               </TouchableOpacity>
             ))}

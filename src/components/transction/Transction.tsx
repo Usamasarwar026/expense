@@ -1,13 +1,12 @@
 import {View, Text, Image, TouchableOpacity} from 'react-native';
-import React, {useEffect} from 'react';
-import { TransctionProp} from '../../types/types';
+import React from 'react';
+import {TransctionProp} from '../../types/types';
 import {styles} from './transctionStyles';
-import {useAppDispatch, useAppSelector} from '../../hooks/useRedux';
 import {
-  fetchExchangeRates,
-  fetchSelectedCurrency,
-} from '../../store/transctionSlice/transctionSlice';
-import { IMAGE_BACKGROUND_COLOR, TRANSACTION_IMAGE } from '../../constant/constant';
+  IMAGE_BACKGROUND_COLOR,
+  TRANSACTION_IMAGE,
+} from '../../constant/constant';
+import {useTransction} from './useTransction';
 
 export default function Transction({
   title,
@@ -15,38 +14,20 @@ export default function Transction({
   amount,
   time,
   type,
-  onPress
+  onPress,
 }: TransctionProp) {
-  const dispatch = useAppDispatch();
-  
-  const {selectedCurrency, exchangeRates} = useAppSelector(
-    state => state.transctions,
-  );
+  const {formattedAmount} = useTransction(amount, type);
 
-  useEffect(() => {
-    dispatch(fetchSelectedCurrency());
-  }, [dispatch]);
-
-  useEffect(() => {
-    dispatch(fetchExchangeRates());
-  }, [dispatch]);
-
-  const convertAmount = (amount: number, currency: string) => {
-    const rate = exchangeRates[currency] || 1;
-    const convertedAmount = amount * rate;
-    return new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: currency,
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 0,
-    }).format(convertedAmount);
-  };
   return (
     <TouchableOpacity style={styles.TransctionContainer} onPress={onPress}>
       <View style={styles.leftContainer}>
-        <View style={[styles.leftContainerImage,{ backgroundColor: IMAGE_BACKGROUND_COLOR(title) }]}>
+        <View
+          style={[
+            styles.leftContainerImage,
+            {backgroundColor: IMAGE_BACKGROUND_COLOR(title)},
+          ]}>
           <Image
-            style={styles.containerImage} 
+            style={styles.containerImage}
             source={TRANSACTION_IMAGE(title)}
           />
         </View>
@@ -62,9 +43,7 @@ export default function Transction({
               type === 'Expense' ? styles.red : styles.green,
               styles.text3,
             ]}>
-            {type === 'Expense'
-              ? `- ${convertAmount(amount, selectedCurrency)}`
-              : `+ ${convertAmount(amount, selectedCurrency)}`}
+            {formattedAmount}
           </Text>
           <Text style={styles.text4}>{time}</Text>
         </View>

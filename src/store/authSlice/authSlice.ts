@@ -320,11 +320,26 @@ export const storeImageUriInFirestore = createAsyncThunk<
   }
 });
 
+export const logout = createAsyncThunk('auth/logout', async (_, { rejectWithValue }) => {
+  try {
+    const user = auth().currentUser;
+    if (!user) {
+      throw new Error('No user is currently signed in');
+    }
+    await auth().signOut();
+    return true; 
+  } catch (error:any) {
+    return rejectWithValue(error.message);
+  }
+});
+
 const initialState: AuthState = {
   user: null,
   loading: false,
   error: null,
   status: 'idle',
+  isAuthenticated: true,
+  usersData: {},
 };
 
 export const authSlice = createSlice({
@@ -406,7 +421,7 @@ export const authSlice = createSlice({
       })
       .addCase(fetchUserData.fulfilled, (state, action) => {
         state.loading = false;
-        state.profileImageUri = action.payload?.profileImageUri ?? '';
+        state.usersData = action.payload;
       })
       .addCase(fetchUserData.rejected, (state, action) => {
         state.loading = false;
@@ -423,6 +438,18 @@ export const authSlice = createSlice({
       .addCase(storeImageUriInFirestore.rejected, (state, action) => {
         state.loading = false;
         state.error = (action.payload as string) || 'Failed to store image URI';
+      })
+      .addCase(logout.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(logout.fulfilled, (state) => {
+        state.loading = false;
+        state.isAuthenticated = false;
+      })
+      .addCase(logout.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string;
       });
   },
 });

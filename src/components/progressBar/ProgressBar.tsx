@@ -3,6 +3,7 @@ import React from 'react';
 import * as Progress from 'react-native-progress';
 import {styles} from './progressBarStyles';
 import {ProgressBarProps} from '../../types/types';
+import useProgressBar from './useProgressBar';
 
 export default function ProgressBar({
   categoryName,
@@ -12,6 +13,7 @@ export default function ProgressBar({
   textColor,
   onPress,
 }: ProgressBarProps) {
+  const {currencyAmount} = useProgressBar({amount})
   return (
     <TouchableOpacity style={styles.barcontainer} onPress={onPress}>
       <View style={styles.innerBarContainer}>
@@ -20,7 +22,7 @@ export default function ProgressBar({
           <Text style={styles.dottext}>{categoryName}</Text>
         </View>
         <View>
-          <Text style={[styles.amount, {color: textColor}]}>{amount}</Text>
+          <Text style={[styles.amount, {color: textColor}]}>{currencyAmount}</Text>
         </View>
       </View>
       <View style={styles.progressBar}>

@@ -5,8 +5,9 @@ export const styles = StyleSheet.create({
     ...StyleSheet.absoluteFillObject,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'rgba(0,0,0,0.5)',
+    backgroundColor: 'rgba(124, 80, 255,0.4)',
   },
+
   modelView: {
     position: 'absolute',
     bottom: 0,

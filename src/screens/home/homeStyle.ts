@@ -8,6 +8,12 @@ export const styles = StyleSheet.create({
       flex: 1,
       backgroundColor: '#fff',
     },
+    topback:{
+      backgroundColor: '#FFF6E5',
+      paddingBottom: 20,
+      borderBottomLeftRadius: 32,
+      borderBottomRightRadius: 32,
+    },
     top: {
       flexDirection: 'row',
       alignItems: 'center',
@@ -97,7 +103,7 @@ export const styles = StyleSheet.create({
       color: '#ffffff',
     },
     thirdcontainer: {
-      paddingTop: 10,
+      // paddingTop: 10,
     },
     thirdcontainerText: {
       paddingTop: 10,

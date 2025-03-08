@@ -3,6 +3,7 @@ import {
   StyleProp,
   TextInputProps,
   TextStyle,
+  ViewStyle,
 } from 'react-native';
 import {FC} from 'react';
 import {BottomTabNavigationOptions} from '@react-navigation/bottom-tabs';
@@ -40,6 +41,10 @@ export type RootStackParamList = {
 };
 
 export type NavigationProps = NativeStackNavigationProp<RootStackParamList>;
+
+export type NavigationUIProps ={
+  isAuthenticated: boolean | null;
+}
 
 export type TransctionProp = {
   title: string;
@@ -106,6 +111,10 @@ export type ProgressBarProps = {
   textColor: string;
   onPress?: () => void;
 };
+
+export type UseProgressBarProps = {
+  amount: string | number;
+}
 
 export type SuccessfulModelProps = {
   openModel: boolean;
@@ -283,14 +292,14 @@ export type AuthState = {
   error: string | null;
   status: 'idle' | 'loading' | 'succeeded' | 'failed';
   profileImageUri?: string;
+  isAuthenticated: boolean;
+  usersData?: UsersData
 };
-export type UserDatas ={
+export type UsersData ={
   profileImageUri?: string;
   name?: string;
   email?: string;
 }
-
-export type UsersData = Record<string, UserData>;
 
 export type User = {
   uid: string;
@@ -303,6 +312,7 @@ export type SettingProps = {
   name: string;
   image: ImageSourcePropType;
   onPress: () => void;
+  customStyle?: StyleProp<ViewStyle>
 }
 
 export type PieChartSection = {
@@ -324,4 +334,18 @@ export type ChartData = {
     color?: (opacity: number) => string; 
     strokeWidth?: number; 
   }[];
+}
+
+export type SetOpenModelType = (visible: boolean) => void;
+export type OnSelectImageType = (uri: string) => void;
+
+export type UseAttachmentModelProps = {
+  setOpenModel: SetOpenModelType;
+  onSelectImage: OnSelectImageType;
+}
+
+export type UseAttachmentModelReturn = {
+  openCamera: () => void;
+  openGallery: () => void;
+  pickDocument: () => void;
 }

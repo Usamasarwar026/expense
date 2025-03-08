@@ -1,6 +1,6 @@
 import React from 'react';
 import {Provider} from 'react-redux';
-import Navigation from './src/navigation/Navigation';
+import Navigation from './src/navigation/mainNavigation/MainNavigation';
 import {store} from './src/store/store';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
 

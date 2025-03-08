@@ -5,7 +5,7 @@ import Profile from '../screens/profile/Profile';
 import {TabsArray} from '../types/types';
 import Login from '../screens/login/Login';
 import SignUp from '../screens/signUp/SignUp';
-import Forget from '../screens/forget/Forget';
+import Forget from '../screens/forgetPassword/ForgetPassword';
 import TabNavigation from '../navigation/tabNavigation/TabNavigation';
 import EditProfile from '../screens/editProfile/EditProfile';
 import ResetPassword from '../screens/resetPassword/ResetPassword';
@@ -15,7 +15,7 @@ import AddModel from '../components/addModel/AddModel';
 import Expense from '../screens/expense/Expense';
 import Income from '../screens/income/Income';
 import SettingScreen from '../screens/settingScreen/SettingScreen';
-import { IMAGES } from './image';
+import {IMAGES} from './image';
 
 export const AUTH_SCREENS = [
   {name: 'Login', component: Login},
@@ -104,52 +104,61 @@ export const PROFILE_DATA = [
     id: '1',
     image: IMAGES.SETTING,
     name: 'Settings',
+    styles:{
+      borderTopLeftRadius: 26,
+      borderTopRightRadius: 26,
+    }
   },
   {
     id: '2',
     image: IMAGES.WARNING,
     name: 'Reset Password',
+    styles:{
+      borderRadius: 0,
+    }
   },
   {
     id: '3',
     image: IMAGES.LOGOUT,
     name: 'Logout',
+    styles:{
+      borderBottomLeftRadius: 26,
+      borderBottomRightRadius: 26,
+    }
   },
 ];
 
- export const CURRENCY_LIST = ['USD', 'EUR', 'GBP', 'PKR', 'INR',];
+export const CURRENCY_LIST = ['USD', 'EUR', 'GBP', 'PKR', 'INR'];
 
- export const TRANSACTION_IMAGE = (category: string) => {
+export const TRANSACTION_IMAGE = (category: string) => {
   switch (category.toLowerCase()) {
     case 'salary':
-      return IMAGES.SALARY
+      return IMAGES.SALARY;
     case 'food':
-      return IMAGES.RESTAURANT
+      return IMAGES.RESTAURANT;
     case 'transportation':
-      return IMAGES.CAR
+      return IMAGES.CAR;
     case 'shopping':
-      return IMAGES.SHOPPING
+      return IMAGES.SHOPPING;
     case 'subscription':
-      return IMAGES.RECURRING_BILL
+      return IMAGES.RECURRING_BILL;
     default:
       return IMAGES.SHOPPING;
-    
   }
 };
 
 export const IMAGE_BACKGROUND_COLOR = (category: string) => {
   switch (category.toLowerCase()) {
     case 'salary':
-      return '#CFFAEA'; 
+      return '#CFFAEA';
     case 'food':
-      return '#FDD5D7'; 
+      return '#FDD5D7';
     case 'transportation':
-      return '#BDDCFF'; 
+      return '#BDDCFF';
     case 'shopping':
-      return '#FCEED4'; 
+      return '#FCEED4';
     case 'subscription':
     default:
-      return '#F0F0F0'; 
+      return '#F0F0F0';
   }
 };
-

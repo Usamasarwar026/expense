@@ -1,8 +1,9 @@
-import {View, TextInput, TouchableOpacity, StyleSheet} from 'react-native';
-import React, {useState} from 'react';
+import {View, TextInput, TouchableOpacity} from 'react-native';
+import React from 'react';
 import Feather from 'react-native-vector-icons/Feather';
 import {InputProps} from '../../types/types';
 import {styles} from './inputStyles';
+import {useInput} from './useInput';
 
 export default function Input(props: InputProps) {
   const {
@@ -14,7 +15,8 @@ export default function Input(props: InputProps) {
     secureTextEntry,
     keyboardType,
   } = props;
-  const [isPasswordVisible, setIsPasswordVisible] = useState(!secureTextEntry);
+  const {isPasswordVisible, togglePasswordVisibility} =
+    useInput(secureTextEntry);
 
   return (
     <View>
@@ -29,7 +31,7 @@ export default function Input(props: InputProps) {
       />
       {secureTextEntry && (
         <TouchableOpacity
-          onPress={() => setIsPasswordVisible(!isPasswordVisible)}
+          onPress={togglePasswordVisibility}
           style={styles.icon}>
           <Feather
             name={isPasswordVisible ? 'eye' : 'eye-off'}

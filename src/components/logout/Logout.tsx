@@ -6,13 +6,12 @@ import {
   Animated,
   TouchableOpacity,
 } from 'react-native';
-import React, {useState} from 'react';
+import React from 'react';
 import SuccessfulModel from '../successfulModel/SuccessfulModel';
-import {CommonActions, useNavigation} from '@react-navigation/native';
 import Toast from 'react-native-toast-message';
-import auth from '@react-native-firebase/auth';
 import {styles} from './logoutStyles';
 import {LogoutModelProps} from '../../types/types';
+import {useLogout} from './useLogout';
 
 export default function Logout({
   openModel,
@@ -22,54 +21,13 @@ export default function Logout({
   text,
   YesPress,
   navigateToHome = false,
-  navigateToLogin = false,
 }: LogoutModelProps) {
-  const [successModelVisible, setSuccessModelVisible] = useState(false);
-  const navigation = useNavigation();
-
-  const handleYesPress = async () => {
-    setOpenModel(false);
-    const user = auth().currentUser;
-
-    if (!user) {
-      Toast.show({
-        text1: 'Error',
-        text2: 'No user is currently signed in',
-        type: 'error',
-        visibilityTime: 3000,
-      });
-      return;
-    }
-
-    if (YesPress) {
-      await YesPress();
-
-      setSuccessModelVisible(true);
-
-      setTimeout(async () => {
-        setSuccessModelVisible(false);
-        if (navigateToLogin) {
-          await auth().signOut();
-        }
-        if (navigateToHome) {
-          navigation.dispatch(
-            CommonActions.reset({
-              index: 0,
-              routes: [{name: 'TabNavigation', params: {screen: 'Home'}}],
-            }),
-          );
-        }
-      }, 1000);
-    } else {
-      setOpenModel(false);
-      Toast.show({
-        text1: 'Error',
-        text2: 'No user is currently signed in',
-        type: 'error',
-        visibilityTime: 3000,
-      });
-    }
-  };
+  const {successModelVisible, setSuccessModelVisible, handleYesPress} =
+    useLogout({
+      setOpenModel,
+      YesPress,
+      navigateToHome,
+    });
   return (
     <>
       <Modal visible={openModel} animationType="slide" transparent={true}>

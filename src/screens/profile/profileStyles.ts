@@ -4,13 +4,14 @@ export const styles = StyleSheet.create({
     container: {
       flex: 1,
       backgroundColor: '#F6F6F6',
-      paddingTop: 20,
+      paddingTop: 20, 
     },
     topcontainer: {
       flexDirection: 'row',
       justifyContent: 'space-evenly',
       alignItems: 'center',
       paddingHorizontal: 20,
+      
     },
     containerRight: {
       flexDirection: 'row',
@@ -50,14 +51,14 @@ export const styles = StyleSheet.create({
       flex: 1,
       justifyContent: 'space-between',
       alignItems: 'center',
-      backgroundColor: 'white',
+      // backgroundColor: 'red',
       borderRadius: 26,
       marginTop: 40,
-      paddingHorizontal: 20,
-      marginHorizontal: 20,
+      // paddingHorizontal: 20,
+      marginHorizontal: 25,
     },
     
-  
+    
   
   });
   

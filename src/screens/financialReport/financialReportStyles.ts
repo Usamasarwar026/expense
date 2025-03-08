@@ -42,7 +42,7 @@ export const styles = StyleSheet.create({
     },
     imageContainerText: {
       position: 'absolute',
-      fontSize: 32,
+      fontSize: 21,
       fontWeight: '700',
     },
     btnContainer: {

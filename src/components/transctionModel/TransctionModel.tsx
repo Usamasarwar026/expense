@@ -16,8 +16,7 @@ export default function TransctionModel({
   filters,
   setFilters,
   applyFilters,
-  setCategory,
-  resetFilters
+  resetFilters,
 }: TransctionModelProps) {
   return (
     <Modal visible={visible} animationType="slide" transparent={true}>
@@ -30,9 +29,7 @@ export default function TransctionModel({
 
         <View style={styles.firstBox}>
           <Text style={styles.firstBoxText}>Filter Transaction</Text>
-          <TouchableOpacity
-          onPress={resetFilters}
-            >
+          <TouchableOpacity onPress={resetFilters}>
             <Text style={styles.firstBoxText1}>Reset</Text>
           </TouchableOpacity>
         </View>

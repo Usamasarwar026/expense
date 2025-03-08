@@ -12,8 +12,8 @@ export const styles = StyleSheet.create({
       padding: 20,
     },
     topcontainerText: {
-      fontSize: 16,
-      fontWeight: '700',
+      fontSize: 18,
+      fontWeight: '600',
     },
     inputcontainer: {
       flex: 2,

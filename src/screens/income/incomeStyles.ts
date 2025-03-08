@@ -93,7 +93,6 @@ export const styles = StyleSheet.create({
       borderWidth: 1,
       borderRadius: 16,
       padding: 10,
-      textAlignVertical: 'top',
     },
     attachBox: {
       flexDirection: 'row',

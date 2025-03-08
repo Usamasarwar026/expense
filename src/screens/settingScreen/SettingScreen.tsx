@@ -6,35 +6,21 @@ import {
   KeyboardAvoidingView,
   ScrollView,
 } from 'react-native';
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import {IMAGES} from '../../constant/image';
-import {CommonActions, useNavigation} from '@react-navigation/native';
 import CurrencyModal from '../../components/currencyModel/CurrencyModel';
-import {useAppDispatch, useAppSelector} from '../../hooks/useRedux';
-import {saveSelectedCurrency} from '../../store/transctionSlice/transctionSlice';
 import {styles} from './settingScreenStyles';
+import useSettingScreen from './useSettingScreen';
 
 export default function SettingScreen() {
-  const Navigation = useNavigation();
-  const [modalVisible, setModalVisible] = useState(false);
-  const dispatch = useAppDispatch();
-  const selectedCurrency = useAppSelector(
-    state => state.transctions.selectedCurrency,
-  );
-
-  const goToBack = () => {
-    try {
-      Navigation.goBack();
-    } catch (error) {
-      console.error('Navigation Error:', error);
-    }
-  };
-  const handleCurrencySelect = async (currency: string) => {
-    await dispatch(saveSelectedCurrency(currency));
-    console.log('currency selected', currency);
-    setModalVisible(false);
-  };
-
+  
+const {
+  goToBack,
+    modalVisible,
+    setModalVisible,
+    selectedCurrency,
+    handleCurrencySelect,
+} = useSettingScreen();
   return (
     <KeyboardAvoidingView style={styles.container}>
       <ScrollView contentContainerStyle={{flexGrow: 1}} bounces={false}>

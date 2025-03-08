@@ -7,6 +7,10 @@ export const styles = StyleSheet.create({
     paddingHorizontal: 20,
     justifyContent: 'space-between',
     height: 89,
+    backgroundColor: '#FCFCFC',
+    marginHorizontal: 20,
+    borderRadius: 24,
+    marginBottom:6,
   },
   leftContainer: {
     flexDirection: 'row',

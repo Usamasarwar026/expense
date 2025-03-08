@@ -7,8 +7,9 @@ export const styles = StyleSheet.create({
       flexDirection: 'row',
       backgroundColor: 'white',
       alignItems: 'center',
-      paddingHorizontal: 20,
+      paddingHorizontal: 30,
       gap: 20,
+      marginBottom:2,
     },
     imageBox: {
       width: 52,

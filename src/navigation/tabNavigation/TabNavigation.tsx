@@ -1,16 +1,14 @@
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/Ionicons';
-import {useState} from 'react';
 import AddModel from '../../components/addModel/AddModel';
 import {TABS} from '../../constant/constant';
 import {styles} from './TabNavigationStyle';
 import {TouchableOpacity} from 'react-native';
 import {TabItem} from '../../types/types';
+import useTabNavigation from './useTabNavigation';
 
-const Tab = createBottomTabNavigator();
 
 export default function TabNavigation() {
-  const [modalVisible, setModalVisible] = useState(false);
+  const {Tab, modalVisible, setModalVisible} = useTabNavigation();
 
   return (
     <>

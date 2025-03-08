@@ -5,45 +5,18 @@ import {
   TouchableOpacity,
   ActivityIndicator,
 } from 'react-native';
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import {IMAGES} from '../../constant/image';
 import Setting from '../../components/setting/Setting';
-import {useAppDispatch} from '../../hooks/useRedux';
-import {fetchUserData} from '../../store/authSlice/authSlice';
 import {styles} from './profileStyles';
-import {UserData} from '../../types/types';
-import {navigate} from '../../navigation/navigationRef';
+import {navigate} from '../../navigation/navigationRef/navigationRef';
+import {PROFILE_DATA} from '../../constant/constant';
 import Logout from '../../components/logout/Logout';
-import { PROFILE_DATA } from '../../constant/constant';
+import useProfile from './useProfile';
 
 export default function Profile() {
-  const [openModel, setOpenModel] = useState(false);
-  const [loading, setLoading] = useState(true);
-  const [userData, setUserData] = useState<UserData | null | undefined>(null);
-  const dispatch = useAppDispatch();
-
-  useEffect(() => {
-    const fetchUserInfo = async () => {
-      try {
-        const data = await dispatch(fetchUserData()).unwrap();
-        setUserData(data);
-      } catch (error) {
-        console.error('Error fetching user data:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchUserInfo();
-  }, [dispatch]);
-
-  const goToEditPage = () => {
-    navigate('EditProfile');
-  };
-
-  const YesPress = () => {
-    console.log('Button Pressed');
-  };
+  const {loading, userData, goToEditPage, openModel, setOpenModel, YesPress} =
+    useProfile();
 
   return (
     <View style={styles.container}>
@@ -96,13 +69,13 @@ export default function Profile() {
               console.log('Different Action for:', profile.name);
             }
           };
-
           return (
             <Setting
               key={profile.id}
               image={profile.image}
               name={profile.name}
               onPress={handlePress}
+              customStyle = {profile.styles}
             />
           );
         })}

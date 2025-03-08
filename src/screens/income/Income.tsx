@@ -6,100 +6,34 @@ import {
   TextInput,
   ScrollView,
 } from 'react-native';
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import {IMAGES} from '../../constant/image';
-import {useNavigation} from '@react-navigation/native';
 import AttachmentModel from '../../components/attachmentModel/AttachmentModel';
 import CategoryDropdown from '../../components/categoryDropdown/CategoryDropdown';
 import Input from '../../components/input/Input';
-import {useAppDispatch, useAppSelector} from '../../hooks/useRedux';
-import {
-  addTransaction,
-  fetchExchangeRates,
-  fetchSelectedCurrency,
-  fetchTransactions,
-} from '../../store/transctionSlice/transctionSlice';
 import SuccessfulModel from '../../components/successfulModel/SuccessfulModel';
 import Toast from 'react-native-toast-message';
 import {styles} from './incomeStyles';
+import useIncome from './useIncome';
 
 export default function Income() {
-  const [openModel, setOpenModel] = useState<boolean>(false);
-  const [successfullyModel, setSuccessfulModel] = useState<boolean>(false);
-  const [description, setDescription] = useState('');
-  const [category, setCategory] = useState<string>('All Expense');
-  const [imageUri, setImageUri] = useState<string | null>(null);
-  const [amount, setAmount] = useState('');
-  const [totalIncome, setTotalIncome] = useState(0);
-  const navigation = useNavigation();
-  const dispatch = useAppDispatch();
-  const {transactions} = useAppSelector(state => state.transctions);
-  const type = 'Income';
-  const {selectedCurrency, exchangeRates} = useAppSelector(
-    state => state.transctions,
-  );
+  const {
+    goToHome,
+    setCategory,
+    description,
+    setDescription,
+    amount,
+    setAmount,
+    imageUri,
+    setImageUri,
+    openModel,
+    setOpenModel,
+    saveData,
+    income,
+    successfullModel,
+    setSuccessfulModel,
+  } = useIncome();
 
-  useEffect(() => {
-    dispatch(fetchSelectedCurrency());
-  }, []);
-
-  useEffect(() => {
-    dispatch(fetchExchangeRates());
-  }, [dispatch]);
-
-  const convertAmount = (amount: number, currency: string) => {
-    const rate = exchangeRates[currency] || 1;
-    const convertedAmount = amount * rate;
-    return new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: currency,
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 0,
-    }).format(convertedAmount);
-  };
-
-  useEffect(() => {
-    dispatch(fetchTransactions());
-  }, [dispatch]);
-  useEffect(() => {
-    if (transactions.length > 0) {
-      const incomeTotal = transactions
-        .filter(transaction => transaction.type === 'Income')
-        .reduce(
-          (sum, transaction) => sum + (Number(transaction.amount) || 0),
-          0,
-        );
-      setTotalIncome(incomeTotal);
-    }
-  }, [transactions]);
-
-  const saveData = () => {
-    if (!description || !category || !amount || !imageUri) {
-      Toast.show({
-        text1: 'All fields are required',
-        type: 'error',
-      });
-      return;
-    }
-    dispatch(addTransaction({description, category, amount, imageUri, type}));
-
-    setDescription('');
-    setCategory('Category');
-    setAmount('');
-    setImageUri(null);
-    setSuccessfulModel(true);
-
-    setTimeout(() => {
-      setSuccessfulModel(false);
-    }, 2000);
-  };
-  const goToHome = () => {
-    try {
-      navigation.goBack();
-    } catch (error) {
-      console.error('Navigation Error:', error);
-    }
-  };
   return (
     <>
       <ScrollView
@@ -115,7 +49,7 @@ export default function Income() {
         <View style={styles.secondContainer}>
           <Text style={styles.secondContainerText}>How much?</Text>
           <Text style={styles.secondContaineramount}>
-            {convertAmount(totalIncome, selectedCurrency)}
+            {income}
           </Text>
         </View>
         <View style={styles.belowContainer}>
@@ -181,7 +115,7 @@ export default function Income() {
         }}
       />
       <SuccessfulModel
-        openModel={successfullyModel}
+        openModel={successfullModel}
         setOpenModel={setSuccessfulModel}
         text="Transaction has been successfully added"
       />

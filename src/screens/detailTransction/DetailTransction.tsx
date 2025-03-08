@@ -1,62 +1,23 @@
 import {View, Text, TouchableOpacity, Image, Modal} from 'react-native';
-import React, {useState} from 'react';
+import React from 'react';
 import {IMAGES} from '../../constant/image';
-import {useNavigation, useRoute} from '@react-navigation/native';
-import {useAppDispatch, useAppSelector} from '../../hooks/useRedux';
-import {deleteTransaction} from '../../store/transctionSlice/transctionSlice';
-import moment from 'moment';
 import {styles} from './detailTransctionStyles';
-import {DetailTransactionRouteProp, ParamTransaction} from '../../types/types';
 import Logout from '../../components/logout/Logout';
+import { useDetailTransction } from './useDetailTransction';
 
 export default function DetailTransction() {
-  const [openModel, setOpenModel] = useState(false);
-  const route = useRoute<DetailTransactionRouteProp>();
-  const [fullScreenImage, setFullScreenImage] = useState<string | null>(null);
-  const dispatch = useAppDispatch();
-  const navigation = useNavigation();
-  const transaction: ParamTransaction = route.params?.transaction || {};
-  const {selectedCurrency, exchangeRates} = useAppSelector(
-    state => state.transctions,
-  );
-  const formattedDate = transaction.timestamp
-    ? moment(transaction.timestamp).format('dddd D MMMM YYYY hh:mm A')
-    : 'No Date Available';
-
-  const goToHome = () => {
-    try {
-      navigation.goBack();
-    } catch (error) {
-      console.error('Navigation Error:', error);
-    }
-  };
-  const onYesPress = async (transactionId: string) => {
-    await dispatch(deleteTransaction(transactionId));
-  };
-
-  const convertAmount = (amount: number, currency: string) => {
-    if (!currency) {
-      console.error('Currency is required but received:', currency);
-      return 'Invalid currency';
-    }
-
-    const rate = exchangeRates[currency] ?? 1;
-    const convertedAmount = amount * rate;
-
-    try {
-      return new Intl.NumberFormat('en-US', {
-        style: 'currency',
-        currency: currency.toUpperCase(),
-        minimumFractionDigits: 0,
-        maximumFractionDigits: 0,
-      }).format(convertedAmount);
-    } catch (error) {
-      console.error('Invalid currency format:', currency, error);
-      return 'Invalid ';
-    }
-  };
-
-  const isExpense = transaction.type === 'Expense';
+  const {
+    openModel,
+    setOpenModel,
+    fullScreenImage,
+    setFullScreenImage,
+    transaction,
+    formattedDate,
+    goToHome,
+    onYesPress,
+    currencyAmount,
+    isExpense,
+  } = useDetailTransction();
 
   return (
     <>
@@ -78,8 +39,7 @@ export default function DetailTransction() {
           <View style={styles.redcontainer}>
             <View>
               <Text style={styles.amount}>
-                {' '}
-                {convertAmount(transaction.amount, selectedCurrency)}
+                {currencyAmount}
               </Text>
             </View>
             <View>

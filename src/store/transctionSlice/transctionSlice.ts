@@ -3,6 +3,7 @@ import firestore from '@react-native-firebase/firestore';
 import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {TransactionDataSlice, TransactionState} from '../../types/types';
 import {uploadToCloudinary} from '../imageSlice/imageSlice';
+import axios from 'axios';
 
 const initialState: TransactionState = {
   transactions: [],
@@ -55,11 +56,8 @@ export const fetchExchangeRates = createAsyncThunk(
   'transactions/fetchExchangeRates',
   async (_, {rejectWithValue}) => {
     try {
-      const response = await fetch(
-        'https://api.exchangerate-api.com/v4/latest/USD',
-      );
-      const data = await response.json();
-      return data.rates;
+      const response = await axios.get('https://api.exchangerate-api.com/v4/latest/USD');
+      return response.data.rates;
     } catch (error: any) {
       return rejectWithValue(error.message);
     }

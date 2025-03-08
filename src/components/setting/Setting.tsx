@@ -4,9 +4,9 @@ import { SettingProps } from '../../types/types';
 import {styles} from './settingStyles';
 
 export default function Setting(props: SettingProps) {
-  const {name, image, onPress} = props;
+  const {name, image, onPress, customStyle} = props;
   return (
-    <TouchableOpacity style={styles.container} onPress={onPress}>
+    <TouchableOpacity style={[styles.container, customStyle]} onPress={onPress}>
       <View style={styles.imageBox}>
         <Image style={styles.image} source={image} />
       </View>

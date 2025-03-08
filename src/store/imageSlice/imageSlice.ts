@@ -1,5 +1,6 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import {AuthState} from '../../types/types';
+import axios from 'axios';
 
 export const uploadToCloudinary = createAsyncThunk(
   'transaction/uploadToCloudinary',
@@ -14,11 +15,10 @@ export const uploadToCloudinary = createAsyncThunk(
       formData.append('upload_preset', 'picture');
       formData.append('cloud_name', 'dptmvt8xi');
 
-      const response = await fetch(
+      const response = await axios.post(
         'https://api.cloudinary.com/v1_1/dptmvt8xi/image/upload',
+        formData,
         {
-          method: 'POST',
-          body: formData,
           headers: {
             Accept: 'application/json',
             'Content-Type': 'multipart/form-data',
@@ -26,13 +26,7 @@ export const uploadToCloudinary = createAsyncThunk(
         },
       );
 
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.error?.message || 'Failed to upload image');
-      }
-
-      return data.secure_url;
+      return response.data.secure_url;
     } catch (error: any) {
       return rejectWithValue(error.message);
     }

@@ -9,63 +9,16 @@ import {
 } from 'react-native';
 import React from 'react';
 import {IMAGES} from '../../constant/image';
-import {
-  CameraOptions,
-  ImageLibraryOptions,
-  launchCamera,
-  launchImageLibrary,
-} from 'react-native-image-picker';
-import DocumentPicker from 'react-native-document-picker';
 import {AttachmentProp} from '../../types/types';
 import {style} from './attachmentModelStyle';
+import { UseAttachmentModel } from './useAttachmentModel';
 
 export default function AttachmentModel({
   openModel,
   setOpenModel,
   onSelectImage,
 }: AttachmentProp) {
-  const openCamera = async (): Promise<void> => {
-    const options: CameraOptions = {
-      mediaType: 'photo',
-      quality: 1,
-      saveToPhotos: true,
-    };
-    const result = await launchCamera(options);
-    if (result.assets && result.assets.length > 0) {
-      const imageUri: string = result.assets[0].uri ?? '';
-      onSelectImage(imageUri);
-      setOpenModel(false);
-    }
-  };
-
-  const openGallery = async (): Promise<void> => {
-    const options: ImageLibraryOptions = {
-      mediaType: 'photo',
-      quality: 1,
-    };
-    const result = await launchImageLibrary(options);
-    if (result.assets && result.assets.length > 0) {
-      const imageUri: string = result.assets[0].uri ?? '';
-      onSelectImage(imageUri);
-      setOpenModel(false);
-    }
-  };
-
-  const pickDocument = async (): Promise<void> => {
-    try {
-      const result = await DocumentPicker.pickSingle({
-        type: [DocumentPicker.types.allFiles],
-      });
-      onSelectImage(result.uri);
-      setOpenModel(false);
-    } catch (err) {
-      if (DocumentPicker.isCancel(err)) {
-      } else {
-        console.error('Error picking document:', err);
-      }
-    }
-  };
-
+  const { openCamera, openGallery, pickDocument } = UseAttachmentModel(setOpenModel, onSelectImage);
   return (
     <Modal visible={!!openModel}>
       <TouchableWithoutFeedback
