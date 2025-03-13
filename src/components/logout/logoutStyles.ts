@@ -1,4 +1,5 @@
 import {StyleSheet} from 'react-native';
+import { COLORS } from '../../constant/color';
 
 export const styles = StyleSheet.create({
   overlay: {
@@ -13,7 +14,7 @@ export const styles = StyleSheet.create({
     bottom: 0,
     width: '100%',
     height: '30%',
-    backgroundColor: 'white',
+    backgroundColor: COLORS.WHITE,
     borderTopLeftRadius: 40,
     borderTopRightRadius: 40,
     padding: 20,
@@ -22,7 +23,7 @@ export const styles = StyleSheet.create({
     elevation: 5,
   },
   logoutline: {
-    borderTopColor: '#D3BDFF',
+    borderTopColor: COLORS.LIGHT_PURPLE,
     borderTopWidth: 3,
     width: '10%',
     height: 2,
@@ -44,14 +45,14 @@ export const styles = StyleSheet.create({
     textAlign: 'center',
     fontSize: 16,
     fontWeight: '500',
-    color: '#91919F',
+    color: COLORS.MUTED_GREY,
   },
   button: {
     borderRadius: 10,
     paddingHorizontal: 50,
     paddingBottom: 18,
     paddingTop: 18,
-    backgroundColor: '#EEE5FF',
+    backgroundColor: COLORS.PURPLE_BLUE,
     marginBottom: 10,
   },
   button1: {
@@ -59,16 +60,16 @@ export const styles = StyleSheet.create({
     paddingHorizontal: 50,
     paddingBottom: 18,
     paddingTop: 18,
-    backgroundColor: '#7F3DFF',
+    backgroundColor: COLORS.DARK_PURPLE,
     marginBottom: 10,
   },
   buttonText: {
-    color: '#7F3DFF',
+    color: COLORS.DARK_PURPLE,
     fontSize: 18,
     fontWeight: 'bold',
   },
   buttonText1: {
-    color: 'white',
+    color: COLORS.WHITE,
     fontSize: 18,
     fontWeight: 'bold',
   },

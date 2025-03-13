@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { CommonActions, useNavigation } from '@react-navigation/native';
 import Toast from 'react-native-toast-message';
-import auth from '@react-native-firebase/auth';
 
 export function useLogout({
   setOpenModel,

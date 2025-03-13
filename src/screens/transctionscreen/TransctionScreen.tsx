@@ -1,5 +1,5 @@
-import {View, Text, Image, TouchableOpacity, FlatList} from 'react-native';
-import React, {useEffect, useMemo, useState} from 'react';
+import {View, Text, Image, TouchableOpacity, FlatList, ScrollView} from 'react-native';
+import React from 'react';
 import {IMAGES} from '../../constant/image';
 import TransctionModel from '../../components/transctionModel/TransctionModel';
 import Dropdown from '../../components/dropdown/Dropdown';
@@ -65,7 +65,7 @@ export default function TransctionScreen() {
               <Image source={IMAGES.RIGHT_ARROW} />
             </View>
           </TouchableOpacity>
-          <View>
+          <View style={styles.flatlist}>
             <FlatList
               data={combinedData}
               keyExtractor={(item, index) =>
@@ -81,7 +81,6 @@ export default function TransctionScreen() {
           </View>
         </View>
       </View>
-
       <TransctionModel
         visible={openModel}
         onClose={() => setOpenModel(false)}

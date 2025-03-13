@@ -5,6 +5,7 @@ import {fetchTransactions} from '../../store/transctionSlice/transctionSlice';
 import {Transaction} from '../../types/types';
 import {navigate} from '../../navigation/navigationRef/navigationRef';
 import { convertAmount } from '../../utils/currencyUtils';
+import { COLORS } from '../../constant/color';
 
 export const useFinancialReport = () => {
     
@@ -79,12 +80,12 @@ export const useFinancialReport = () => {
       }, {} as Record<string, number>);
 
       const categoryColors: Record<string, string> = {
-        Shopping: '#FCAC12',
-        Subscription: '#7F3DFF',
-        Food: '#007BFF',
-        Salary: '#00A86B',
-        Transportation: 'black',
-        Other: '#BDC3C7',
+        Shopping: COLORS.YELLOW_ORANGE,
+        Subscription: COLORS.DARK_PURPLE,
+        Food: COLORS.BRIGHT_BLUE,
+        Salary: COLORS.GREEN,
+        Transportation: COLORS.BLACK,
+        Other: COLORS.SILVER_GRAY,
       };
 
       const sections = Object.entries(categoryTotals).map(

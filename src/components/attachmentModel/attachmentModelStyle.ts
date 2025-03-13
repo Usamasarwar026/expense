@@ -1,4 +1,5 @@
 import {StyleSheet} from 'react-native';
+import { COLORS } from '../../constant/color';
 
 export const style = StyleSheet.create({
   overlay: {
@@ -13,7 +14,7 @@ export const style = StyleSheet.create({
     bottom: 0,
     width: '100%',
     height: '25%',
-    backgroundColor: 'white',
+    backgroundColor: COLORS.WHITE,
     borderTopLeftRadius: 40,
     borderTopRightRadius: 40,
     padding: 20,
@@ -21,7 +22,7 @@ export const style = StyleSheet.create({
     elevation: 5,
   },
   logoutline: {
-    borderTopColor: '#D3BDFF',
+    borderTopColor: COLORS.LIGHT_PURPLE,
     borderTopWidth: 3,
     width: '10%',
     height: 2,
@@ -37,7 +38,7 @@ export const style = StyleSheet.create({
   innerAttachBox: {
     width: 107,
     height: 91,
-    backgroundColor: '#EEE5FF',
+    backgroundColor: COLORS.PURPLE_BLUE,
     borderRadius: 10,
     justifyContent: 'center',
     alignItems: 'center',
@@ -49,6 +50,6 @@ export const style = StyleSheet.create({
   attachText: {
     fontSize: 16,
     fontWeight: '600',
-    color: '#7F3DFF',
+    color: COLORS.DARK_PURPLE,
   },
 });

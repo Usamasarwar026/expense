@@ -1,4 +1,5 @@
 import { StyleSheet } from "react-native";
+import { COLORS } from "../../constant/color";
 
 export const styles = StyleSheet.create({
     container: {
@@ -24,13 +25,13 @@ export const styles = StyleSheet.create({
     inputField: {
       width: 343,
       height: 56,
-      borderColor: '#ccc',
+      borderColor: COLORS.LIGHT_GREY,
       borderWidth: 1,
       borderRadius: 16,
       paddingHorizontal: 15,
       marginBottom: 15,
       fontSize: 16,
-      color: 'black',
+      color: COLORS.BLACK,
     },
     label: {
       paddingHorizontal: 30,
@@ -39,15 +40,15 @@ export const styles = StyleSheet.create({
       gap: 10,
     },
     forgettext: {
-      color: '#7F00FF',
+      color: COLORS.VIVID_VIOLET,
       fontWeight: 600,
     },
     labelText: {
-      color: '#7F00FF',
+      color: COLORS.VIVID_VIOLET,
       textDecorationLine: 'underline',
     },
     btntext:{
-      color: '#91919F',    
+      color: COLORS.MUTED_GREY,    
     },
     btn: {
       flex: 1,
@@ -58,14 +59,14 @@ export const styles = StyleSheet.create({
     button: {
       width: 343,
       height: 56,
-      backgroundColor: '#7F3DFF',
+      backgroundColor: COLORS.DARK_PURPLE,
       paddingVertical: 12,
       borderRadius: 16,
       justifyContent: 'center',
       alignItems: 'center',
     },
     buttonText: {
-      color: '#fff',
+      color: COLORS.WHITE,
       fontSize: 18,
       fontWeight: '700',
     },
@@ -75,7 +76,7 @@ export const styles = StyleSheet.create({
       alignItems: 'center',
       marginBottom: 10,
       fontSize: 16,
-      color: 'black',
+      color: COLORS.BLACK,
     },
     googletext: {
       fontSize: 16,
@@ -89,7 +90,7 @@ export const styles = StyleSheet.create({
       flexDirection: 'row',
       gap: 10,
       borderWidth: 1,
-      borderColor: '#ccc',
+      borderColor: COLORS.LIGHT_GREY,
       borderRadius: 16,
       marginHorizontal: 20,
       marginBottom: 8,

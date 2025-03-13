@@ -12,6 +12,7 @@ import Input from '../../components/input/Input';
 import Toast from 'react-native-toast-message';
 import {styles} from './resetPasswordStyles';
 import useResetPassword from './useResetPassword';
+import { COLORS } from '../../constant/color';
 
 export default function ResetPassword() {
   const {
@@ -40,7 +41,7 @@ export default function ResetPassword() {
           <Input
             style={styles.inputField}
             placeholder="Old Password"
-            placeholderTextColor="#91919F"
+            placeholderTextColor={COLORS.MUTED_GREY}
             value={oldpassword}
             onChangeText={setOldpassword}
             secureTextEntry={true}
@@ -48,7 +49,7 @@ export default function ResetPassword() {
           <Input
             style={styles.inputField}
             placeholder="New Password"
-            placeholderTextColor="#91919F"
+            placeholderTextColor={COLORS.MUTED_GREY}
             value={newpassword}
             onChangeText={setNewpassword}
             secureTextEntry={true}
@@ -56,7 +57,7 @@ export default function ResetPassword() {
           <Input
             style={styles.inputField}
             placeholder="ReType New Password"
-            placeholderTextColor="#91919F"
+            placeholderTextColor={COLORS.MUTED_GREY}
             value={confirmPassword}
             onChangeText={setConfirmPassword}
             secureTextEntry={true}

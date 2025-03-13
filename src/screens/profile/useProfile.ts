@@ -10,13 +10,13 @@ export default function useProfile() {
   const [loading, setLoading] = useState(true);
   const [userData, setUserData] = useState<UserData | null | undefined>(null);
   const dispatch = useAppDispatch();
-  const {usersData} = useAppSelector(state => state.auth);
+  const usersData = useAppSelector(state => state.auth.usersData);
 
   useEffect(() => {
     const fetchUserInfo = async () => {
       try {
+        setLoading(true);
         await dispatch(fetchUserData()).unwrap();
-        setUserData(usersData);
       } catch (error) {
         console.error('Error fetching user data:', error);
       } finally {
@@ -25,6 +25,10 @@ export default function useProfile() {
     };
     fetchUserInfo();
   }, [dispatch]);
+  useEffect(() => {
+    setUserData(usersData);
+  }, [usersData]); 
+
 
   const goToEditPage = () => {
     navigate('EditProfile');

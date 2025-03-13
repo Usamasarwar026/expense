@@ -6,7 +6,7 @@ import {
 } from '../../store/transctionSlice/transctionSlice';
 import {convertAmount} from '../../utils/currencyUtils';
 
-export function useTransction(amount: number, type: string) {
+export function useTransction(amount: number | string, type: string) {
   const dispatch = useAppDispatch();
   const {selectedCurrency, exchangeRates} = useAppSelector(
     state => state.transctions,
@@ -19,8 +19,8 @@ export function useTransction(amount: number, type: string) {
 
   const formattedAmount =
     type === 'Expense'
-      ? `- ${convertAmount(amount, selectedCurrency, exchangeRates)}`
-      : `+ ${convertAmount(amount, selectedCurrency, exchangeRates)}`;
+      ? `- ${convertAmount(Number(amount), selectedCurrency, exchangeRates)}`
+      : `+ ${convertAmount(Number(amount), selectedCurrency, exchangeRates)}`;
 
   return {
     formattedAmount,

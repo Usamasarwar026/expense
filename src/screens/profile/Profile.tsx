@@ -13,6 +13,7 @@ import {navigate} from '../../navigation/navigationRef/navigationRef';
 import {PROFILE_DATA} from '../../constant/constant';
 import Logout from '../../components/logout/Logout';
 import useProfile from './useProfile';
+import { COLORS } from '../../constant/color';
 
 export default function Profile() {
   const {loading, userData, goToEditPage, openModel, setOpenModel, YesPress} =
@@ -23,7 +24,7 @@ export default function Profile() {
       <View style={styles.topcontainer}>
         <View style={styles.imageBox}>
           {loading ? (
-            <ActivityIndicator size="small" color="#7F3DFF" />
+            <ActivityIndicator size="small" color={COLORS.DARK_PURPLE} />
           ) : (
             <Image
               style={styles.profileImage}
@@ -39,7 +40,7 @@ export default function Profile() {
         <View style={styles.containerRight}>
           <View>
             {loading ? (
-              <ActivityIndicator size="large" color="#7F3DFF" />
+              <ActivityIndicator size="large" color={COLORS.DARK_PURPLE} />
             ) : (
               <>
                 <Text style={styles.username}>Username</Text>

@@ -26,7 +26,7 @@ export const Time = (
     const endOfSelectedMonth = moment(selectedMonth, 'MMMM').endOf('month');
 
     return {
-      [selectedMonth]: transactions.filter((transaction: any) =>
+      [selectedMonth]: transactions?.filter((transaction: any) =>
         moment(transaction.timestamp).isBetween(
           startOfSelectedMonth,
           endOfSelectedMonth,
@@ -45,7 +45,7 @@ export const Time = (
     Older: [],
   };
 
-  transactions.forEach((transaction: Transaction) => {
+  transactions?.forEach((transaction: Transaction) => {
     const transactionDate = moment(transaction.timestamp);
 
     if (transactionDate.isSame(today, 'day')) {

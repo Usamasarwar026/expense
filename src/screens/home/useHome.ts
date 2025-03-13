@@ -11,6 +11,7 @@ import {ChartData, Transaction, UserData} from '../../types/types';
 import {CommonActions, useNavigation} from '@react-navigation/native';
 import {navigate} from '../../navigation/navigationRef/navigationRef';
 import {convertAmount} from '../../utils/currencyUtils';
+import { COLORS } from '../../constant/color';
 
 export function useHome() {
   const [userData, setUserData] = useState<UserData | null | undefined>(null);
@@ -21,7 +22,7 @@ export function useHome() {
   const [totalExpense, setTotalExpense] = useState(0);
   const navigation = useNavigation();
   const dispatch = useAppDispatch();
-  const {transactions, loading, selectedCurrency, exchangeRates} =
+  const {transactions, selectedCurrency, exchangeRates} =
     useAppSelector(state => state.transctions);
 
   useEffect(() => {
@@ -149,9 +150,9 @@ export function useHome() {
   };
 
   const chartConfig = {
-    backgroundGradientFrom: 'white',
+    backgroundGradientFrom: COLORS.WHITE,
     backgroundGradientFromOpacity: 1,
-    backgroundGradientTo: 'white',
+    backgroundGradientTo: COLORS.WHITE,
     backgroundGradientToOpacity: 0.5,
     color: (opacity = 1) => `rgba(255, 0, 0, ${opacity})`,
     strokeWidth: 2,
@@ -160,8 +161,8 @@ export function useHome() {
     propsForBackgroundLines: {
       strokeWidth: 0,
     },
-    fillShadowGradientFrom: 'rgba(159, 120, 235, 0.6)',
-    fillShadowGradientTo: 'rgba(255, 255, 255, 0)',
+    fillShadowGradientFrom: COLORS.TRANSPARENT_PURPLE,
+    fillShadowGradientTo: COLORS.TRANSPARENT_WHITE,
     fillShadowGradientOpacity: 0.3,
   };
   const handlepress = (transaction: Transaction) => {

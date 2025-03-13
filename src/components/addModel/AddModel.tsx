@@ -4,7 +4,7 @@ import {
   TouchableWithoutFeedback,
   Animated,
   Image,
-  TouchableOpacity,
+  TouchableOpacity
 } from 'react-native';
 import React from 'react';
 import {IMAGES} from '../../constant/image';

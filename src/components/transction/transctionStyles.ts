@@ -1,4 +1,5 @@
 import {StyleSheet} from 'react-native';
+import { COLORS } from '../../constant/color';
 
 export const styles = StyleSheet.create({
   TransctionContainer: {
@@ -7,7 +8,7 @@ export const styles = StyleSheet.create({
     paddingHorizontal: 20,
     justifyContent: 'space-between',
     height: 89,
-    backgroundColor: '#FCFCFC',
+    backgroundColor: COLORS.OFF_WHITE,
     marginHorizontal: 20,
     borderRadius: 24,
     marginBottom:6,
@@ -21,7 +22,6 @@ export const styles = StyleSheet.create({
     width: 60,
     height: 60,
     borderRadius: 16,
-    backgroundColor: '#FCEED4',
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -38,13 +38,13 @@ export const styles = StyleSheet.create({
   text2: {
     fontSize: 13,
     fontWeight: '500',
-    color: '#91919F',
+    color: COLORS.MUTED_GREY,
     
   },
   text4: {
     fontSize: 13,
     fontWeight: '500',
-    color: '#91919F',
+    color: COLORS.MUTED_GREY,
     textAlign: 'right',
     
   },
@@ -59,10 +59,10 @@ export const styles = StyleSheet.create({
     fontWeight: '600',
   },
   red: {
-    color: '#FD3C4A',
+    color: COLORS.RED_SALSA,
   },
   green: {
-    color: '#10B981',
+    color: COLORS.EMERALD_GREEN,
   },
   pricebox:{
     borderWidth: 1,

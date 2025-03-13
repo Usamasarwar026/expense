@@ -7,19 +7,26 @@ import {
 } from 'react-native';
 import {FC} from 'react';
 import {BottomTabNavigationOptions} from '@react-navigation/bottom-tabs';
-import { RouteProp} from '@react-navigation/native';
+import {RouteProp} from '@react-navigation/native';
 import {IconProps} from 'react-native-vector-icons/Icon';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 
-export type TabItem = {
+export type TabItem<T = undefined> = {
   id: number;
   name: string;
-  component: FC<any>;
+  component: T extends undefined ? FC : FC<T>;
   icon: IconProps['name'];
   headerShown?: BottomTabNavigationOptions['headerShown'];
   isAddButton?: boolean;
 };
-export type TabsArray = TabItem[];
+
+export type TabsArray = [
+  TabItem,
+  TabItem,
+  TabItem<AddModelProps>,
+  TabItem,
+  TabItem,
+];
 
 export type RootStackParamList = {
   LaunchScreen: undefined;
@@ -42,18 +49,18 @@ export type RootStackParamList = {
 
 export type NavigationProps = NativeStackNavigationProp<RootStackParamList>;
 
-export type NavigationUIProps ={
+export type NavigationUIProps = {
   isAuthenticated: boolean | null;
-}
+};
 
 export type TransctionProp = {
   title: string;
   subtitle: string;
-  amount: number;
+  amount: number | string;
   time: string;
   image: {uri: string};
   type: string;
-  onPress?: ()=>void;
+  onPress?: () => void;
 };
 export type ImageProp = {
   uri: string;
@@ -114,7 +121,7 @@ export type ProgressBarProps = {
 
 export type UseProgressBarProps = {
   amount: string | number;
-}
+};
 
 export type SuccessfulModelProps = {
   openModel: boolean;
@@ -122,20 +129,25 @@ export type SuccessfulModelProps = {
   text: string;
 };
 export type Transaction = {
+  id: string;
+  userId: string;
+  category: string;
+  description: string;
+  amount: string;
+  imageUri: string;
+  type: string;
   timestamp: string;
-  [key: string]: any;
 };
-
 
 export type TransactionHeader = {
   type: 'header';
   title: string;
-}
+};
 
 export type TransactionItem = {
   type: 'transaction';
   data: Transaction;
-}
+};
 
 export type CombinedData = (TransactionHeader | TransactionItem)[];
 
@@ -194,15 +206,14 @@ export type TransctionModelProps = {
   setFilters: (filters: TransactionFilters) => void;
   applyFilters: () => void;
   setCategory?: (category: string) => void;
-  resetFilters?: ()=>void
+  resetFilters?: () => void;
 };
 
 export type CurrencyModalProps = {
   visible: boolean;
   onClose: () => void;
   onSelectCurrency: (currency: string) => void;
-}
-
+};
 
 export type UserProfile = {
   name: string;
@@ -258,15 +269,15 @@ export interface TransactionDataSlice {
   timestamp: string;
 }
 
-export type ExchangeRates ={
+export type ExchangeRates = {
   [currency: string]: number;
-}
+};
 export interface TransactionState {
   transactions: TransactionDataSlice[];
   loading: boolean;
   error: string | null;
   status: 'idle' | 'loading' | 'succeeded' | 'failed';
-  selectedCurrency: string ;
+  selectedCurrency: string;
   exchangeRates: ExchangeRates;
 }
 
@@ -293,13 +304,13 @@ export type AuthState = {
   status: 'idle' | 'loading' | 'succeeded' | 'failed';
   profileImageUri?: string;
   isAuthenticated: boolean;
-  usersData?: UsersData
+  usersData?: UsersData;
 };
-export type UsersData ={
+export type UsersData = {
   profileImageUri?: string;
   name?: string;
   email?: string;
-}
+};
 
 export type User = {
   uid: string;
@@ -312,8 +323,8 @@ export type SettingProps = {
   name: string;
   image: ImageSourcePropType;
   onPress: () => void;
-  customStyle?: StyleProp<ViewStyle>
-}
+  customStyle?: StyleProp<ViewStyle>;
+};
 
 export type PieChartSection = {
   percentage: number;
@@ -326,26 +337,15 @@ export type PieChartProps = {
   strokeWidth?: number;
 };
 
-
 export type ChartData = {
   labels: string[];
   datasets: {
-    data: number[]; 
-    color?: (opacity: number) => string; 
-    strokeWidth?: number; 
+    data: number[];
+    color?: (opacity: number) => string;
+    strokeWidth?: number;
   }[];
-}
+};
 
-export type SetOpenModelType = (visible: boolean) => void;
-export type OnSelectImageType = (uri: string) => void;
-
-export type UseAttachmentModelProps = {
-  setOpenModel: SetOpenModelType;
-  onSelectImage: OnSelectImageType;
-}
-
-export type UseAttachmentModelReturn = {
-  openCamera: () => void;
-  openGallery: () => void;
-  pickDocument: () => void;
-}
+export type UsePieChartLogicProps = {
+  sections: PieChartSection[];
+};

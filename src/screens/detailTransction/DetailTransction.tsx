@@ -4,6 +4,7 @@ import {IMAGES} from '../../constant/image';
 import {styles} from './detailTransctionStyles';
 import Logout from '../../components/logout/Logout';
 import { useDetailTransction } from './useDetailTransction';
+import { COLORS } from '../../constant/color';
 
 export default function DetailTransction() {
   const {
@@ -25,7 +26,7 @@ export default function DetailTransction() {
         <View
           style={[
             styles.topcontainer,
-            {backgroundColor: isExpense ? '#FD3C4A' : '#00A86B'},
+            {backgroundColor: isExpense ? COLORS.RED : COLORS.GREEN},
           ]}>
           <View style={styles.topbar}>
             <TouchableOpacity onPress={goToHome}>

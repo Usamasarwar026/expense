@@ -15,6 +15,7 @@ import SuccessfulModel from '../../components/successfulModel/SuccessfulModel';
 import Toast from 'react-native-toast-message';
 import {styles} from './expenseStyles';
 import useExpenseLogic from './useExpense';
+import { COLORS } from '../../constant/color';
 
 export default function Expense() {
   const {
@@ -74,7 +75,7 @@ export default function Expense() {
             <Input
               style={styles.numberInput}
               placeholder="Enter Expense"
-              placeholderTextColor="#91919F"
+              placeholderTextColor={COLORS.MUTED_GREY}
               value={amount}
               onChangeText={setAmount}
               keyboardType="numeric"

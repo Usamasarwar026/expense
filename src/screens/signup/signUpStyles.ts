@@ -1,4 +1,5 @@
 import { StyleSheet } from "react-native";
+import { COLORS } from "../../constant/color";
 
 export const styles = StyleSheet.create({
     container: {
@@ -29,13 +30,13 @@ export const styles = StyleSheet.create({
     inputField: {
       width: 343,
       height: 56,
-      borderColor: '#ccc',
+      borderColor: COLORS.LIGHT_GREY,
       borderWidth: 1,
       borderRadius: 16,
       paddingHorizontal: 15,
       marginBottom: 15,
       fontSize: 16,
-      color: 'black',
+      color: COLORS.BLACK,
     },
     label: {
       paddingHorizontal: 33,
@@ -46,10 +47,10 @@ export const styles = StyleSheet.create({
       marginBottom: 10,
     },
     btntext:{
-      color: '#91919F',    
+      color: COLORS.MUTED_GREY,    
     },
     labelText: {
-      color: '#7F00FF',
+      color: COLORS.VIVID_VIOLET,
       textDecorationLine: 'underline',
     },
     btn: {
@@ -61,14 +62,14 @@ export const styles = StyleSheet.create({
     button: {
       width: 343,
       height: 56,
-      backgroundColor: '#7F3DFF',
+      backgroundColor: COLORS.DARK_PURPLE,
       paddingVertical: 12,
       borderRadius: 16,
       justifyContent: 'center',
       alignItems: 'center',
     },
     buttonText: {
-      color: '#fff',
+      color: COLORS.WHITE,
       fontSize: 18,
       fontWeight: '700',
     },
@@ -78,7 +79,7 @@ export const styles = StyleSheet.create({
       alignItems: 'center',
       marginBottom: 10,
       fontSize: 16,
-      color: 'black',
+      color: COLORS.BLACK,
     },
     googletext: {
       fontSize: 16,
@@ -92,7 +93,7 @@ export const styles = StyleSheet.create({
       flexDirection: 'row',
       gap: 10,
       borderWidth: 1,
-      borderColor: '#ccc',
+      borderColor: COLORS.LIGHT_GREY,
       borderRadius: 16,
       marginHorizontal: 20,
       marginBottom: 8,
@@ -108,16 +109,16 @@ export const styles = StyleSheet.create({
       width: 24,
       height: 24,
       borderWidth: 2,
-      borderColor: '#7F3DFF',
+      borderColor: COLORS.DARK_PURPLE,
       justifyContent: 'center',
       alignItems: 'center',
       borderRadius: 5,
     },
     checked: {
-      backgroundColor: '#7F3DFF',
+      backgroundColor: COLORS.DARK_PURPLE,
     },
     checkmark: {
-      color: 'white',
+      color: COLORS.WHITE,
       fontSize: 16,
     },
   });

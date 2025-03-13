@@ -11,6 +11,7 @@ import {IMAGES} from '../../constant/image';
 import {styles} from './categoryDropdownStyle';
 import {CategoryDropdownProps} from '../../types/types';
 import {useCategoryDropdown} from './useCategoryDropdown';
+import { COLORS } from '../../constant/color';
 
 export default function CategoryDropdown({
   dropdownPosition,
@@ -34,7 +35,7 @@ export default function CategoryDropdown({
         {style === 'AllExpense' ? (
           <>
             <Text
-              style={[styles.label, {color: selectedValue ? 'black' : 'grey'}]}>
+              style={[styles.label, {color: selectedValue ? COLORS.BLACK : COLORS.GREYS}]}>
               {selectedValue || 'Category'}
             </Text>
             <Image source={IMAGES.ARROW_DOWN} style={styles.icon} />

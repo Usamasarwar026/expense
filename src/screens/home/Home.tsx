@@ -14,6 +14,7 @@ import Dropdown from '../../components/dropdown/Dropdown';
 import {styles} from './homeStyle';
 import {LineChart} from 'react-native-chart-kit';
 import {useHome} from './useHome';
+import { COLORS } from '../../constant/color';
 
 const width = Dimensions.get('window').width + 115;
 
@@ -41,7 +42,7 @@ export default function Home() {
             <View style={styles.innertop}>
               <TouchableOpacity style={styles.picbox} onPress={goToProfile}>
                 {loader ? (
-                  <ActivityIndicator size="small" color="#7F3DFF" />
+                  <ActivityIndicator size="small" color={COLORS.DARK_PURPLE} />
                 ) : (
                   <Image
                     source={
@@ -92,7 +93,7 @@ export default function Home() {
             </View>
           </View>
         </View>
-        <View style={styles.thirdcontainer}>
+        <View >
           <Text style={styles.thirdcontainerText}>Spend Frequency</Text>
         </View>
         <View style={styles.graphcontainer}>

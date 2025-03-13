@@ -1,4 +1,5 @@
 import {StyleSheet} from 'react-native';
+import { COLORS } from '../../constant/color';
 
 export const styles = StyleSheet.create({
   container: {
@@ -18,11 +19,11 @@ export const styles = StyleSheet.create({
   },
   allListContainer: {
     flex: 1,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: COLORS.WHITE,
     borderRadius: 5,
     position: 'absolute',
     borderWidth: 1,
-    borderColor: '#7F3DFF',
+    borderColor: COLORS.DARK_PURPLE,
     width: '100%',
     top: 40,
     zIndex: 100,
@@ -37,10 +38,10 @@ export const styles = StyleSheet.create({
   },
   listContainer: {
     flex: 1,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: COLORS.WHITE,
     borderRadius: 5,
     borderWidth: 1,
-    borderColor: '#7F3DFF',
+    borderColor: COLORS.DARK_PURPLE,
     width: 200,
   },
   centerDropdown: {

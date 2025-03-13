@@ -15,6 +15,7 @@ import SuccessfulModel from '../../components/successfulModel/SuccessfulModel';
 import Toast from 'react-native-toast-message';
 import {styles} from './incomeStyles';
 import useIncome from './useIncome';
+import { COLORS } from '../../constant/color';
 
 export default function Income() {
   const {
@@ -76,7 +77,7 @@ export default function Income() {
             <Input
               style={styles.numberInput}
               placeholder="Enter Income"
-              placeholderTextColor="#91919F"
+              placeholderTextColor={COLORS.MUTED_GREY}
               value={amount}
               onChangeText={setAmount}
               keyboardType="numeric"

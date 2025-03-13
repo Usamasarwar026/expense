@@ -1,4 +1,5 @@
 import { StyleSheet } from "react-native";
+import { COLORS } from "../../constant/color";
 
 export const styles = StyleSheet.create({
   maincontainer:{
@@ -6,10 +7,10 @@ export const styles = StyleSheet.create({
   },  
   container: {
       flex: 1,
-      backgroundColor: '#fff',
+      backgroundColor: COLORS.WHITE,
     },
     topback:{
-      backgroundColor: '#FFF6E5',
+      backgroundColor: COLORS.LIGHT_PASTEL_PEACH,
       paddingBottom: 20,
       borderBottomLeftRadius: 32,
       borderBottomRightRadius: 32,
@@ -39,7 +40,7 @@ export const styles = StyleSheet.create({
       height: 40,
       borderRadius: 50,
       borderWidth: 2,
-      borderColor: '#7F3DFF',
+      borderColor: COLORS.DARK_PURPLE,
       justifyContent: 'center',
       alignItems: 'center',
     },
@@ -52,7 +53,7 @@ export const styles = StyleSheet.create({
     blnc: {
       fontSize: 14,
       fontWeight: '500',
-      color: '#91919F',
+      color: COLORS.MUTED_GREY,
       textAlign: 'center',
     },
     blncamount: {
@@ -72,13 +73,13 @@ export const styles = StyleSheet.create({
       width: 48,
       height: 48,
       borderRadius: 10,
-      backgroundColor: '#ffffff',
+      backgroundColor: COLORS.WHITE,
     },
     balanceBox: {
       flexDirection: 'row',
       justifyContent: 'space-evenly',
       alignItems: 'center',
-      backgroundColor: '#00A86B',
+      backgroundColor: COLORS.GREEN,
       width: 175,
       height: 80,
       borderRadius: 28,
@@ -87,7 +88,7 @@ export const styles = StyleSheet.create({
       flexDirection: 'row',
       justifyContent: 'space-evenly',
       alignItems: 'center',
-      backgroundColor: '#FD3C4A',
+      backgroundColor: COLORS.RED,
       width: 175,
       height: 80,
       borderRadius: 28,
@@ -95,19 +96,15 @@ export const styles = StyleSheet.create({
     parentText: {
       fontSize: 14,
       fontWeight: '500',
-      color: '#ffffff',
+      color: COLORS.WHITE,
     },
     parentAmount: {
       fontSize: 16,
       fontWeight: '600',
-      color: '#ffffff',
-    },
-    thirdcontainer: {
-      // paddingTop: 10,
+      color: COLORS.WHITE,
     },
     thirdcontainerText: {
       paddingTop: 10,
-  
       fontSize: 18,
       fontWeight: '600',
       paddingHorizontal: 20,
@@ -126,7 +123,7 @@ export const styles = StyleSheet.create({
     barbox: {
       justifyContent: 'center',
       alignItems: 'center',
-      backgroundColor: '#FCEED4',
+      backgroundColor: COLORS.SOFT_PEACH,
       borderRadius: 20,
       height: 34,
       width: 90,
@@ -152,8 +149,8 @@ export const styles = StyleSheet.create({
     recentBarText2: {
       fontSize: 14,
       fontWeight: '500',
-      color: '#7F3DFF',
-      backgroundColor: '#EEE5FF',
+      color: COLORS.DARK_PURPLE,
+      backgroundColor: COLORS.PURPLE_BLUE,
       paddingHorizontal: 15,
       paddingTop: 8,
       paddingBottom: 8,
@@ -187,13 +184,13 @@ export const styles = StyleSheet.create({
       width: 90,
     },
     selectedFilter: {
-      backgroundColor: '#FCEED4',
+      backgroundColor: COLORS.SOFT_PEACH,
     },
     filterText: {
-      color: '#91919F',
+      color: COLORS.MUTED_GREY,
     },
     selectedFilterText: {
-      color: '#FCAC12',
+      color: COLORS.YELLOW_ORANGE,
     },
   });
   

@@ -1,4 +1,5 @@
 import { StyleSheet } from "react-native";
+import { COLORS } from "../../constant/color";
 
 export const styles = StyleSheet.create({
     container: {
@@ -54,7 +55,7 @@ export const styles = StyleSheet.create({
       marginHorizontal: 20,
       height: 48,
       borderRadius: 32,
-      backgroundColor: '#EEE5FF',
+      backgroundColor: COLORS.PURPLE_BLUE,
       overflow: 'hidden',
       marginBottom: 15,
     },
@@ -64,9 +65,9 @@ export const styles = StyleSheet.create({
       fontWeight: '500',
       borderRadius: 32,
       paddingVertical: 12,
-      backgroundColor: '#7F3DFF',
+      backgroundColor: COLORS.DARK_PURPLE,
       textAlign: 'center',
-      color: '#fff',
+      color: COLORS.WHITE,
     },
     btn2: {
       flex: 1,
@@ -74,20 +75,20 @@ export const styles = StyleSheet.create({
       fontWeight: '500',
       borderRadius: 32,
       paddingVertical: 12,
-      color: '#7F3DFF',
+      color: COLORS.DARK_PURPLE,
       textAlign: 'center',
     },
     btnText1: {
       textAlign: 'center',
       justifyContent: 'center',  
       alignItems: 'center',
-      color: '#fff',      
+      color: COLORS.WHITE,      
     },
     btnText2: {
       textAlign: 'center',
       justifyContent: 'center',  
       alignItems: 'center',
-      color: 'black'      
+      color: COLORS.BLACK      
     },
   
     

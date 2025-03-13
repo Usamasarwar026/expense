@@ -1,4 +1,5 @@
 import {StyleSheet} from 'react-native';
+import { COLORS } from '../../constant/color';
 
 export const styles = StyleSheet.create({
   overlay: {
@@ -24,17 +25,15 @@ export const styles = StyleSheet.create({
     width: 56,
     justifyContent: 'center',
     alignItems: 'center',
-    borderColor: '#E6E6E6',
     borderRadius: 28,
-    backgroundColor: '#00A86B',
+    backgroundColor: COLORS.GREEN,
   },
   pic2Box: {
     height: 56,
     width: 56,
     justifyContent: 'center',
     alignItems: 'center',
-    borderColor: '#E6E6E6',
     borderRadius: 28,
-    backgroundColor: '#FD3C4A',
+    backgroundColor: COLORS.RED,
   },
 });

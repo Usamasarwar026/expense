@@ -4,6 +4,7 @@ import * as Progress from 'react-native-progress';
 import {styles} from './progressBarStyles';
 import {ProgressBarProps} from '../../types/types';
 import useProgressBar from './useProgressBar';
+import { COLORS } from '../../constant/color';
 
 export default function ProgressBar({
   categoryName,
@@ -33,7 +34,7 @@ export default function ProgressBar({
           color={color}
           borderWidth={0}
           borderRadius={10}
-          unfilledColor="lightgray"
+          unfilledColor={COLORS.LIGHT_GREY}
         />
       </View>
     </TouchableOpacity>

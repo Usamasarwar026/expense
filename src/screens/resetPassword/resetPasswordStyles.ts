@@ -1,4 +1,5 @@
 import { StyleSheet } from "react-native";
+import { COLORS } from "../../constant/color";
 
 export const styles = StyleSheet.create({
     container: {
@@ -24,13 +25,13 @@ export const styles = StyleSheet.create({
     inputField: {
       width: 343,
       height: 56,
-      borderColor: '#ccc',
+      borderColor: COLORS.LIGHT_GREY,
       borderWidth: 1,
       borderRadius: 16,
       paddingHorizontal: 15,
       marginBottom: 15,
       fontSize: 16,
-      color: 'black',
+      color: COLORS.BLACK,
     },
   
     textcontainer: {
@@ -46,7 +47,7 @@ export const styles = StyleSheet.create({
     },
   
     labelText: {
-      color: '#7F00FF',
+      color: COLORS.VIVID_VIOLET,
     },
   
     btn: {
@@ -59,14 +60,14 @@ export const styles = StyleSheet.create({
     button: {
       width: 343,
       height: 56,
-      backgroundColor: '#7F3DFF',
+      backgroundColor: COLORS.DARK_PURPLE,
       paddingVertical: 12,
       borderRadius: 16,
       justifyContent: 'center',
       alignItems: 'center',
     },
     buttonText: {
-      color: '#fff',
+      color: COLORS.WHITE,
       fontSize: 18,
       fontWeight: '700',
     },

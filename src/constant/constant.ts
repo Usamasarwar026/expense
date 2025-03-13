@@ -104,27 +104,27 @@ export const PROFILE_DATA = [
     id: '1',
     image: IMAGES.SETTING,
     name: 'Settings',
-    styles:{
+    styles: {
       borderTopLeftRadius: 26,
       borderTopRightRadius: 26,
-    }
+    },
   },
   {
     id: '2',
     image: IMAGES.WARNING,
     name: 'Reset Password',
-    styles:{
+    styles: {
       borderRadius: 0,
-    }
+    },
   },
   {
     id: '3',
     image: IMAGES.LOGOUT,
     name: 'Logout',
-    styles:{
+    styles: {
       borderBottomLeftRadius: 26,
       borderBottomRightRadius: 26,
-    }
+    },
   },
 ];
 

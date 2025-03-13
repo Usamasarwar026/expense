@@ -13,6 +13,7 @@ import {IMAGES} from '../../constant/image';
 import Toast from 'react-native-toast-message';
 import {styles} from './editProfileStyles';
 import { useEditProfile } from './useEditProfile';
+import { COLORS } from '../../constant/color';
 
 export default function EditProfile() {
   const {
@@ -40,7 +41,7 @@ export default function EditProfile() {
         <View style={styles.picConatiner}>
           <View style={styles.picBox}>
             {loading ? (
-              <ActivityIndicator size="large" color="#7F3DFF" />
+              <ActivityIndicator size="large" color={COLORS.DARK_PURPLE} />
             ) : (
               <Image
                 style={styles.pic}
@@ -59,7 +60,7 @@ export default function EditProfile() {
             <Input
               style={styles.inputField}
               placeholder="Email"
-              placeholderTextColor="#91919F"
+              placeholderTextColor={COLORS.MUTED_GREY}
               value={email}
               editable={false}
             />
@@ -69,7 +70,7 @@ export default function EditProfile() {
             <Input
               style={styles.inputField}
               placeholder="name"
-              placeholderTextColor="#91919F"
+              placeholderTextColor={COLORS.MUTED_GREY}
               value={name}
               onChangeText={setName}
             />
@@ -80,7 +81,7 @@ export default function EditProfile() {
           <TouchableOpacity
             style={[
               styles.button,
-              {backgroundColor: isButtonEnabled ? '#7F3DFF' : '#8580bc'},
+              {backgroundColor: isButtonEnabled ? COLORS.DARK_PURPLE : COLORS.SOFT_PURPLE},
             ]}
             disabled={!isButtonEnabled}
             onPress={handleUpdateProfile}>

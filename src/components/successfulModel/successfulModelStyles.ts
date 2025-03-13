@@ -1,4 +1,5 @@
 import {StyleSheet} from 'react-native';
+import { COLORS } from '../../constant/color';
 
 export const styles = StyleSheet.create({
   overlay: {
@@ -13,7 +14,7 @@ export const styles = StyleSheet.create({
 
   modelView: {
     width: '90%',
-    backgroundColor: 'white',
+    backgroundColor: COLORS.WHITE,
     borderRadius: 20,
     padding: 20,
     alignItems: 'center',
@@ -30,6 +31,6 @@ export const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: '500',
     textAlign: 'center',
-    color: '#333',
+    color: COLORS.DARK_GREY,
   },
 });

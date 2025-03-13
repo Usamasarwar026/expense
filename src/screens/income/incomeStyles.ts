@@ -1,9 +1,10 @@
 import { StyleSheet } from "react-native";
+import { COLORS } from "../../constant/color";
 
 export const styles = StyleSheet.create({
     container: {
       flex: 1,
-      backgroundColor: '#00A86B',
+      backgroundColor: COLORS.GREEN,
     },
     topcontainer: {
       flex: 1,
@@ -14,7 +15,7 @@ export const styles = StyleSheet.create({
     topcontainerText: {
       fontSize: 16,
       fontWeight: '700',
-      color: '#FFFFFF',
+      color: COLORS.WHITE,
       width: '55%',
     },
     inputcontainer: {
@@ -30,18 +31,18 @@ export const styles = StyleSheet.create({
     secondContainerText: {
       fontSize: 18,
       fontWeight: '600',
-      color: '#FCFCFC',
+      color: COLORS.OFF_WHITE,
     },
     secondContaineramount: {
       fontSize: 50,
       fontWeight: '600',
-      color: '#FCFCFC',
+      color: COLORS.OFF_WHITE,
       paddingTop: 20,
       marginBottom: 20,
     },
     belowContainer: {
       flex: 10,
-      backgroundColor: 'white',
+      backgroundColor: COLORS.WHITE,
       borderTopLeftRadius: 32,
       borderTopRightRadius: 32,
       paddingTop: 50,
@@ -51,7 +52,7 @@ export const styles = StyleSheet.create({
       justifyContent: 'space-between',
       paddingHorizontal: 10,
       borderWidth: 1,
-      borderColor: '#F1F1FA',
+      borderColor: COLORS.OFF_WHITE_PURPLE,
       paddingVertical: 20,
       marginHorizontal: 30,
       marginVertical: 10,
@@ -60,7 +61,7 @@ export const styles = StyleSheet.create({
     belowinnerContainerText: {
       fontSize: 16,
       fontWeight: '400',
-      color: '#91919F',
+      color: COLORS.MUTED_GREY,
     },
     textareaBox: {
       paddingHorizontal: 30,
@@ -70,15 +71,15 @@ export const styles = StyleSheet.create({
     numberInputBox: {
       paddingHorizontal: 30,
       paddingVertical: 10,
-      borderColor: '#F1F1FA',
+      borderColor: COLORS.OFF_WHITE_PURPLE,
       width: '100%',
     },
     numberInput: {
       fontSize: 16,
       fontWeight: '400',
-      color: 'black',
+      color: COLORS.BLACK,
       borderWidth: 1,
-      borderColor: '#F1F1FA',
+      borderColor: COLORS.OFF_WHITE_PURPLE,
       paddingHorizontal: 10,
       borderRadius: 16,
       width: '100%',
@@ -86,10 +87,10 @@ export const styles = StyleSheet.create({
     },
     textArea: {
       height: 60,
-      borderColor: '#F1F1FA',
+      borderColor: COLORS.OFF_WHITE_PURPLE,
       fontSize: 16,
       fontWeight: '400',
-      color: 'black',
+      color: COLORS.BLACK,
       borderWidth: 1,
       borderRadius: 16,
       padding: 10,
@@ -103,12 +104,12 @@ export const styles = StyleSheet.create({
       marginHorizontal: 30,
       borderRadius: 16,
       borderWidth: 1,
-      borderColor: '#F1F1FA',
+      borderColor: COLORS.OFF_WHITE_PURPLE,
       alignItems: 'center',
       marginVertical: 10,
     },
     saveButton: {
-      backgroundColor: '#7F3DFF',
+      backgroundColor: COLORS.DARK_PURPLE,
       paddingVertical: 15,
       marginHorizontal: 30,
       marginVertical: 30,
@@ -119,7 +120,7 @@ export const styles = StyleSheet.create({
     saveButtonText: {
       fontSize: 18,
       fontWeight: '600',
-      color: '#FCFCFC',
+      color: COLORS.OFF_WHITE,
     },
   
     imagePreview: {
@@ -136,7 +137,7 @@ export const styles = StyleSheet.create({
       position: 'absolute',
       top: -8,
       left: 80,
-      backgroundColor: '#ffffff',
+      backgroundColor: COLORS.WHITE,
       borderRadius: 15,
       width: 30,
       height: 30,

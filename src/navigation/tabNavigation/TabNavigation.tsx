@@ -5,6 +5,7 @@ import {styles} from './TabNavigationStyle';
 import {TouchableOpacity} from 'react-native';
 import {TabItem} from '../../types/types';
 import useTabNavigation from './useTabNavigation';
+import { COLORS } from '../../constant/color';
 
 
 export default function TabNavigation() {
@@ -16,8 +17,8 @@ export default function TabNavigation() {
         screenOptions={{
           tabBarShowLabel: true,
           tabBarStyle: modalVisible ? styles.curvedTabBar : styles.tabBar,
-          tabBarActiveTintColor: '#7F3DFF',
-          tabBarInactiveTintColor: '#C6C6C6',
+          tabBarActiveTintColor: COLORS.DARK_PURPLE,
+          tabBarInactiveTintColor: COLORS.SILVER_LIGHT_GRAY,
         }}>
         {TABS.map(
           ({id, name, component, icon, headerShown, isAddButton}: TabItem) => (
@@ -34,7 +35,7 @@ export default function TabNavigation() {
                       <Icon
                         name={modalVisible ? 'close' : 'add'}
                         size={28}
-                        color="#fff"
+                        color={COLORS.WHITE}
                       />
                     </TouchableOpacity>
                   ) : (

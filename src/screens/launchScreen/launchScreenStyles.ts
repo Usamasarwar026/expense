@@ -1,11 +1,12 @@
 import { StyleSheet } from "react-native";
+import { COLORS } from "../../constant/color";
 
 export const styles = StyleSheet.create({
     container: {
       flex: 1,
       justifyContent: 'center',
       alignItems: 'center',
-      backgroundColor: '#7F3DFF',
+      backgroundColor: COLORS.DARK_PURPLE,
     },
     textWrapper: {
       justifyContent: 'center',
@@ -25,7 +26,7 @@ export const styles = StyleSheet.create({
     text: {
       fontSize: 56,
       fontWeight: '700',
-      color: '#FFFFFF',
+      color: COLORS.WHITE,
     },
   });
   

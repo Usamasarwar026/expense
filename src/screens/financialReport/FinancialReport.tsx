@@ -7,6 +7,7 @@ import CategoryDropdown from '../../components/categoryDropdown/CategoryDropdown
 import {styles} from './financialReportStyles';
 import PieChart from '../../components/pieChart/PieChart';
 import {useFinancialReport} from './useFinancialReport';
+import { COLORS } from '../../constant/color';
 
 export default function FinancialReport() {
   const {
@@ -89,14 +90,14 @@ export default function FinancialReport() {
           {dataToDisplay.map(item => {
             const progress = Math.min((Number(item.amount) / maxAmount) * 100);
             const categoryColors: Record<string, string> = {
-              Shopping: '#FCAC12',
-              Subscription: '#7F3DFF',
-              Food: '#007BFF',
-              Salary: '#00A86B',
-              Transportation: 'black',
+              Shopping: COLORS.YELLOW_ORANGE,
+              Subscription: COLORS.DARK_PURPLE,
+              Food: COLORS.BRIGHT_BLUE,
+              Salary: COLORS.GREEN,
+              Transportation: COLORS.BLACK,
             };
-            const progressBarColor = categoryColors[item.category] || '#BDC3C7';
-            const textColor = selectedTab === 'Expense' ? '#E74C3C' : '#2ECC71';
+            const progressBarColor = categoryColors[item.category] || COLORS.SILVER_GRAY;
+            const textColor = selectedTab === 'Expense' ? COLORS.BRIGHT_RED : COLORS.GREEN_SHADE;
             return (
               <ProgressBar
                 key={item.id}

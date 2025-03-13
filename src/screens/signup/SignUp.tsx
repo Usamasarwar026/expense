@@ -12,6 +12,7 @@ import Input from '../../components/input/Input';
 import Toast from 'react-native-toast-message';
 import {styles} from './signUpStyles';
 import useSignUp from './useSignUp';
+import { COLORS } from '../../constant/color';
 
 export default function SignUp() {
   const {
@@ -44,14 +45,14 @@ export default function SignUp() {
           <Input
             style={styles.inputField}
             placeholder="Name"
-            placeholderTextColor="#91919F"
+            placeholderTextColor={COLORS.MUTED_GREY}
             value={name}
             onChangeText={setName}
           />
           <Input
             style={styles.inputField}
             placeholder="Email"
-            placeholderTextColor="#91919F"
+            placeholderTextColor={COLORS.MUTED_GREY}
             value={email}
             onChangeText={setEmail}
             keyboardType="email-address"
@@ -59,7 +60,7 @@ export default function SignUp() {
           <Input
             style={styles.inputField}
             placeholder="Password"
-            placeholderTextColor="#91919F"
+            placeholderTextColor={COLORS.MUTED_GREY}
             value={password}
             onChangeText={setPassword}
             secureTextEntry={true}

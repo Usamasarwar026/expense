@@ -1,4 +1,5 @@
 import {StyleSheet} from 'react-native';
+import { COLORS } from '../../constant/color';
 
 export const styles = StyleSheet.create({
   overlay: {
@@ -16,11 +17,11 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     borderTopLeftRadius: 40,
     borderTopRightRadius: 40,
-    backgroundColor: 'white',
+    backgroundColor: COLORS.WHITE,
     elevation: 5,
   },
   modelLine: {
-    borderTopColor: '#D3BDFF',
+    borderTopColor: COLORS.LIGHT_PURPLE,
     borderTopWidth: 3,
     width: '10%',
     height: 2,
@@ -40,12 +41,12 @@ export const styles = StyleSheet.create({
   firstBoxText1: {
     fontSize: 14,
     fontWeight: '500',
-    color: '#7F3DFF',
+    color: COLORS.DARK_PURPLE,
     paddingHorizontal: 16,
     paddingTop: 8,
     paddingBottom: 8,
     borderRadius: 40,
-    backgroundColor: '#EEE5FF',
+    backgroundColor: COLORS.PURPLE_BLUE,
   },
   secondBox: {
     width: '100%',
@@ -70,20 +71,8 @@ export const styles = StyleSheet.create({
     paddingTop: 12,
     paddingBottom: 12,
     borderRadius: 24,
-    backgroundColor: '#E3E5E5',
+    backgroundColor: COLORS.CLOUD_GREY,
     marginRight: 8,
-    marginBottom: 8,
-  },
-  text2: {
-    fontSize: 14,
-    fontWeight: '500',
-    paddingHorizontal: 24,
-    paddingTop: 12,
-    paddingBottom: 12,
-    borderRadius: 24,
-    color: '#7F3DFF',
-    backgroundColor: '#E3E5E5',
-    marginLeft: 8,
     marginBottom: 8,
   },
   chooseBox: {
@@ -108,15 +97,15 @@ export const styles = StyleSheet.create({
   innerchooseBoxText: {
     fontSize: 14,
     fontWeight: '500',
-    color: '#91919F',
+    color: COLORS.MUTED_GREY,
   },
   buttonText: {
-    color: 'white',
+    color: COLORS.WHITE,
     fontSize: 18,
     fontWeight: '600',
   },
   Touchbtn: {
-    backgroundColor: '#7F3DFF',
+    backgroundColor: COLORS.DARK_PURPLE,
     width: '100%',
     alignItems: 'center',
     paddingHorizontal: 16,
@@ -124,7 +113,7 @@ export const styles = StyleSheet.create({
     borderRadius: 16,
   },
   activeText: {
-    backgroundColor: '#7F3DFF',
-    color: 'white',
+    backgroundColor: COLORS.DARK_PURPLE,
+    color: COLORS.WHITE,
   },
 });

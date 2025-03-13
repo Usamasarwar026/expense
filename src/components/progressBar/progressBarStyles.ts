@@ -1,4 +1,5 @@
 import { StyleSheet } from "react-native";
+import { COLORS } from "../../constant/color";
 
 export const styles = StyleSheet.create({
     barcontainer: {
@@ -20,7 +21,7 @@ export const styles = StyleSheet.create({
       alignItems: 'center',
       justifyContent: 'flex-start',
       paddingVertical: 4,
-      backgroundColor: '#FCFCFC',
+      backgroundColor: COLORS.OFF_WHITE,
       width: '45%',
       borderRadius: 32,
       paddingLeft: 10,
@@ -29,7 +30,7 @@ export const styles = StyleSheet.create({
       width: 14,
       height: 14,
       borderRadius: 50,
-      backgroundColor: '#FCAC12',
+      backgroundColor: COLORS.YELLOW_ORANGE,
     },
     dottext: {
       fontSize: 14,
@@ -41,7 +42,6 @@ export const styles = StyleSheet.create({
       overflow: 'hidden',
     },
     amount: {
-      color: '#FD3C4A',
       fontSize: 24,
       fontWeight: '500',
     },
