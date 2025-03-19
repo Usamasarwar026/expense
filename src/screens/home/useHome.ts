@@ -1,17 +1,17 @@
 import {useState, useEffect, useMemo} from 'react';
 import {useAppDispatch, useAppSelector} from '../../hooks/useRedux';
-import {fetchUserData} from '../../store/authSlice/authSlice';
+import {fetchUserData} from '../../store/slices/authSlice/authSlice';
 import {
   fetchExchangeRates,
   fetchSelectedCurrency,
   fetchTransactions,
-} from '../../store/transctionSlice/transctionSlice';
+} from '../../store/slices/transctionSlice/transctionSlice';
 import moment from 'moment';
 import {ChartData, Transaction, UserData} from '../../types/types';
 import {CommonActions, useNavigation} from '@react-navigation/native';
 import {navigate} from '../../navigation/navigationRef/navigationRef';
 import {convertAmount} from '../../utils/currencyUtils';
-import { COLORS } from '../../constant/color';
+import {COLORS} from '../../constant/color';
 
 export function useHome() {
   const [userData, setUserData] = useState<UserData | null | undefined>(null);
@@ -22,8 +22,9 @@ export function useHome() {
   const [totalExpense, setTotalExpense] = useState(0);
   const navigation = useNavigation();
   const dispatch = useAppDispatch();
-  const {transactions, selectedCurrency, exchangeRates} =
-    useAppSelector(state => state.transctions);
+  const {transactions, selectedCurrency, exchangeRates} = useAppSelector(
+    state => state.transctions,
+  );
 
   useEffect(() => {
     dispatch(fetchSelectedCurrency());

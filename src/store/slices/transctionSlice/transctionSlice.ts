@@ -1,9 +1,10 @@
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit';
-import {TransactionDataSlice, TransactionState} from '../../types/types';
+import {TransactionDataSlice, TransactionState} from '../../../types/types';
 import {uploadToCloudinary} from '../imageSlice/imageSlice';
 import axios from 'axios';
+import AxiosInsatnce from '../../../utils/axiosInstance';
 
 const initialState: TransactionState = {
   transactions: [],
@@ -28,8 +29,9 @@ export const fetchSelectedCurrency = createAsyncThunk(
       } else {
         return 'USD';
       }
-    } catch (error: any) {
-      return rejectWithValue(error.message);
+    } catch (error) {
+      const typedError = error as Error;
+      return rejectWithValue(typedError.message);
     }
   },
 );
@@ -46,8 +48,9 @@ export const saveSelectedCurrency = createAsyncThunk(
         .doc(user.uid)
         .set({selectedCurrency: currency}, {merge: true});
       return currency;
-    } catch (error: any) {
-      return rejectWithValue(error.message);
+    } catch (error) {
+      const typedError = error as Error;
+      return rejectWithValue(typedError.message);
     }
   },
 );
@@ -56,10 +59,11 @@ export const fetchExchangeRates = createAsyncThunk(
   'transactions/fetchExchangeRates',
   async (_, {rejectWithValue}) => {
     try {
-      const response = await axios.get('https://api.exchangerate-api.com/v4/latest/USD');
+      const response = await AxiosInsatnce('/USD');
       return response.data.rates;
-    } catch (error: any) {
-      return rejectWithValue(error.message);
+    } catch (error) {
+      const typedError = error as Error;
+      return rejectWithValue(typedError.message);
     }
   },
 );
@@ -124,8 +128,9 @@ export const addTransaction = createAsyncThunk(
           transactionData?.timestamp?.toDate().toISOString() ||
           new Date().toISOString(),
       };
-    } catch (error: any) {
-      return rejectWithValue(error.message);
+    } catch (error) {
+      const typedError = error as Error;
+      return rejectWithValue(typedError.message);
     }
   },
 );
@@ -156,8 +161,9 @@ export const fetchTransactions = createAsyncThunk(
       }));
 
       return transactions;
-    } catch (error: any) {
-      return rejectWithValue(error.message);
+    } catch (error) {
+      const typedError = error as Error;
+      return rejectWithValue(typedError.message);
     }
   },
 );
@@ -176,9 +182,10 @@ export const deleteTransaction = createAsyncThunk(
       await transactionRef.delete();
 
       return transactionId;
-    } catch (error: any) {
+    } catch (error) {
+      const typedError = error as Error;
       console.error('Error deleting transaction:', error);
-      return rejectWithValue(error.message);
+      return rejectWithValue(typedError.message);
     }
   },
 );

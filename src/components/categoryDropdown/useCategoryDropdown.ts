@@ -1,8 +1,11 @@
-import { useCallback, useEffect, useState } from 'react';
-import { useFocusEffect } from '@react-navigation/native';
-import { EXPENSE_DATA, INCOME_DATA } from '../../constant/constant';
+import {useCallback, useEffect, useState} from 'react';
+import {useFocusEffect} from '@react-navigation/native';
+import {EXPENSE_DATA, INCOME_DATA} from '../../constant/constant';
 
-export function useCategoryDropdown(type: string, setCategory: (value: string) => void) {
+export function useCategoryDropdown(
+  type: string,
+  setCategory: (value: string) => void,
+) {
   const [selectedValue, setSelectedValue] = useState<string | null>(null);
   const [listVisible, setListVisible] = useState<boolean>(false);
 
@@ -20,7 +23,7 @@ export function useCategoryDropdown(type: string, setCategory: (value: string) =
         setListVisible(false);
         setSelectedValue('Category');
       };
-    }, [])
+    }, []),
   );
 
   const toggleDropdown = () => setListVisible(!listVisible);
@@ -31,5 +34,11 @@ export function useCategoryDropdown(type: string, setCategory: (value: string) =
     setListVisible(false);
   };
 
-  return { selectedValue, listVisible, dropdownData, toggleDropdown, selectCategory };
+  return {
+    selectedValue,
+    listVisible,
+    dropdownData,
+    toggleDropdown,
+    selectCategory,
+  };
 }

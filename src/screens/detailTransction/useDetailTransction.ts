@@ -1,7 +1,7 @@
 import {useState} from 'react';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import {useAppDispatch, useAppSelector} from '../../hooks/useRedux';
-import {deleteTransaction} from '../../store/transctionSlice/transctionSlice';
+import {deleteTransaction} from '../../store/slices/transctionSlice/transctionSlice';
 import moment from 'moment';
 import {DetailTransactionRouteProp, ParamTransaction} from '../../types/types';
 import {convertAmount} from '../../utils/currencyUtils';

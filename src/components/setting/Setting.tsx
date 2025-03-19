@@ -1,6 +1,6 @@
 import {View, Text, Image, TouchableOpacity} from 'react-native';
 import React from 'react';
-import { SettingProps } from '../../types/types';
+import {SettingProps} from '../../types/types';
 import {styles} from './settingStyles';
 
 export default function Setting(props: SettingProps) {

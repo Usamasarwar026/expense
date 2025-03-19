@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { CommonActions, useNavigation } from '@react-navigation/native';
+import {useState} from 'react';
+import {CommonActions, useNavigation} from '@react-navigation/native';
 import Toast from 'react-native-toast-message';
 
 export function useLogout({
@@ -28,7 +28,7 @@ export function useLogout({
           navigation.dispatch(
             CommonActions.reset({
               index: 0,
-              routes: [{ name: 'TabNavigation', params: { screen: 'Home' } }],
+              routes: [{name: 'TabNavigation', params: {screen: 'Home'}}],
             }),
           );
         }

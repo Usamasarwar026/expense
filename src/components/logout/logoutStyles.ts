@@ -1,10 +1,10 @@
 import {StyleSheet} from 'react-native';
-import { COLORS } from '../../constant/color';
+import {COLORS} from '../../constant/color';
 
 export const styles = StyleSheet.create({
   overlay: {
     ...StyleSheet.absoluteFillObject,
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    backgroundColor: COLORS.LIGHT_BLACK,
     justifyContent: 'center',
     alignItems: 'center',
   },

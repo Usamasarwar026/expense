@@ -4,7 +4,7 @@ import Feather from 'react-native-vector-icons/Feather';
 import {InputProps} from '../../types/types';
 import {styles} from './inputStyles';
 import {useInput} from './useInput';
-import { COLORS } from '../../constant/color';
+import {COLORS} from '../../constant/color';
 
 export default function Input(props: InputProps) {
   const {

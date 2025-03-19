@@ -5,7 +5,7 @@ import {
   fetchExchangeRates,
   fetchSelectedCurrency,
   fetchTransactions,
-} from '../../store/transctionSlice/transctionSlice';
+} from '../../store/slices/transctionSlice/transctionSlice';
 import Toast from 'react-native-toast-message';
 import {convertAmount} from '../../utils/currencyUtils';
 import {useNavigation} from '@react-navigation/native';

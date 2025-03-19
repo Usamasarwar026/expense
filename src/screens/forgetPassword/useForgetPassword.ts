@@ -1,6 +1,6 @@
 import {useState} from 'react';
 import {useAppDispatch} from '../../hooks/useRedux';
-import {resetPassword} from '../../store/authSlice/authSlice';
+import {resetPassword} from '../../store/slices/authSlice/authSlice';
 import Toast from 'react-native-toast-message';
 import {navigate} from '../../navigation/navigationRef/navigationRef';
 

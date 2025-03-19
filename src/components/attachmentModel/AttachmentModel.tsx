@@ -11,14 +11,17 @@ import React from 'react';
 import {IMAGES} from '../../constant/image';
 import {AttachmentProp} from '../../types/types';
 import {style} from './attachmentModelStyle';
-import { UseAttachmentModel } from './useAttachmentModel';
+import {UseAttachmentModel} from './useAttachmentModel';
 
 export default function AttachmentModel({
   openModel,
   setOpenModel,
   onSelectImage,
 }: AttachmentProp) {
-  const { openCamera, openGallery, pickDocument } = UseAttachmentModel(setOpenModel, onSelectImage);
+  const {openCamera, openGallery, pickDocument} = UseAttachmentModel(
+    setOpenModel,
+    onSelectImage,
+  );
   return (
     <Modal visible={!!openModel}>
       <TouchableWithoutFeedback

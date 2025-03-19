@@ -6,7 +6,7 @@ import {
 } from '../../types/types';
 
 export const Time = (
-  transactions: Transaction[] | any,
+  transactions: Transaction[] ,
   selectedMonth: string | null,
 ): TimeReturnType => {
   if (!Array.isArray(transactions)) {
@@ -26,7 +26,7 @@ export const Time = (
     const endOfSelectedMonth = moment(selectedMonth, 'MMMM').endOf('month');
 
     return {
-      [selectedMonth]: transactions?.filter((transaction: any) =>
+      [selectedMonth]: transactions?.filter((transaction: Transaction) =>
         moment(transaction.timestamp).isBetween(
           startOfSelectedMonth,
           endOfSelectedMonth,

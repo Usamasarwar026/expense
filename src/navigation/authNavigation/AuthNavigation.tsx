@@ -14,7 +14,7 @@ export default function AuthNavigation() {
         component={LaunchScreen}
         options={{headerShown: false}}
       />
-      {AUTH_SCREENS.map(({name, component}: any) => (
+      {AUTH_SCREENS.map(({name, component}) => (
         <Stack.Screen
           key={name}
           name={name as keyof RootStackParamList}

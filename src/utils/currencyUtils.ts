@@ -1,5 +1,5 @@
 export const convertAmount = (
-  amount: number ,
+  amount: number,
   currency: string,
   exchangeRates: Record<string, number>,
 ) => {

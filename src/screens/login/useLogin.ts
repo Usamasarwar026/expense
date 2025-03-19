@@ -1,6 +1,6 @@
 import {CommonActions, useNavigation} from '@react-navigation/native';
 import {useAppDispatch, useAppSelector} from '../../hooks/useRedux';
-import {GoogleSignup, login} from '../../store/authSlice/authSlice';
+import {GoogleSignup, login} from '../../store/slices/authSlice/authSlice';
 import {navigate} from '../../navigation/navigationRef/navigationRef';
 import {useState} from 'react';
 import Toast from 'react-native-toast-message';
@@ -97,12 +97,13 @@ export default function useLogin() {
           visibilityTime: 3000,
         });
       }
-    } catch (error: any) {
+    } catch (error) {
+      const typedError = error as Error;
       console.error('Google Sign-In Error:', error);
       Toast.show({
         type: 'error',
         text1: 'Google Sign-In Failed!==> Please try again',
-        text2: error.message || 'An unexpected error occurred.',
+        text2: typedError.message || 'An unexpected error occurred.',
         position: 'top',
         visibilityTime: 3000,
       });

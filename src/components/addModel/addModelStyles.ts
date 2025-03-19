@@ -1,12 +1,12 @@
 import {StyleSheet} from 'react-native';
-import { COLORS } from '../../constant/color';
+import {COLORS} from '../../constant/color';
 
 export const styles = StyleSheet.create({
   overlay: {
     ...StyleSheet.absoluteFillObject,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'rgba(124, 80, 255,0.4)',
+    backgroundColor: COLORS.SLATE_BLUE,
   },
 
   modelView: {

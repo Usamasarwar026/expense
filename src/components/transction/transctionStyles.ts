@@ -1,5 +1,5 @@
 import {StyleSheet} from 'react-native';
-import { COLORS } from '../../constant/color';
+import {COLORS} from '../../constant/color';
 
 export const styles = StyleSheet.create({
   TransctionContainer: {
@@ -11,7 +11,7 @@ export const styles = StyleSheet.create({
     backgroundColor: COLORS.OFF_WHITE,
     marginHorizontal: 20,
     borderRadius: 24,
-    marginBottom:6,
+    marginBottom: 6,
   },
   leftContainer: {
     flexDirection: 'row',
@@ -39,14 +39,12 @@ export const styles = StyleSheet.create({
     fontSize: 13,
     fontWeight: '500',
     color: COLORS.MUTED_GREY,
-    
   },
   text4: {
     fontSize: 13,
     fontWeight: '500',
     color: COLORS.MUTED_GREY,
     textAlign: 'right',
-    
   },
   rightContainer: {
     flexDirection: 'row',
@@ -64,7 +62,7 @@ export const styles = StyleSheet.create({
   green: {
     color: COLORS.EMERALD_GREEN,
   },
-  pricebox:{
+  pricebox: {
     borderWidth: 1,
     borderColor: 'red',
     justifyContent: 'flex-end',
@@ -73,7 +71,6 @@ export const styles = StyleSheet.create({
     position: 'absolute',
     left: '50%',
     top: '50%',
-    transform: [{translateX: -12}, {translateY: -12}], 
+    transform: [{translateX: -12}, {translateY: -12}],
   },
-  
 });

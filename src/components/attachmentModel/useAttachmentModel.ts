@@ -20,7 +20,7 @@ export function UseAttachmentModel(
 
     launchCamera(options).then(result => {
       if (result.assets && result.assets.length > 0) {
-        onSelectImage(result.assets[0].uri ?? '');
+        onSelectImage(result?.assets?.[0]?.uri ?? '');
         setOpenModel(false);
       }
     });

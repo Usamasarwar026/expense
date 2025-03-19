@@ -4,7 +4,7 @@ import {
   TouchableWithoutFeedback,
   Animated,
   Image,
-  TouchableOpacity
+  TouchableOpacity,
 } from 'react-native';
 import React from 'react';
 import {IMAGES} from '../../constant/image';
@@ -19,20 +19,18 @@ export default function AddModel({
   const {closeModal, goToExpense, goToIncome} = useAddModel(setModalVisible);
 
   return (
-    <>
-      <Modal visible={modalVisible} animationType="fade" transparent={true}>
-        <TouchableWithoutFeedback onPress={closeModal}>
-          <Animated.View style={styles.overlay} />
-        </TouchableWithoutFeedback>
-        <View style={styles.modelView}>
-          <TouchableOpacity style={styles.pic1Box} onPress={goToIncome}>
-            <Image source={IMAGES.WHITEINCOME} />
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.pic2Box} onPress={goToExpense}>
-            <Image source={IMAGES.WHITEEXPENSE} />
-          </TouchableOpacity>
-        </View>
-      </Modal>
-    </>
+    <Modal visible={modalVisible} animationType="fade" transparent={true}>
+      <TouchableWithoutFeedback onPress={closeModal}>
+        <Animated.View style={styles.overlay} />
+      </TouchableWithoutFeedback>
+      <View style={styles.modelView}>
+        <TouchableOpacity style={styles.pic1Box} onPress={goToIncome}>
+          <Image source={IMAGES.WHITEINCOME} />
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.pic2Box} onPress={goToExpense}>
+          <Image source={IMAGES.WHITEEXPENSE} />
+        </TouchableOpacity>
+      </View>
+    </Modal>
   );
 }

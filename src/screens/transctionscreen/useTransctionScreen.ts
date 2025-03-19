@@ -1,6 +1,6 @@
 import {Time} from '../../components/time/Time';
 import {useAppDispatch, useAppSelector} from '../../hooks/useRedux';
-import {fetchTransactions} from '../../store/transctionSlice/transctionSlice';
+import {fetchTransactions} from '../../store/slices/transctionSlice/transctionSlice';
 import {navigate} from '../../navigation/navigationRef/navigationRef';
 import {
   CombinedData,

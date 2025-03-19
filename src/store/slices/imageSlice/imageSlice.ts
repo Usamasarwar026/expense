@@ -1,5 +1,5 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
-import {AuthState} from '../../types/types';
+import {AuthState} from '../../../types/types';
 import axios from 'axios';
 
 export const uploadToCloudinary = createAsyncThunk(
@@ -27,8 +27,9 @@ export const uploadToCloudinary = createAsyncThunk(
       );
 
       return response.data.secure_url;
-    } catch (error: any) {
-      return rejectWithValue(error.message);
+    } catch (error) {
+      const typedError = error as Error;
+      return rejectWithValue(typedError.message);
     }
   },
 );

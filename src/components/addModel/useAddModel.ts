@@ -1,7 +1,7 @@
-import { useCallback } from 'react';
-import { navigate } from '../../navigation/navigationRef/navigationRef';
+import {useCallback} from 'react';
+import {navigate} from '../../navigation/navigationRef/navigationRef';
 
-export function useAddModel(setModalVisible: (visible: boolean) => void){
+export function useAddModel(setModalVisible: (visible: boolean) => void) {
   const closeModal = useCallback(() => {
     setModalVisible(false);
   }, [setModalVisible]);
@@ -14,5 +14,5 @@ export function useAddModel(setModalVisible: (visible: boolean) => void){
     navigate('Income');
   }, []);
 
-  return { closeModal, goToExpense, goToIncome };
-};
+  return {closeModal, goToExpense, goToIncome};
+}

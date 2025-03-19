@@ -2,11 +2,12 @@ import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 import Toast from 'react-native-toast-message';
+import {FirebaseError} from 'firebase/app';
 import {
   GoogleSignin,
   SignInResponse,
 } from '@react-native-google-signin/google-signin';
-import {AuthState, AuthUser} from '../../types/types';
+import {AuthState, AuthUser} from '../../../types/types';
 import {uploadToCloudinary} from '../imageSlice/imageSlice';
 
 export const signup = createAsyncThunk(
@@ -30,17 +31,22 @@ export const signup = createAsyncThunk(
       });
 
       return {uid: user.uid, name: name, email: user.email};
-    } catch (error: any) {
-      console.error('Firebase Auth Error:', error.code, error.message);
+    } catch (error) {
+      const typedError = error as FirebaseError;
+      console.error(
+        'Firebase Auth Error:',
+        typedError.code,
+        typedError.message,
+      );
       let errorMessage = 'Authentication failed';
 
-      if (error.code === 'auth/email-already-in-use') {
+      if (typedError.code === 'auth/email-already-in-use') {
         errorMessage = 'Email already in use';
-      } else if (error.code === 'auth/invalid-email') {
+      } else if (typedError.code === 'auth/invalid-email') {
         errorMessage = 'Invalid email address';
       } else if (
-        error.code === 'auth/weak-password' ||
-        error.code === 'auth/invalid-password'
+        typedError.code === 'auth/weak-password' ||
+        typedError.code === 'auth/invalid-password'
       ) {
         errorMessage =
           'Weak password! Password must be at least 6 characters long';
@@ -73,11 +79,12 @@ export const login = createAsyncThunk(
       };
 
       return user;
-    } catch (error: any) {
+    } catch (error) {
+      const typedError = error as FirebaseError;
       let errorMessage = 'Login failed. Please try again.';
 
-      if (error.code) {
-        switch (error.code) {
+      if (typedError.code) {
+        switch (typedError.code) {
           case 'auth/invalid-email':
             errorMessage = 'Invalid email format. Please enter a valid email.';
             break;
@@ -99,7 +106,8 @@ export const login = createAsyncThunk(
             break;
           default:
             errorMessage =
-              error.message || 'Login failed. Please check your credentials.';
+              typedError.message ||
+              'Login failed. Please check your credentials.';
         }
       }
 
@@ -134,7 +142,7 @@ export const resetPassword = createAsyncThunk(
           autoHide: true,
         });
       }
-    } catch (error: any) {
+    } catch (error) {
       console.error('Error sending password reset email:', error);
       Toast.show({
         type: 'error',
@@ -177,10 +185,11 @@ export const GoogleSignup = createAsyncThunk(
       } else {
         throw new Error('Google sign-in was canceled or failed.');
       }
-    } catch (error: any) {
+    } catch (error) {
+      const typedError = error as Error;
       console.error('Google Sign-in Error', error);
 
-      return rejectWithValue(error.message);
+      return rejectWithValue(typedError.message);
     }
   },
 );
@@ -197,9 +206,10 @@ export const updateName = createAsyncThunk(
         name: name,
       });
       return name;
-    } catch (error: any) {
+    } catch (error) {
+      const typedError = error as Error;
       console.error('Error updating name:', error);
-      return rejectWithValue(error.message);
+      return rejectWithValue(typedError.message);
     }
   },
 );
@@ -218,13 +228,14 @@ export const updateEmail = createAsyncThunk(
         email: email,
       });
       return email;
-    } catch (error: any) {
-      if (error.code === 'auth/requires-recent-login') {
+    } catch (error) {
+      const typedError = error as FirebaseError;
+      if (typedError.code === 'auth/requires-recent-login') {
         return rejectWithValue(
           'This operation requires recent authentication. Log in again and try again.',
         );
       }
-      return rejectWithValue(error.message || 'Failed to update email');
+      return rejectWithValue(typedError.message || 'Failed to update email');
     }
   },
 );
@@ -256,18 +267,22 @@ export const changePassword = createAsyncThunk(
       } else {
         throw new Error('User not found');
       }
-    } catch (error: any) {
+    } catch (error) {
+      const typedError = error as FirebaseError;
       console.error(error);
-      if (error.code === 'auth/wrong-password' || 'auth/invalid-credential') {
+      if (
+        typedError.code === 'auth/wrong-password' ||
+        'auth/invalid-credential'
+      ) {
         Toast.show({
           type: 'error',
-          text1: error.message,
+          text1: typedError.message,
           position: 'top',
           visibilityTime: 2000,
           autoHide: true,
         });
       }
-      return rejectWithValue(error.message);
+      return rejectWithValue(typedError.message);
     }
   },
 );
@@ -314,24 +329,29 @@ export const storeImageUriInFirestore = createAsyncThunk<
       profileImageUri: uploadedImageUrl,
     });
     return {profileImageUri: uri};
-  } catch (error: any) {
+  } catch (error) {
+    const typedError = error as Error;
     console.error('Error storing image URI:', error);
-    return rejectWithValue(error.message);
+    return rejectWithValue(typedError.message);
   }
 });
 
-export const logout = createAsyncThunk('auth/logout', async (_, { rejectWithValue }) => {
-  try {
-    const user = auth().currentUser;
-    if (!user) {
-      throw new Error('No user is currently signed in');
+export const logout = createAsyncThunk(
+  'auth/logout',
+  async (_, {rejectWithValue}) => {
+    try {
+      const user = auth().currentUser;
+      if (!user) {
+        throw new Error('No user is currently signed in');
+      }
+      await auth().signOut();
+      return true;
+    } catch (error) {
+      const typedError = error as Error;
+      return rejectWithValue(typedError.message);
     }
-    await auth().signOut();
-    return true; 
-  } catch (error:any) {
-    return rejectWithValue(error.message);
-  }
-});
+  },
+);
 
 const initialState: AuthState = {
   user: null,
@@ -439,11 +459,11 @@ export const authSlice = createSlice({
         state.loading = false;
         state.error = (action.payload as string) || 'Failed to store image URI';
       })
-      .addCase(logout.pending, (state) => {
+      .addCase(logout.pending, state => {
         state.loading = true;
         state.error = null;
       })
-      .addCase(logout.fulfilled, (state) => {
+      .addCase(logout.fulfilled, state => {
         state.loading = false;
         state.isAuthenticated = false;
       })

@@ -6,7 +6,7 @@ import {
   fetchUserData,
   storeImageUriInFirestore,
   updateName,
-} from '../../store/authSlice/authSlice';
+} from '../../store/slices/authSlice/authSlice';
 import Toast from 'react-native-toast-message';
 import {
   CameraOptions,
@@ -102,7 +102,6 @@ export const useEditProfile = () => {
     try {
       let nameUpdated = false;
       let imageUpdated = false;
-
       if (name !== initialName) {
         await dispatch(updateName(name));
         nameUpdated = true;
@@ -134,12 +133,13 @@ export const useEditProfile = () => {
         }, 500);
         goToProfile();
       }
-    } catch (error: any) {
+    } catch (error) {
+      const typedError = error as Error;
       Toast.show({
         type: 'error',
         position: 'top',
         text1: 'Error updating profile',
-        text2: error.message,
+        text2: typedError.message,
       });
     }
   };

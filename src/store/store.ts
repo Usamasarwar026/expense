@@ -1,7 +1,7 @@
-import { configureStore } from '@reduxjs/toolkit'
-import authReducer from './authSlice/authSlice'
-import transctionReducer from './transctionSlice/transctionSlice'
-import imageReducer from "./imageSlice/imageSlice"; 
+import {configureStore} from '@reduxjs/toolkit';
+import authReducer from './slices/authSlice/authSlice';
+import transctionReducer from './slices/transctionSlice/transctionSlice';
+import imageReducer from './slices/imageSlice/imageSlice';
 
 export const store = configureStore({
   reducer: {
@@ -13,7 +13,7 @@ export const store = configureStore({
     getDefaultMiddleware({
       serializableCheck: false,
     }),
-})
+});
 
-export type RootState = ReturnType<typeof store.getState>
-export type AppDispatch = typeof store.dispatch
+export type RootState = ReturnType<typeof store.getState>;
+export type AppDispatch = typeof store.dispatch;

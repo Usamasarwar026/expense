@@ -3,7 +3,7 @@ import {useAppDispatch, useAppSelector} from '../../hooks/useRedux';
 import {
   fetchExchangeRates,
   fetchSelectedCurrency,
-} from '../../store/transctionSlice/transctionSlice';
+} from '../../store/slices/transctionSlice/transctionSlice';
 import {convertAmount} from '../../utils/currencyUtils';
 
 export function useTransction(amount: number | string, type: string) {

@@ -1,6 +1,6 @@
 import {useEffect, useState} from 'react';
 import {useAppDispatch, useAppSelector} from '../../hooks/useRedux';
-import {fetchUserData, logout} from '../../store/authSlice/authSlice';
+import {fetchUserData, logout} from '../../store/slices/authSlice/authSlice';
 import {UserData} from '../../types/types';
 import Toast from 'react-native-toast-message';
 import {navigate} from '../../navigation/navigationRef/navigationRef';
@@ -27,8 +27,7 @@ export default function useProfile() {
   }, [dispatch]);
   useEffect(() => {
     setUserData(usersData);
-  }, [usersData]); 
-
+  }, [usersData]);
 
   const goToEditPage = () => {
     navigate('EditProfile');
@@ -37,8 +36,9 @@ export default function useProfile() {
   const YesPress = async () => {
     try {
       await dispatch(logout()).unwrap();
-    } catch (error: any) {
-      Toast.show(error.message);
+    } catch (error) {
+      const typedError = error as Error;
+      console.error(typedError.message);
     }
   };
   return {

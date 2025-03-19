@@ -16,6 +16,7 @@ import Expense from '../screens/expense/Expense';
 import Income from '../screens/income/Income';
 import SettingScreen from '../screens/settingScreen/SettingScreen';
 import {IMAGES} from './image';
+import {COLORS} from './color';
 
 export const AUTH_SCREENS = [
   {name: 'Login', component: Login},
@@ -150,15 +151,15 @@ export const TRANSACTION_IMAGE = (category: string) => {
 export const IMAGE_BACKGROUND_COLOR = (category: string) => {
   switch (category.toLowerCase()) {
     case 'salary':
-      return '#CFFAEA';
+      return COLORS.LIGHT_GREEN;
     case 'food':
-      return '#FDD5D7';
+      return COLORS.LIGHT_PINK;
     case 'transportation':
-      return '#BDDCFF';
+      return COLORS.SKY_BLUE;
     case 'shopping':
-      return '#FCEED4';
+      return COLORS.PASCAL_YELLOW;
     case 'subscription':
     default:
-      return '#F0F0F0';
+      return COLORS.BRIGHT_GREY;
   }
 };
