@@ -32,13 +32,13 @@ export default function useTransctionScreen() {
 
   useEffect(() => {
     dispatch(fetchTransactions());
-  }, [dispatch]);
+  }, []);
 
   const groupedTransactions = isFiltered
     ? filteredTransactions
     : Time(transactions, selectedMonth);
 
-  const nonEmptyPeriods = Object.keys(groupedTransactions).filter(
+  const nonEmptyPeriods = Object.keys(groupedTransactions)?.filter(
     period =>
       (groupedTransactions as Record<string, Transaction[]>)[period]?.length >
       0,
@@ -49,20 +49,20 @@ export default function useTransctionScreen() {
   };
 
   const applyFilters = () => {
-    let newFilteredTransactions = transactions.map(transaction => ({
+    let newFilteredTransactions = transactions?.map(transaction => ({
       ...transaction,
       timestamp: new Date(transaction.timestamp as string).toISOString(),
     }));
 
     if (filters.type) {
-      newFilteredTransactions = newFilteredTransactions.filter(
+      newFilteredTransactions = newFilteredTransactions?.filter(
         transaction =>
           transaction.type?.toLowerCase() === filters.type?.toLowerCase(),
       );
     }
 
     if (filters.category && filters.category !== 'Choose Category') {
-      newFilteredTransactions = newFilteredTransactions.filter(
+      newFilteredTransactions = newFilteredTransactions?.filter(
         transaction =>
           transaction.category?.toLowerCase() ===
           filters.category?.toLowerCase(),
@@ -77,7 +77,7 @@ export default function useTransctionScreen() {
     };
 
     if (filters.sortBy) {
-      newFilteredTransactions.sort(sortByMap[filters.sortBy]);
+      newFilteredTransactions?.sort(sortByMap[filters.sortBy]);
     }
 
     setFilteredTransactions(newFilteredTransactions);
@@ -87,18 +87,18 @@ export default function useTransctionScreen() {
 
   const combinedData: CombinedData = useMemo(() => {
     return isFiltered
-      ? filteredTransactions.map(transaction => ({
+      ? filteredTransactions?.map(transaction => ({
           type: 'transaction' as const,
           data: transaction,
         }))
-      : nonEmptyPeriods.flatMap(period => [
+      : nonEmptyPeriods?.flatMap(period => [
           {type: 'header' as const, title: period},
-          ...(groupedTransactions as Record<string, Transaction[]>)[period].map(
-            transaction => ({
-              type: 'transaction' as const,
-              data: transaction,
-            }),
-          ),
+          ...(groupedTransactions as Record<string, Transaction[]>)[
+            period
+          ]?.map(transaction => ({
+            type: 'transaction' as const,
+            data: transaction,
+          })),
         ]);
   }, [filteredTransactions, isFiltered, groupedTransactions, nonEmptyPeriods]);
 

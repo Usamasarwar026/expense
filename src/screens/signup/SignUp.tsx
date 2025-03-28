@@ -12,7 +12,7 @@ import Input from '../../components/input/Input';
 import Toast from 'react-native-toast-message';
 import {styles} from './signUpStyles';
 import useSignUp from './useSignUp';
-import { COLORS } from '../../constant/color';
+import {COLORS} from '../../constant/color';
 
 export default function SignUp() {
   const {
@@ -38,7 +38,6 @@ export default function SignUp() {
             <Image source={IMAGES.ARROW} />
           </TouchableOpacity>
           <Text style={styles.topcontainerText}>Sign Up</Text>
-          <Text></Text>
         </View>
 
         <View style={styles.inputcontainer}>

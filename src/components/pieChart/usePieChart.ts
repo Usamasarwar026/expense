@@ -1,9 +1,9 @@
 import {useMemo} from 'react';
-import {PieChartSection, UsePieChartLogicProps} from '../../types/types';
+import {UsePieChartLogicProps} from '../../types/types';
 
 export const usePieChart = ({sections}: UsePieChartLogicProps) => {
   const total = useMemo(
-    () => sections.reduce((sum, section) => sum + section.percentage, 0),
+    () => sections?.reduce((sum, section) => sum + section.percentage, 0),
     [sections],
   );
 

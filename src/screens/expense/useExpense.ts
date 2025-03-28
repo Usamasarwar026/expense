@@ -33,11 +33,11 @@ const useExpenseLogic = () => {
   }, [dispatch]);
 
   useEffect(() => {
-    if (transactions.length > 0) {
+    if (transactions?.length > 0) {
       const expenseTotal = transactions
-        .filter(transaction => transaction.type === 'Expense')
-        .reduce(
-          (sum, transaction) => sum + (Number(transaction.amount) || 0),
+        ?.filter(transaction => transaction?.type === 'Expense')
+        ?.reduce(
+          (sum, transaction) => sum + (Number(transaction?.amount) || 0),
           0,
         );
       setTotalExpense(expenseTotal);
@@ -85,7 +85,6 @@ const useExpenseLogic = () => {
     setSuccessfulModel,
     description,
     setDescription,
-    category,
     setCategory,
     imageUri,
     setImageUri,

@@ -32,11 +32,11 @@ export default function useIncome() {
 
   useEffect(() => {
     dispatch(fetchExchangeRates());
-  }, [dispatch]);
+  }, []);
 
   useEffect(() => {
     dispatch(fetchTransactions());
-  }, [dispatch]);
+  }, []);
   useEffect(() => {
     if (transactions.length > 0) {
       const incomeTotal = transactions

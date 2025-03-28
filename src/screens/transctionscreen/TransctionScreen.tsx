@@ -1,4 +1,11 @@
-import {View, Text, Image, TouchableOpacity, FlatList, ScrollView} from 'react-native';
+import {
+  View,
+  Text,
+  Image,
+  TouchableOpacity,
+  FlatList,
+  ScrollView,
+} from 'react-native';
 import React from 'react';
 import {IMAGES} from '../../constant/image';
 import TransctionModel from '../../components/transctionModel/TransctionModel';
@@ -24,18 +31,18 @@ export default function TransctionScreen() {
   } = useTransctionScreen();
 
   const renderTransactionItem = ({item}: {item: CombinedData[number]}) => {
-    return item.type === 'header' ? (
+    return item?.type === 'header' ? (
       <View style={styles.periodHeader}>
         <Text style={styles.periodText}>{item.title}</Text>
       </View>
     ) : (
       <Transction
-        title={item.data.category}
-        subtitle={item.data.description}
-        amount={item.data.amount}
-        time={moment(item.data.timestamp).format('hh:mm A')}
-        image={{uri: item.data.imageUri}}
-        type={item.data.type}
+        title={item?.data?.category}
+        subtitle={item?.data?.description}
+        amount={item?.data?.amount}
+        time={moment(item?.data?.timestamp).format('hh:mm A')}
+        image={{uri: item?.data?.imageUri}}
+        type={item?.data?.type}
         onPress={() => {
           handlepress(item.data);
         }}

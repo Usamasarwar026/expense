@@ -19,10 +19,8 @@ export function UseAttachmentModel(
     };
 
     launchCamera(options).then(result => {
-      if (result.assets && result.assets.length > 0) {
-        onSelectImage(result?.assets?.[0]?.uri ?? '');
-        setOpenModel(false);
-      }
+      onSelectImage(result?.assets?.[0]?.uri ?? '');
+      setOpenModel(false);
     });
   }, [setOpenModel, onSelectImage]);
 
@@ -33,10 +31,8 @@ export function UseAttachmentModel(
     };
 
     launchImageLibrary(options).then(result => {
-      if (result.assets && result.assets.length > 0) {
-        onSelectImage(result.assets[0].uri ?? '');
-        setOpenModel(false);
-      }
+      onSelectImage(result?.assets?.[0]?.uri ?? '');
+      setOpenModel(false);
     });
   }, [setOpenModel, onSelectImage]);
 

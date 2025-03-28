@@ -61,7 +61,7 @@ export default function CategoryDropdown({
             dropdownPosition === 'above' && styles.aboveDropdown,
           ]}>
           <ScrollView style={styles.list}>
-            {dropdownData.map(item => (
+            {dropdownData?.map(item => (
               <TouchableOpacity
                 key={item.id}
                 style={styles.itemButton}

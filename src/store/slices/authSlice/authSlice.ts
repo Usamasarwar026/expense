@@ -24,9 +24,9 @@ export const signup = createAsyncThunk(
       const user = response.user;
 
       await firestore().collection('users').doc(user.uid).set({
-        uid: user.uid,
+        uid: user?.uid,
         name: name,
-        email: user.email,
+        email: user?.email,
         createdAt: firestore.FieldValue.serverTimestamp(),
       });
 
@@ -74,8 +74,8 @@ export const login = createAsyncThunk(
     try {
       const response = await auth().signInWithEmailAndPassword(email, password);
       const user = {
-        uid: response.user.uid,
-        email: response.user.email,
+        uid: response?.user?.uid,
+        email: response?.user?.email,
       };
 
       return user;
@@ -171,15 +171,15 @@ export const GoogleSignup = createAsyncThunk(
         const googleCredential = auth.GoogleAuthProvider.credential(token);
         const response = await auth().signInWithCredential(googleCredential);
         await firestore().collection('users').doc(response.user.uid).set({
-          uid: response.user.uid,
-          name: response.user.displayName,
-          email: response.user.email,
+          uid: response?.user?.uid,
+          name: response?.user?.displayName,
+          email: response?.user?.email,
           createdAt: firestore.FieldValue.serverTimestamp(),
         });
         const user = {
-          uid: response.user.uid,
-          email: response.user.email,
-          name: response.user.displayName,
+          uid: response?.user?.uid,
+          email: response?.user?.email,
+          name: response?.user?.displayName,
         };
         return user;
       } else {
@@ -255,7 +255,7 @@ export const changePassword = createAsyncThunk(
         email,
         currentPassword,
       );
-      const user = response.user;
+      const user = response?.user;
       if (user) {
         const credential = auth.EmailAuthProvider.credential(
           email,
@@ -340,7 +340,7 @@ export const logout = createAsyncThunk(
   'auth/logout',
   async (_, {rejectWithValue}) => {
     try {
-      const user = auth().currentUser;
+      const user = auth()?.currentUser;
       if (!user) {
         throw new Error('No user is currently signed in');
       }

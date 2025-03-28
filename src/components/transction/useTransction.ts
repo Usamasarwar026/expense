@@ -15,7 +15,7 @@ export function useTransction(amount: number | string, type: string) {
   useEffect(() => {
     dispatch(fetchSelectedCurrency());
     dispatch(fetchExchangeRates());
-  }, [dispatch]);
+  }, []);
 
   const formattedAmount =
     type === 'Expense'

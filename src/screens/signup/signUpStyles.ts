@@ -20,6 +20,7 @@ export const styles = StyleSheet.create({
     topcontainerText: {
       fontSize: 16,
       fontWeight: '700',
+      width: '70%'
     },
     inputcontainer: {
       flex: 3,

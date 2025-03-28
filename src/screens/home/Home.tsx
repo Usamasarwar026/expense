@@ -14,7 +14,7 @@ import Dropdown from '../../components/dropdown/Dropdown';
 import {styles} from './homeStyle';
 import {LineChart} from 'react-native-chart-kit';
 import {useHome} from './useHome';
-import { COLORS } from '../../constant/color';
+import {COLORS} from '../../constant/color';
 
 const width = Dimensions.get('window').width + 115;
 
@@ -29,7 +29,6 @@ export default function Home() {
     handlepress,
     goToProfile,
     filterTransactions,
-    setSelectedMonth,
     balance,
     income,
     expense,
@@ -57,7 +56,6 @@ export default function Home() {
               <View style={styles.dropdown}>
                 <Dropdown
                   dropdownPosition="center"
-                  setSelectedMonth={month => setSelectedMonth(month)}
                 />
               </View>
               <Image source={IMAGES.NOTIFICATION} />
@@ -93,7 +91,7 @@ export default function Home() {
             </View>
           </View>
         </View>
-        <View >
+        <View>
           <Text style={styles.thirdcontainerText}>Spend Frequency</Text>
         </View>
         <View style={styles.graphcontainer}>
@@ -111,7 +109,7 @@ export default function Home() {
         </View>
 
         <View style={styles.daybar}>
-          {['Today', 'Week', 'Month', 'Year'].map(filter => (
+          {['Today', 'Week', 'Month', 'Year']?.map(filter => (
             <TouchableOpacity
               key={filter}
               style={[
@@ -137,7 +135,7 @@ export default function Home() {
           </TouchableOpacity>
         </View>
         <View style={styles.listbar}>
-          {filterTransactions().length === 0 ? (
+          {filterTransactions()?.length === 0 ? (
             <View style={styles.listtextBox}>
               <Text style={styles.listtext}>No transactions found.</Text>
             </View>

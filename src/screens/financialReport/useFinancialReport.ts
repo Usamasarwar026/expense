@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import {useEffect, useState} from 'react';
 import {useNavigation} from '@react-navigation/native';
 import {useAppDispatch, useAppSelector} from '../../hooks/useRedux';
 import {fetchTransactions} from '../../store/slices/transctionSlice/transctionSlice';
@@ -8,10 +8,8 @@ import {convertAmount} from '../../utils/currencyUtils';
 import {COLORS} from '../../constant/color';
 
 export const useFinancialReport = () => {
-  const [category, setCategory] = useState<string | null>(null);
   const [totalIncome, setTotalIncome] = useState<number>(0);
   const [totalExpense, setTotalExpense] = useState<number>(0);
-  const [selectedMonth, setSelectedMonth] = useState<string | null>(null);
   const [pieData, setPieData] = useState<{percentage: number; color: string}[]>(
     [],
   );
@@ -26,7 +24,7 @@ export const useFinancialReport = () => {
 
   useEffect(() => {
     dispatch(fetchTransactions());
-  }, [dispatch]);
+  }, []);
 
   useEffect(() => {
     if (transactions.length > 0) {
@@ -111,8 +109,6 @@ export const useFinancialReport = () => {
 
   return {
     selectedTab,
-    setCategory,
-    setSelectedMonth,
     pieData,
     toggleTab,
     handlepress,

@@ -7,13 +7,11 @@ import CategoryDropdown from '../../components/categoryDropdown/CategoryDropdown
 import {styles} from './financialReportStyles';
 import PieChart from '../../components/pieChart/PieChart';
 import {useFinancialReport} from './useFinancialReport';
-import { COLORS } from '../../constant/color';
+import {COLORS} from '../../constant/color';
 
 export default function FinancialReport() {
   const {
     selectedTab,
-    setCategory,
-    setSelectedMonth,
     pieData,
     toggleTab,
     handlepress,
@@ -35,7 +33,6 @@ export default function FinancialReport() {
           <View style={styles.topBarLeft}>
             <Dropdown
               dropdownPosition="left"
-              setSelectedMonth={setSelectedMonth}
             />
           </View>
           <View>
@@ -77,7 +74,6 @@ export default function FinancialReport() {
             <CategoryDropdown
               dropdownPosition="left"
               type={selectedTab}
-              setCategory={setCategory}
             />
           </View>
           <View>
@@ -87,7 +83,7 @@ export default function FinancialReport() {
           </View>
         </View>
         <View>
-          {dataToDisplay.map(item => {
+          {dataToDisplay?.map(item => {
             const progress = Math.min((Number(item.amount) / maxAmount) * 100);
             const categoryColors: Record<string, string> = {
               Shopping: COLORS.YELLOW_ORANGE,
@@ -96,8 +92,12 @@ export default function FinancialReport() {
               Salary: COLORS.GREEN,
               Transportation: COLORS.BLACK,
             };
-            const progressBarColor = categoryColors[item.category] || COLORS.SILVER_GRAY;
-            const textColor = selectedTab === 'Expense' ? COLORS.BRIGHT_RED : COLORS.GREEN_SHADE;
+            const progressBarColor =
+              categoryColors[item.category] || COLORS.SILVER_GRAY;
+            const textColor =
+              selectedTab === 'Expense'
+                ? COLORS.BRIGHT_RED
+                : COLORS.GREEN_SHADE;
             return (
               <ProgressBar
                 key={item.id}

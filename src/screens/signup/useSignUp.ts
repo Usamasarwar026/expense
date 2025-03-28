@@ -117,7 +117,7 @@ export default function useSignUp() {
       console.error('Google Sign-In Error:', error);
       Toast.show({
         type: 'error',
-        text1: 'Google Sign-In Failed!==> Please try again',
+        text1: 'Google Sign-In Failed! Please try again',
         text2: typedError.message || 'An unexpected error occurred.',
         position: 'top',
         visibilityTime: 3000,

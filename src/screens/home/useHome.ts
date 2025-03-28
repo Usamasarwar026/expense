@@ -17,7 +17,6 @@ export function useHome() {
   const [userData, setUserData] = useState<UserData | null | undefined>(null);
   const [loader, setLoader] = useState(true);
   const [selectedFilter, setSelectedFilter] = useState('Today');
-  const [selectedMonth, setSelectedMonth] = useState<string | null>(null);
   const [totalIncome, setTotalIncome] = useState(0);
   const [totalExpense, setTotalExpense] = useState(0);
   const navigation = useNavigation();
@@ -28,11 +27,11 @@ export function useHome() {
 
   useEffect(() => {
     dispatch(fetchSelectedCurrency());
-  }, [dispatch]);
+  }, []);
 
   useEffect(() => {
     dispatch(fetchExchangeRates());
-  }, [dispatch]);
+  }, []);
 
   useEffect(() => {
     dispatch(fetchTransactions());
@@ -48,21 +47,21 @@ export function useHome() {
     };
 
     fetchUserInfo();
-  }, [dispatch]);
+  }, []);
 
   useEffect(() => {
-    if (Array.isArray(transactions) && transactions.length > 0) {
+    if (Array.isArray(transactions) && transactions?.length > 0) {
       const incomeTotal = transactions
-        .filter(transaction => transaction.type === 'Income')
-        .reduce(
-          (sum, transaction) => sum + (Number(transaction.amount) || 0),
+        ?.filter(transaction => transaction?.type === 'Income')
+        ?.reduce(
+          (sum, transaction) => sum + (Number(transaction?.amount) || 0),
           0,
         );
 
       const expenseTotal = transactions
-        .filter(transaction => transaction.type === 'Expense')
-        .reduce(
-          (sum, transaction) => sum + (Number(transaction.amount) || 0),
+        ?.filter(transaction => transaction?.type === 'Expense')
+        ?.reduce(
+          (sum, transaction) => sum + (Number(transaction?.amount) || 0),
           0,
         );
 
@@ -77,8 +76,8 @@ export function useHome() {
     }
     if (selectedFilter === 'All') return transactions;
     const now = new Date();
-    return transactions.filter(transaction => {
-      const transactionDate = new Date(transaction.timestamp);
+    return transactions?.filter(transaction => {
+      const transactionDate = new Date(transaction?.timestamp);
       switch (selectedFilter) {
         case 'Today':
           return transactionDate.toDateString() === now.toDateString();
@@ -106,8 +105,8 @@ export function useHome() {
   const expenseData = useMemo(() => {
     if (!Array.isArray(filteredTransactions)) return [];
     const individualExpenses = filteredTransactions
-      .filter(transaction => transaction.type === 'Expense')
-      .map(transaction => {
+      ?.filter(transaction => transaction?.type === 'Expense')
+      ?.map(transaction => {
         const dateKey = moment(transaction.timestamp).format('YYYY-MM-DD');
         const numericAmount = parseFloat(transaction.amount);
 
@@ -126,9 +125,9 @@ export function useHome() {
           amounts: numericAmount,
         };
       })
-      .filter(entry => entry !== null);
+      ?.filter(entry => entry !== null);
 
-    const sortedExpenses = individualExpenses.sort((a, b) =>
+    const sortedExpenses = individualExpenses?.sort((a, b) =>
       moment(a.date).diff(moment(b.date)),
     );
 
@@ -143,7 +142,7 @@ export function useHome() {
     labels: [],
     datasets: [
       {
-        data: expenseData.map(entry => entry.amounts),
+        data: expenseData?.map(entry => entry.amounts),
         color: (opacity = 1) => `rgba(127, 17, 244, ${opacity})`,
         strokeWidth: 4,
       },
@@ -200,7 +199,6 @@ export function useHome() {
     handlepress,
     goToProfile,
     filterTransactions,
-    setSelectedMonth,
     balance,
     income,
     expense,

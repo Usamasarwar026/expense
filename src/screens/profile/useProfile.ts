@@ -24,7 +24,7 @@ export default function useProfile() {
       }
     };
     fetchUserInfo();
-  }, [dispatch]);
+  }, []);
   useEffect(() => {
     setUserData(usersData);
   }, [usersData]);

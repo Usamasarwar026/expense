@@ -15,7 +15,7 @@ import SuccessfulModel from '../../components/successfulModel/SuccessfulModel';
 import Toast from 'react-native-toast-message';
 import {styles} from './expenseStyles';
 import useExpenseLogic from './useExpense';
-import { COLORS } from '../../constant/color';
+import {COLORS} from '../../constant/color';
 
 export default function Expense() {
   const {
@@ -25,7 +25,6 @@ export default function Expense() {
     setSuccessfulModel,
     description,
     setDescription,
-    category,
     setCategory,
     imageUri,
     setImageUri,

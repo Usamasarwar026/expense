@@ -14,7 +14,7 @@ import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 export type TabItem<T = undefined> = {
   id: number;
   name: string;
-  component: T extends undefined ? FC : FC<T>;
+  component: T extends undefined ? FC<{}> : FC<T>;
   icon: IconProps['name'];
   headerShown?: BottomTabNavigationOptions['headerShown'];
   isAddButton?: boolean;
@@ -27,6 +27,18 @@ export type TabsArray = [
   TabItem,
   TabItem,
 ];
+
+// export type TabItem<T = undefined> = {
+//   id: number;
+//   name: string;
+//   component: T extends undefined ? FC<{}> : FC<T>;
+//   icon: IconProps["name"];
+//   headerShown?: BottomTabNavigationOptions["headerShown"];
+//   isAddButton?: boolean;
+// };
+
+// Flexible TabsArray as an array of union types
+// export type TabsArray = Array<TabItem<undefined> | TabItem<AddModelProps>>;
 
 export type RootStackParamList = {
   LaunchScreen: undefined;
@@ -89,7 +101,7 @@ export type CategoryDropdownProps = {
 };
 export type DropdownProps = {
   dropdownPosition?: 'center' | 'left';
-  setSelectedMonth: (month: string) => void;
+  setSelectedMonth?: (month: string) => void;
 };
 
 export interface InputProps extends TextInputProps {

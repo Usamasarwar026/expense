@@ -41,7 +41,7 @@ export const useEditProfile = () => {
       setLoading(false);
     };
     fetchData();
-  }, [dispatch]);
+  }, []);
 
   const goToProfile = () => {
     try {

@@ -1,7 +1,7 @@
 import {useState, useCallback} from 'react';
 import {MONTH} from '../../constant/constant';
 
-export function useDropdown(setSelectedMonth: (month: string) => void) {
+export function useDropdown(setSelectedMonth?: (month: string) => void) {
   const [selectedValue, setSelectedValue] = useState<string | null>('Month');
   const [listVisible, setListVisible] = useState<boolean>(false);
 
@@ -9,7 +9,9 @@ export function useDropdown(setSelectedMonth: (month: string) => void) {
 
   const handleSelectMonth = (month: string) => {
     setSelectedValue(month);
-    setSelectedMonth(month);
+    if (setSelectedMonth) {
+      setSelectedMonth(month);
+    }
     setListVisible(false);
   };
 

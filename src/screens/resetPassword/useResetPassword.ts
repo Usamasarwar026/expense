@@ -9,7 +9,6 @@ export default function useResetPassword() {
   const [oldpassword, setOldpassword] = useState('');
   const [newpassword, setNewpassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
   const navigation = useNavigation();
   const dispatch = useAppDispatch();
 
@@ -45,8 +44,6 @@ export default function useResetPassword() {
     }
 
     try {
-      setIsLoading(true);
-
       const email = auth().currentUser?.email;
 
       if (!email) {
@@ -68,8 +65,6 @@ export default function useResetPassword() {
         }),
       );
 
-      setIsLoading(false);
-
       if (changePassword.fulfilled.match(actionResult)) {
         goToBack();
         setTimeout(() => {
@@ -84,7 +79,6 @@ export default function useResetPassword() {
       }
     } catch (error) {
       const typedError = error as Error;
-      setIsLoading(false);
 
       Toast.show({
         type: 'error',
