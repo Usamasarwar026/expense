@@ -11,34 +11,16 @@ import {RouteProp} from '@react-navigation/native';
 import {IconProps} from 'react-native-vector-icons/Icon';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 
-export type TabItem<T = undefined> = {
+export type TabItem = {
   id: number;
   name: string;
-  component: T extends undefined ? FC<{}> : FC<T>;
+  component: FC<{}>;
   icon: IconProps['name'];
   headerShown?: BottomTabNavigationOptions['headerShown'];
   isAddButton?: boolean;
 };
 
-export type TabsArray = [
-  TabItem,
-  TabItem,
-  TabItem<AddModelProps>,
-  TabItem,
-  TabItem,
-];
-
-// export type TabItem<T = undefined> = {
-//   id: number;
-//   name: string;
-//   component: T extends undefined ? FC<{}> : FC<T>;
-//   icon: IconProps["name"];
-//   headerShown?: BottomTabNavigationOptions["headerShown"];
-//   isAddButton?: boolean;
-// };
-
-// Flexible TabsArray as an array of union types
-// export type TabsArray = Array<TabItem<undefined> | TabItem<AddModelProps>>;
+export type TabsArray = Array<TabItem>;
 
 export type RootStackParamList = {
   LaunchScreen: undefined;

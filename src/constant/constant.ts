@@ -17,6 +17,7 @@ import Income from '../screens/income/Income';
 import SettingScreen from '../screens/settingScreen/SettingScreen';
 import {IMAGES} from './image';
 import {COLORS} from './color';
+import AddModelScreen from '../screens/AddModelScreen/AddModelScreen';
 
 export const AUTH_SCREENS = [
   {name: 'Login', component: Login},
@@ -53,7 +54,7 @@ export const TABS: TabsArray = [
   {
     id: 3,
     name: 'Add',
-    component: AddModel,
+    component: AddModelScreen,
     icon: 'add',
     isAddButton: true,
   },

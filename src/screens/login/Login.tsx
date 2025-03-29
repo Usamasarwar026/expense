@@ -12,7 +12,7 @@ import Input from '../../components/input/Input';
 import Toast from 'react-native-toast-message';
 import {styles} from './loginStyles';
 import useLogin from './useLogin';
-import { COLORS } from '../../constant/color';
+import {COLORS} from '../../constant/color';
 
 export default function Login() {
   const {

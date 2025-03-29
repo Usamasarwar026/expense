@@ -15,7 +15,7 @@ import SuccessfulModel from '../../components/successfulModel/SuccessfulModel';
 import Toast from 'react-native-toast-message';
 import {styles} from './incomeStyles';
 import useIncome from './useIncome';
-import { COLORS } from '../../constant/color';
+import {COLORS} from '../../constant/color';
 
 export default function Income() {
   const {
@@ -49,9 +49,7 @@ export default function Income() {
         </View>
         <View style={styles.secondContainer}>
           <Text style={styles.secondContainerText}>How much?</Text>
-          <Text style={styles.secondContaineramount}>
-            {income}
-          </Text>
+          <Text style={styles.secondContaineramount}>{income}</Text>
         </View>
         <View style={styles.belowContainer}>
           <View style={styles.belowinnerContainer}>

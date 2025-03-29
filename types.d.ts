@@ -1,7 +1,7 @@
 export interface TabItem {
   id: number;
   name: string;
-  component?: React.ComponentType<any> | undefined; // Make it optional
+  component?: React.ComponentType<any> | undefined;
   icon: string;
   headerShown?: boolean;
   isAddButton?: boolean;

@@ -35,10 +35,9 @@ export const COLORS = {
   TRANSPARENT_WHITE: '#ffffff00',
   SLATE_BLUE: 'rgba(124, 80, 255,0.4)',
   LIGHT_BLACK: 'rgba(0, 0, 0, 0.5)',
-  LIGHT_GREEN:'#CFFAEA',
+  LIGHT_GREEN: '#CFFAEA',
   LIGHT_PINK: '#FDD5D7',
   SKY_BLUE: '#BDDCFF',
   PASCAL_YELLOW: '#FCEED4',
-  BRIGHT_GREY: '#F0F0F0'
-  
+  BRIGHT_GREY: '#F0F0F0',
 };

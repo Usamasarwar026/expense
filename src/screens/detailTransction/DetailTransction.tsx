@@ -3,8 +3,8 @@ import React from 'react';
 import {IMAGES} from '../../constant/image';
 import {styles} from './detailTransctionStyles';
 import Logout from '../../components/logout/Logout';
-import { useDetailTransction } from './useDetailTransction';
-import { COLORS } from '../../constant/color';
+import {useDetailTransction} from './useDetailTransction';
+import {COLORS} from '../../constant/color';
 
 export default function DetailTransction() {
   const {
@@ -39,9 +39,7 @@ export default function DetailTransction() {
           </View>
           <View style={styles.redcontainer}>
             <View>
-              <Text style={styles.amount}>
-                {currencyAmount}
-              </Text>
+              <Text style={styles.amount}>{currencyAmount}</Text>
             </View>
             <View>
               <Text style={styles.text}>{transaction.description}</Text>

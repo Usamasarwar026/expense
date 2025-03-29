@@ -3,7 +3,7 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {APP_SCREENS} from '../../constant/constant';
 import {RootStackParamList} from '../../types/types';
 
-const Stack = createNativeStackNavigator<RootStackParamList >();
+const Stack = createNativeStackNavigator<RootStackParamList>();
 
 export default function AppNavigation() {
   return (

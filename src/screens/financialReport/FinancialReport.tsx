@@ -31,9 +31,7 @@ export default function FinancialReport() {
         </View>
         <View style={styles.topBar}>
           <View style={styles.topBarLeft}>
-            <Dropdown
-              dropdownPosition="left"
-            />
+            <Dropdown dropdownPosition="left" />
           </View>
           <View>
             <TouchableOpacity>
@@ -71,10 +69,7 @@ export default function FinancialReport() {
         </View>
         <View style={styles.topBar}>
           <View style={styles.topBarLeft}>
-            <CategoryDropdown
-              dropdownPosition="left"
-              type={selectedTab}
-            />
+            <CategoryDropdown dropdownPosition="left" type={selectedTab} />
           </View>
           <View>
             <TouchableOpacity>

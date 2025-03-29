@@ -13,14 +13,13 @@ import {styles} from './settingScreenStyles';
 import useSettingScreen from './useSettingScreen';
 
 export default function SettingScreen() {
-  
-const {
-  goToBack,
+  const {
+    goToBack,
     modalVisible,
     setModalVisible,
     selectedCurrency,
     handleCurrencySelect,
-} = useSettingScreen();
+  } = useSettingScreen();
   return (
     <KeyboardAvoidingView style={styles.container}>
       <ScrollView contentContainerStyle={{flexGrow: 1}} bounces={false}>

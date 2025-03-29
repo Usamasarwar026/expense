@@ -54,9 +54,7 @@ export default function Home() {
                 )}
               </TouchableOpacity>
               <View style={styles.dropdown}>
-                <Dropdown
-                  dropdownPosition="center"
-                />
+                <Dropdown dropdownPosition="center" />
               </View>
               <Image source={IMAGES.NOTIFICATION} />
             </View>

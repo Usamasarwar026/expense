@@ -5,8 +5,7 @@ import {styles} from './TabNavigationStyle';
 import {TouchableOpacity} from 'react-native';
 import {TabItem} from '../../types/types';
 import useTabNavigation from './useTabNavigation';
-import { COLORS } from '../../constant/color';
-
+import {COLORS} from '../../constant/color';
 
 export default function TabNavigation() {
   const {Tab, modalVisible, setModalVisible} = useTabNavigation();

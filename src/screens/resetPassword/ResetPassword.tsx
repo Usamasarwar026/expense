@@ -12,7 +12,7 @@ import Input from '../../components/input/Input';
 import Toast from 'react-native-toast-message';
 import {styles} from './resetPasswordStyles';
 import useResetPassword from './useResetPassword';
-import { COLORS } from '../../constant/color';
+import {COLORS} from '../../constant/color';
 
 export default function ResetPassword() {
   const {

@@ -1,8 +1,8 @@
-import { useEffect, useState } from 'react'
+import {useEffect, useState} from 'react';
 import auth from '@react-native-firebase/auth';
 
 export default function useMainNavigation() {
-    const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
 
   useEffect(() => {
     const unsubscribe = auth().onAuthStateChanged(user => {
@@ -11,5 +11,5 @@ export default function useMainNavigation() {
 
     return () => unsubscribe();
   }, []);
-  return {isAuthenticated}
+  return {isAuthenticated};
 }

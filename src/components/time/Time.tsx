@@ -6,7 +6,7 @@ import {
 } from '../../types/types';
 
 export const Time = (
-  transactions: Transaction[] ,
+  transactions: Transaction[],
   selectedMonth: string | null,
 ): TimeReturnType => {
   if (!Array.isArray(transactions)) {

@@ -12,8 +12,8 @@ import Input from '../../components/input/Input';
 import {IMAGES} from '../../constant/image';
 import Toast from 'react-native-toast-message';
 import {styles} from './editProfileStyles';
-import { useEditProfile } from './useEditProfile';
-import { COLORS } from '../../constant/color';
+import {useEditProfile} from './useEditProfile';
+import {COLORS} from '../../constant/color';
 
 export default function EditProfile() {
   const {
@@ -81,7 +81,11 @@ export default function EditProfile() {
           <TouchableOpacity
             style={[
               styles.button,
-              {backgroundColor: isButtonEnabled ? COLORS.DARK_PURPLE : COLORS.SOFT_PURPLE},
+              {
+                backgroundColor: isButtonEnabled
+                  ? COLORS.DARK_PURPLE
+                  : COLORS.SOFT_PURPLE,
+              },
             ]}
             disabled={!isButtonEnabled}
             onPress={handleUpdateProfile}>

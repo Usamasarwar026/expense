@@ -11,10 +11,10 @@ import {IMAGES} from '../../constant/image';
 import Input from '../../components/input/Input';
 import Toast from 'react-native-toast-message';
 import {styles} from './forgetPasswordStyles';
-import { useForgetPassword } from './useForgetPassword';
+import {useForgetPassword} from './useForgetPassword';
 
 export default function ForgetPassword() {
-   const { email, setEmail, goToBack, handleSendEmail } = useForgetPassword();
+  const {email, setEmail, goToBack, handleSendEmail} = useForgetPassword();
 
   return (
     <KeyboardAvoidingView style={styles.container}>

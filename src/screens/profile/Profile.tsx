@@ -13,7 +13,7 @@ import {navigate} from '../../navigation/navigationRef/navigationRef';
 import {PROFILE_DATA} from '../../constant/constant';
 import Logout from '../../components/logout/Logout';
 import useProfile from './useProfile';
-import { COLORS } from '../../constant/color';
+import {COLORS} from '../../constant/color';
 
 export default function Profile() {
   const {loading, userData, goToEditPage, openModel, setOpenModel, YesPress} =
@@ -76,7 +76,7 @@ export default function Profile() {
               image={profile.image}
               name={profile.name}
               onPress={handlePress}
-              customStyle = {profile.styles}
+              customStyle={profile.styles}
             />
           );
         })}
