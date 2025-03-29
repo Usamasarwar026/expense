@@ -6,9 +6,9 @@ import {
   fetchSelectedCurrency,
   fetchTransactions,
 } from '../../store/slices/transctionSlice/transctionSlice';
-import Toast from 'react-native-toast-message';
 import {convertAmount} from '../../utils/currencyUtils';
 import {useNavigation} from '@react-navigation/native';
+import {showToast} from '../../utils/toastUtils';
 
 const useExpenseLogic = () => {
   const [openModel, setOpenModel] = useState<boolean>(false);
@@ -52,9 +52,9 @@ const useExpenseLogic = () => {
 
   const saveData = () => {
     if (!description || !category || !amount || !imageUri) {
-      Toast.show({
-        text1: 'All fields are required',
+      showToast({
         type: 'error',
+        message: 'All fields are required',
       });
       return;
     }

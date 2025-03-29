@@ -7,13 +7,13 @@ import {
   storeImageUriInFirestore,
   updateName,
 } from '../../store/slices/authSlice/authSlice';
-import Toast from 'react-native-toast-message';
 import {
   CameraOptions,
   ImageLibraryOptions,
   launchCamera,
   launchImageLibrary,
 } from 'react-native-image-picker';
+import {showToast} from '../../utils/toastUtils';
 
 export const useEditProfile = () => {
   const [email, setEmail] = useState<string>('');
@@ -114,16 +114,14 @@ export const useEditProfile = () => {
 
       if (nameUpdated || imageUpdated) {
         setTimeout(() => {
-          Toast.show({
-            type: 'success',
-            position: 'top',
-            text1:
+          showToast({
+            message:
               nameUpdated && imageUpdated
                 ? 'Profile Updated!'
                 : nameUpdated
                 ? 'Name Updated!'
                 : 'Profile Picture Updated!',
-            text2:
+            description:
               nameUpdated && imageUpdated
                 ? 'Your name and profile picture were updated successfully.'
                 : nameUpdated
@@ -135,11 +133,10 @@ export const useEditProfile = () => {
       }
     } catch (error) {
       const typedError = error as Error;
-      Toast.show({
+      showToast({
         type: 'error',
-        position: 'top',
-        text1: 'Error updating profile',
-        text2: typedError.message,
+        message: 'Error updating your profile',
+        description: typedError.message,
       });
     }
   };

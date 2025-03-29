@@ -9,6 +9,7 @@ import {
 } from '@react-native-google-signin/google-signin';
 import {AuthState, AuthUser} from '../../../types/types';
 import {uploadToCloudinary} from '../imageSlice/imageSlice';
+import {showToast} from '../../../utils/toastUtils';
 
 export const signup = createAsyncThunk(
   'auth/signup',
@@ -52,12 +53,9 @@ export const signup = createAsyncThunk(
           'Weak password! Password must be at least 6 characters long';
         console.error(errorMessage);
       }
-      Toast.show({
+      showToast({
         type: 'error',
-        text1: errorMessage,
-        position: 'top',
-        visibilityTime: 2000,
-        autoHide: true,
+        message: errorMessage,
       });
 
       return rejectWithValue(errorMessage);
@@ -125,32 +123,22 @@ export const resetPassword = createAsyncThunk(
         .where('email', '==', email)
         .get();
       if (snapshot.empty) {
-        Toast.show({
+        showToast({
           type: 'error',
-          text1: 'No user found with that email address.',
-          position: 'top',
-          visibilityTime: 2000,
-          autoHide: true,
-        });
+          message: 'No user found with that email address.',
+        })
       } else {
         await auth().sendPasswordResetEmail(email);
-        Toast.show({
-          type: 'success',
-          text1: 'Password reset email sent successfully. Check your inbox.',
-          position: 'top',
-          visibilityTime: 2000,
-          autoHide: true,
-        });
+        showToast({
+          message: 'Password reset email sent successfully. Check your inbox.',
+        })
       }
     } catch (error) {
       console.error('Error sending password reset email:', error);
-      Toast.show({
+      showToast({
         type: 'error',
-        text1: 'Failed to send password reset email. Please try again.',
-        position: 'top',
-        visibilityTime: 2000,
-        autoHide: true,
-      });
+        message: 'Failed to send password reset email. Please try again.',
+      })
     }
   },
 );
@@ -274,13 +262,10 @@ export const changePassword = createAsyncThunk(
         typedError.code === 'auth/wrong-password' ||
         'auth/invalid-credential'
       ) {
-        Toast.show({
+        showToast({
           type: 'error',
-          text1: typedError.message,
-          position: 'top',
-          visibilityTime: 2000,
-          autoHide: true,
-        });
+          message: typedError.message,
+        })
       }
       return rejectWithValue(typedError.message);
     }

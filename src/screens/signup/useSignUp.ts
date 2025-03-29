@@ -2,7 +2,7 @@ import {useAppDispatch} from '../../hooks/useRedux';
 import {GoogleSignup, signup} from '../../store/slices/authSlice/authSlice';
 import {navigate} from '../../navigation/navigationRef/navigationRef';
 import {useState} from 'react';
-import Toast from 'react-native-toast-message';
+import {showToast} from '../../utils/toastUtils';
 
 export default function useSignUp() {
   const [name, setName] = useState('');
@@ -25,29 +25,23 @@ export default function useSignUp() {
   const signupfunction = async () => {
     try {
       if (!name || !email || !password) {
-        Toast.show({
+        showToast({
           type: 'error',
-          text1: 'Please fill all fields.',
-          position: 'top',
-          visibilityTime: 3000,
+          message: 'Please fill in all fields',
         });
         return;
       }
       if (!isChecked) {
-        Toast.show({
+        showToast({
           type: 'error',
-          text1: 'Please Accept the Terms and Privacy Policy.',
-          position: 'top',
-          visibilityTime: 3000,
+          message: 'Please Accept the Terms and Privacy Policy.',
         });
         return;
       }
       if (password.length < 6) {
-        Toast.show({
+        showToast({
           type: 'error',
-          text1: 'Password must be at least 6 characters long.',
-          position: 'top',
-          visibilityTime: 3000,
+          message: 'Password must be at least 6 characters long.',
         });
         return;
       }
@@ -57,12 +51,9 @@ export default function useSignUp() {
         navigate('Login');
 
         setTimeout(() => {
-          Toast.show({
-            type: 'success',
-            text1: 'Signup Successful!',
-            text2: 'You can now log in to your account.',
-            position: 'top',
-            visibilityTime: 3000,
+          showToast({
+            message: 'Signup Successful!',
+            description: 'You can now log in to your account.',
           });
         }, 1500);
 
@@ -72,19 +63,15 @@ export default function useSignUp() {
       } else {
         const errorMessage =
           resultAction.payload || 'Signup failed, please try again.';
-        Toast.show({
+        showToast({
           type: 'error',
-          text1: errorMessage as string,
-          position: 'top',
-          visibilityTime: 3000,
+          message: errorMessage as string,
         });
       }
     } catch (error) {
-      Toast.show({
+      showToast({
         type: 'error',
-        text1: 'Signup failed, please try again.',
-        position: 'top',
-        visibilityTime: 3000,
+        message: 'Signup failed, please try again.',
       });
     }
   };
@@ -93,34 +80,26 @@ export default function useSignUp() {
     try {
       const resultAction = await dispatch(GoogleSignup());
       if (GoogleSignup.fulfilled.match(resultAction)) {
-        Toast.show({
-          type: 'success',
-          text1: 'Google Sign-In Successful!',
-          position: 'top',
-          visibilityTime: 3000,
+        showToast({
+          message: 'Google Sign-In Successful!',
         });
-
         navigate('Home');
       } else {
         const errorMessage =
           resultAction.payload || 'Something went wrong! Please try again.';
-        Toast.show({
+        showToast({
           type: 'error',
-          text1: 'Google Sign-In Failed!',
-          text2: String(errorMessage) || 'Please try again.',
-          position: 'top',
-          visibilityTime: 3000,
+          message: 'Google Sign-In Failed!',
+          description: errorMessage as string | 'please try again',
         });
       }
     } catch (error) {
       const typedError = error as Error;
       console.error('Google Sign-In Error:', error);
-      Toast.show({
+      showToast({
         type: 'error',
-        text1: 'Google Sign-In Failed! Please try again',
-        text2: typedError.message || 'An unexpected error occurred.',
-        position: 'top',
-        visibilityTime: 3000,
+        message: 'Google Sign-In Failed! please try again',
+        description: typedError.message || 'An unexpected error occurred.',
       });
     }
   };

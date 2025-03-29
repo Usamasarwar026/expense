@@ -3,7 +3,7 @@ import {useAppDispatch} from '../../hooks/useRedux';
 import {changePassword} from '../../store/slices/authSlice/authSlice';
 import auth from '@react-native-firebase/auth';
 import {useState} from 'react';
-import Toast from 'react-native-toast-message';
+import {showToast} from '../../utils/toastUtils';
 
 export default function useResetPassword() {
   const [oldpassword, setOldpassword] = useState('');
@@ -22,23 +22,17 @@ export default function useResetPassword() {
 
   const handleChangePassword = async () => {
     if (newpassword !== confirmPassword) {
-      Toast.show({
+      showToast({
         type: 'error',
-        text1: 'Passwords do not match',
-        position: 'top',
-        visibilityTime: 2000,
-        autoHide: true,
+        message: 'Passwords do not match',
       });
       return;
     }
 
     if (!oldpassword || !newpassword || !confirmPassword) {
-      Toast.show({
+      showToast({
         type: 'error',
-        text1: 'All fields are required',
-        position: 'top',
-        visibilityTime: 2000,
-        autoHide: true,
+        message: 'All fields are required',
       });
       return;
     }
@@ -47,12 +41,9 @@ export default function useResetPassword() {
       const email = auth().currentUser?.email;
 
       if (!email) {
-        Toast.show({
+        showToast({
           type: 'error',
-          text1: 'User is not authenticated',
-          position: 'top',
-          visibilityTime: 200,
-          autoHide: true,
+          message: 'User is not authenticated',
         });
         return;
       }
@@ -68,24 +59,17 @@ export default function useResetPassword() {
       if (changePassword.fulfilled.match(actionResult)) {
         goToBack();
         setTimeout(() => {
-          Toast.show({
-            type: 'success',
-            text1: 'Password successfully updated!',
-            position: 'top',
-            visibilityTime: 2000,
-            autoHide: true,
+          showToast({
+            message: 'Password successfully updated!',
           });
         }, 1500);
       }
     } catch (error) {
       const typedError = error as Error;
-
-      Toast.show({
+      showToast({
         type: 'error',
-        text1: typedError.message,
-        position: 'top',
-        visibilityTime: 2000,
-        autoHide: true,
+        message: 'Error updating password',
+        description: typedError.message,
       });
     }
   };

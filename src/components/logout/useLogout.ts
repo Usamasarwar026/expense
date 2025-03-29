@@ -1,6 +1,7 @@
 import {useState} from 'react';
 import {CommonActions, useNavigation} from '@react-navigation/native';
 import Toast from 'react-native-toast-message';
+import { showToast } from '../../utils/toastUtils';
 
 export function useLogout({
   setOpenModel,
@@ -35,12 +36,12 @@ export function useLogout({
       }, 500);
     } else {
       setOpenModel(false);
-      Toast.show({
-        text1: 'Error',
-        text2: 'No user is currently signed in',
+      showToast({
         type: 'error',
-        visibilityTime: 3000,
-      });
+        message: 'Error',
+        description: 'No user is currently signed in',
+        
+      })
     }
   };
 

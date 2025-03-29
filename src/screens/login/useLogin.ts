@@ -3,7 +3,7 @@ import {useAppDispatch, useAppSelector} from '../../hooks/useRedux';
 import {GoogleSignup, login} from '../../store/slices/authSlice/authSlice';
 import {navigate} from '../../navigation/navigationRef/navigationRef';
 import {useState} from 'react';
-import Toast from 'react-native-toast-message';
+import {showToast} from '../../utils/toastUtils';
 
 export default function useLogin() {
   const [email, setEmail] = useState('');
@@ -32,11 +32,9 @@ export default function useLogin() {
 
   const handleLogin = async () => {
     if (!email || !password) {
-      Toast.show({
+      showToast({
         type: 'error',
-        text1: 'Please fill in all fields',
-        position: 'top',
-        visibilityTime: 2000,
+        message: 'Please fill in all fields',
       });
       return;
     }
@@ -55,21 +53,16 @@ export default function useLogin() {
         setPassword('');
 
         setTimeout(() => {
-          Toast.show({
-            type: 'success',
-            text1: 'Logged in successfully',
-            position: 'top',
-            visibilityTime: 2000,
+          showToast({
+            message: 'Logged in Successfully',
           });
         }, 1500);
       }
     } catch (errorMessage) {
       console.error('Login Error:', errorMessage);
-      Toast.show({
+      showToast({
         type: 'error',
-        text1: errorMessage as string,
-        position: 'top',
-        visibilityTime: 2000,
+        message: errorMessage as string,
       });
     }
   };
@@ -78,34 +71,26 @@ export default function useLogin() {
     try {
       const resultAction = await dispatch(GoogleSignup());
       if (GoogleSignup.fulfilled.match(resultAction)) {
-        Toast.show({
-          type: 'success',
-          text1: 'Google Sign-In Successful!',
-          position: 'top',
-          visibilityTime: 3000,
+        showToast({
+          message: 'Google Sign-In Successfull',
         });
-
         navigate('Home');
       } else {
         const errorMessage =
           resultAction.payload || 'Something went wrong! Please try again.';
-        Toast.show({
+        showToast({
           type: 'error',
-          text1: 'Google Sign-In Failed!',
-          text2: String(errorMessage) || 'Please try again.',
-          position: 'top',
-          visibilityTime: 3000,
+          message: 'Google Sign-In Failed!',
+          description: (errorMessage as string) || 'please try again',
         });
       }
     } catch (error) {
       const typedError = error as Error;
       console.error('Google Sign-In Error:', error);
-      Toast.show({
+      showToast({
         type: 'error',
-        text1: 'Google Sign-In Failed!==> Please try again',
-        text2: typedError.message || 'An unexpected error occurred.',
-        position: 'top',
-        visibilityTime: 3000,
+        message: 'Google Sign-In Failed! Please try again',
+        description: typedError.message || 'An unexpected error occurred.',
       });
     }
   };

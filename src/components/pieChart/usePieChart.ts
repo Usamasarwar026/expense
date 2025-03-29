@@ -25,6 +25,5 @@ export const usePieChart = ({sections}: UsePieChartLogicProps) => {
 
   return {
     chartData,
-    total,
   };
 };

@@ -343,3 +343,14 @@ export type ChartData = {
 export type UsePieChartLogicProps = {
   sections: PieChartSection[];
 };
+
+type ToastType = 'success' | 'error' | 'info';
+type ToastPosition = 'top' | 'bottom';
+
+export type ShowToastParams = {
+  type?: ToastType;
+  message: string;
+  description?: string;
+  position?: ToastPosition;
+  duration?: number;
+};
